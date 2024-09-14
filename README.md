@@ -1,6 +1,6 @@
 # Way2Quran Mobile App
 
-![Way2Quran App](/src/assets/images/screenshot-2.png)
+![Way2Quran App](/src/assets/images/screenshot.png)
 
 Way2Quran is a comprehensive Quran app that offers a diverse collection of recitations by various Qaris. With downloadable audio clips for offline listening, this app provides an immersive experience for users to engage with the Quran anytime, anywhere.
 
