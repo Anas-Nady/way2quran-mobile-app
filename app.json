@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "الطريق إلي القرآن",
+    "slug": "way2quran",
+    "description": "استماع وتحميل تلاوات للقرآن الكريم من أنحاء العالم الإسلامي",
+    "version": "1.0.0",
+    "orientation": "default",
+    "icon": "./src/assets/images/icon.png",
+    "scheme": "way2quran",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./src/assets/images/bg.jpg",
+      "resizeMode": "contain",
+      "backgroundColor": "#fff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/images/adaptive-icon.png",
+        "backgroundColor": "#374151"
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./src/assets/images/icon.png"
+    },
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      }
+    }
+  }
+}
