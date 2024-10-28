@@ -16,7 +16,7 @@ const ConfirmationDialog = ({ isVisible, onConfirm, onCancel, message }) => {
         <Text className="mb-5 text-base text-center text-gray-800 dark:text-gray-200">
           {message}
         </Text>
-        <View className="flex-row justify-between">
+        <View className="flex-row-reverse justify-between">
           <TouchableOpacity
             className="py-2.5 px-5 rounded bg-gray-300 dark:bg-gray-600"
             onPress={onCancel}

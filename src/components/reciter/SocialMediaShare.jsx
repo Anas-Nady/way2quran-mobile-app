@@ -48,7 +48,7 @@ const SocialMediaShare = ({
 
             <Text className={`text-xl mb-6 mt-4`}>Share via</Text>
 
-            <View className="flex-row items-center justify-center w-full gap-5 mb-4">
+            <View className="flex-row-reverse items-center justify-center w-full gap-5 mb-4">
               {mediaShare.map((item, index) => (
                 <TouchableOpacity
                   key={index}

@@ -210,7 +210,7 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
         >
           <View
             style={{ transform: [{ rotate: "45deg" }] }}
-            className="flex-row items-center justify-center ml-4 bg-gray-200 w-9 h-9 dark:bg-green-600"
+            className="flex-row-reverse items-center justify-center ml-4 bg-gray-200 w-9 h-9 dark:bg-green-600"
           >
             <Text
               style={{ transform: [{ rotate: "-45deg" }] }}

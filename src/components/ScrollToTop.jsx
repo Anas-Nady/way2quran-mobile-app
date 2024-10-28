@@ -10,6 +10,7 @@ import { Ionicons } from "@expo/vector-icons"; // You can use any icon library
 
 const ScrollToTop = () => {
   const [isVisible, setIsVisible] = useState(true);
+  const scrollViewRef = useRef < ScrollView > null; // Reference to the ScrollView
 
   // Handling scroll visibility using the onScroll event from ScrollView
   const handleScroll = (event) => {
@@ -22,7 +23,9 @@ const ScrollToTop = () => {
   };
 
   const scrollToTop = () => {
-    console.log("scrollToTop now");
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({ y: 0, animated: true });
+    }
   };
 
   return (

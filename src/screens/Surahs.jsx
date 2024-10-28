@@ -30,7 +30,7 @@ export default function Surahs() {
         <View className="items-center justify-center flex-1 mx-auto w-[90%]">
           <HeadingScreen headingTxt={t("quranicSurahs")} />
           <SearchInput handleTextDebounce={handleTextDebounce} />
-          <View className="flex-row flex-wrap items-center my-2">
+          <View className="flex-row-reverse flex-wrap items-center my-2">
             {filteredSurahs.map((surah) => (
               <SurahCard key={surah.slug} surah={surah} />
             ))}

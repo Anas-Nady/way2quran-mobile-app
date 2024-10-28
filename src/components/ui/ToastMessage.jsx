@@ -42,7 +42,7 @@ const ToastMessage = ({
         zIndex: 50,
       }}
     >
-      <View className="flex-row items-center p-4 bg-white border border-gray-300 rounded-lg shadow dark:border-gray-600 dark:bg-gray-800">
+      <View className="flex-row-reverse items-center p-4 bg-white border border-gray-300 rounded-lg shadow dark:border-gray-600 dark:bg-gray-800">
         <View
           className={`items-center justify-center w-8 h-8 rounded-lg ${
             success

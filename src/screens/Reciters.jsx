@@ -75,7 +75,7 @@ export default function Reciters() {
           >
             <HeadingScreen headingTxt={recitation?.arabicName || ""} />
 
-            <View className="flex-row flex-wrap items-center justify-center py-7">
+            <View className="flex-row-reverse flex-wrap items-center justify-center py-7">
               {state.reciters?.length > 0 ? (
                 state.reciters?.map((reciter) => (
                   <ReciterCard

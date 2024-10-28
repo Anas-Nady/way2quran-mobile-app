@@ -65,7 +65,6 @@ const ReciterScreen = () => {
 
         const data = await res.json();
         setState({ reciter: data.reciter, loading: false, error: null });
-        console.log(data.reciter?.photo);
         setRecitations(data.reciter.recitations);
       } catch (error) {
         setState({ reciter: null, loading: false, error: error.message });
@@ -151,10 +150,10 @@ const ReciterScreen = () => {
                   {state.reciter?.arabicName}
                 </Text>
                 {state.reciter?.isTopReciter && <TopReciterBadge />}
-                <View className="flex-row items-center justify-center mt-2">
+                <View className="flex-row-reverse items-center justify-center gap-2 mt-2">
                   <Ionicons name="eye-outline" size={25} color="#6B7280" />
                   <Text className="mb-1 ml-1 text-lg font-semibold text-gray-700 dark:text-white">
-                    {state.reciter?.totalViewers}
+                    {state.reciter?.totalViewers?.toLocaleString()}
                   </Text>
                 </View>
               </View>
@@ -170,7 +169,7 @@ const ReciterScreen = () => {
             {/* Download All Button */}
             <TouchableOpacity
               onPress={handleDownloadAll}
-              className="flex-row items-center justify-center p-4 mt-4 bg-white border border-gray-400 rounded-md dark:bg-gray-700 dark:border-gray-500"
+              className="flex-row-reverse items-center justify-center p-4 mt-4 bg-white border border-gray-400 rounded-md dark:bg-gray-700 dark:border-gray-500"
             >
               <Text className="ml-2 text-lg font-semibold text-center text-gray-800 dark:text-white">
                 {translate("downloadAll")}

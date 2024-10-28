@@ -12,8 +12,14 @@ export default function SurahCard({ surah }) {
         }
         className="flex-row-reverse items-center gap-4"
       >
-        <View className="flex-row-reverse items-center justify-center rotate-45 bg-green-500 border rounded-sm w-9 h-9 dark:bg-green-600 border-slate-400 dark:border-gray-500 ">
-          <Text className="block font-medium text-center text-white -rotate-45 dark:text-white">
+        <View
+          style={{ transform: [{ rotate: "45deg" }] }}
+          className="flex-row-reverse items-center justify-center bg-green-500 border rounded-sm w-9 h-9 dark:bg-green-600 border-slate-400 dark:border-gray-500 "
+        >
+          <Text
+            style={{ transform: [{ rotate: "-45deg" }] }}
+            className="block font-medium text-center text-white dark:text-white"
+          >
             {surah.number}
           </Text>
         </View>

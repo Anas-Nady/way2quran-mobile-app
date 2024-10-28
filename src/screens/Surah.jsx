@@ -29,9 +29,9 @@ export default function Surah() {
       <GoBackButton />
       <ScrollView
         ref={scrollViewRef}
-        className="flex-1 w-full px-4 bg-gray-200 dark:bg-gray-800"
+        className="flex-1 w-full px-4 bg-white dark:bg-gray-800"
       >
-        <HeadingScreen headingTxt={surahInfo.arabicName} />
+        <HeadingScreen headingTxt={surahInfo?.arabicName} />
 
         {/* Surah Info */}
         <View className="flex-col flex-1 w-[90%] py-7 mx-auto border-b-2 border-gray-400 dark:border-gray-700">

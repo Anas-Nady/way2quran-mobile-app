@@ -32,7 +32,7 @@ const SelectOptions = ({
     >
       <View className="justify-end flex-1 bg-black bg-opacity-50">
         <View className="bg-white rounded-t-lg dark:bg-gray-800">
-          <View className="flex-row items-center justify-between p-4 border-b border-gray-200">
+          <View className="flex-row-reverse items-center justify-between p-4 border-b border-gray-200">
             <Text className="text-xl font-semibold text-gray-800 dark:text-white">
               {placeholder}
             </Text>

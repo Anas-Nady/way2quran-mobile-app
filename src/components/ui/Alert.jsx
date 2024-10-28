@@ -39,7 +39,7 @@ const Alert = ({ message, type = "success", duration = 3000, onClose }) => {
       }}
       className="absolute z-50 top-4 left-4 right-4"
     >
-      <View className="flex-row items-center p-4 bg-gray-200 border border-gray-400 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-500">
+      <View className="flex-row-reverse items-center p-4 bg-gray-200 border border-gray-400 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-500">
         <Ionicons
           name={getIconName()}
           size={24}

@@ -18,7 +18,7 @@ export default function QuranPDFCard({ quran }) {
   return (
     <TouchableOpacity
       onPress={() => handleDownloadPDF()}
-      style={{ width: cardWidth }} // Set the responsive width here
+      style={{ width: cardWidth }}
       className="my-2"
     >
       <View className="flex-col border border-gray-300 quran-pdf dark:border-gray-600">

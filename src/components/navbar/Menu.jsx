@@ -51,7 +51,7 @@ export default function Menu({ closeMenu }) {
         </TouchableOpacity>
       ))}
       {/* Search icon */}
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => handleNavigation("Search", {})}
         className="flex-row-reverse px-2 py-1 bg-white border border-gray-400 rounded dark:bg-gray-700 dark:border-gray-500"
       >
@@ -60,7 +60,7 @@ export default function Menu({ closeMenu }) {
           size={30}
           color={colorScheme === "dark" ? "white" : "#4b5563"}
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 }

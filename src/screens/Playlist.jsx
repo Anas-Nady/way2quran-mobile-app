@@ -66,7 +66,7 @@ const PlaylistCard = ({
       </View>
       {expanded && (
         <View className="border-t border-gray-300 dark:border-gray-600">
-          <Text className="p-1 px-2 mx-auto -mt-3 font-bold text-gray-500 bg-green-700 rounded-full text-md dark:text-gray-100">
+          <Text className="p-1 px-2 mx-auto -mt-3 font-bold text-white bg-green-700 rounded-full text-md dark:text-white">
             {sortedSurahs.length}
           </Text>
           <View className="flex-row-reverse flex-wrap gap-2 p-4">

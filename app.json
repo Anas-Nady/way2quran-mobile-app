@@ -18,22 +18,28 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/adaptive-icon.png",
+        "foregroundImage": "./src/assets/images/icon.png",
         "backgroundColor": "#374151"
-      }
+      },
+      "package": "com.anasnady.way2quran"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
       "favicon": "./src/assets/images/icon.png"
     },
-    "plugins": ["expo-router"],
+    "plugins": [
+      "expo-router"
+    ],
     "experiments": {
       "typedRoutes": true
     },
     "extra": {
       "router": {
         "origin": false
+      },
+      "eas": {
+        "projectId": "2acace1d-7c47-4d2b-8b11-09629a7f99f5"
       }
     }
   }

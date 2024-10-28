@@ -16,7 +16,7 @@ export default function DownloadQuranPDF() {
           <View className="flex-col flex-wrap items-center justify-center">
             <HeadingScreen headingTxt={t("downloadQuranPdf")} />
           </View>
-          <View className="flex-row flex-wrap justify-between">
+          <View className="flex-col flex-wrap justify-between">
             {listQuranPdf.map((quran) => (
               <QuranPDFCard quran={quran} key={quran.slug} />
             ))}

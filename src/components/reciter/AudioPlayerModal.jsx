@@ -221,7 +221,11 @@ const AudioPlayerModal = () => {
         // Expanded view content
         <>
           <View className="flex-row-reverse items-center justify-end mr-6">
-            <View className="flex-row items-center flex-1 gap-2">
+            <View className="flex-row-reverse items-center flex-1 gap-2">
+              <Image
+                source={{ uri: playerState.reciter?.photo }}
+                className="rounded-full w-14 h-14"
+              />
               <View className="flex-1">
                 <Text className="text-[20px] font-bold text-gray-700 dark:text-gray-100 text-right">
                   {playerState.reciter?.arabicName}
@@ -231,10 +235,6 @@ const AudioPlayerModal = () => {
                   {playerState?.recitation?.recitationInfo?.arabicName}
                 </Text>
               </View>
-              <Image
-                source={{ uri: playerState.reciter?.photo }}
-                className="rounded-full w-14 h-14"
-              />
             </View>
           </View>
 
@@ -302,8 +302,19 @@ const AudioPlayerModal = () => {
         </>
       ) : (
         // Collapsed view content
-        <View className="flex-row items-center justify-end">
-          <View className="flex-row items-center">
+        <View className="flex-row-reverse">
+          <TouchableOpacity onPress={togglePlayPause} className="ml-4">
+            <Ionicons
+              name={playerState.isPlaying ? "pause-circle" : "play-circle"}
+              size={33}
+              color="#22c55e"
+            />
+          </TouchableOpacity>
+          <View className="flex-row-reverse items-center">
+            <Image
+              source={{ uri: playerState.reciter?.photo }}
+              className="w-12 h-12 rounded-full"
+            />
             <View className="mr-3">
               <Text className="text-[16px] font-bold text-gray-700 dark:text-gray-100 text-right">
                 {playerState.reciter?.arabicName}
@@ -312,18 +323,7 @@ const AudioPlayerModal = () => {
                 {playerState.currentAudio?.surahInfo?.arabicName}
               </Text>
             </View>
-            <Image
-              source={{ uri: playerState.reciter?.photo }}
-              className="w-12 h-12 rounded-full"
-            />
           </View>
-          <TouchableOpacity onPress={togglePlayPause} className="ml-4">
-            <Ionicons
-              name={playerState.isPlaying ? "pause-circle" : "play-circle"}
-              size={33}
-              color="#22c55e"
-            />
-          </TouchableOpacity>
         </View>
       )}
     </View>

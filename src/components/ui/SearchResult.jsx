@@ -9,20 +9,35 @@ export default function SearchResult({ results, loading, error }) {
   const navigation = useNavigation();
   const translate = useTranslate("SearchScreen");
 
-  const renderResults = (items, pathPrefix) =>
-    items.map((item, index) => (
-      <TouchableOpacity
-        key={index}
-        onClick={() => navigation.navigate(`/${pathPrefix}/${item.slug}`)}
-        className="block px-2 py-3"
-        role="button"
-        tabIndex={0}
-      >
-        <Text className="pt-1 pb-2 text-xl font-medium text-gray-800 border-b border-gray-400 dark:text-gray-100 text-start dark:border-gray-500">
-          {item.arabicName}
-        </Text>
-      </TouchableOpacity>
-    ));
+  const renderResults = (items, pathPrefix, params) =>
+    items.map((item, index) => {
+      const dynamicParams = {};
+
+      // Apply specific parameters based on the provided params structure
+      if (params.reciterSlug && params.recitationSlug) {
+        dynamicParams.reciterSlug = item.slug;
+        dynamicParams.recitationSlug = item.recitationSlug;
+      } else if (params.recitationSlug) {
+        dynamicParams.recitationSlug = item.slug;
+      } else if (params.surahNumber) {
+        dynamicParams.surahNumber = item.number;
+        console.log(item)
+      }
+
+      return (
+        <TouchableOpacity
+          key={index}
+          onPress={() => navigation.navigate(pathPrefix, dynamicParams)}
+          className="block px-2 py-3"
+          role="button"
+          tabIndex={0}
+        >
+          <Text className="pt-1 pb-2 text-xl font-medium text-gray-800 border-b border-gray-400 dark:text-gray-100 text-start dark:border-gray-500">
+            {item?.arabicName}
+          </Text>
+        </TouchableOpacity>
+      );
+    });
 
   if (loading) {
     return <Loading />;
@@ -45,10 +60,16 @@ export default function SearchResult({ results, loading, error }) {
     <View className="w-[90%] flex-1 mx-auto mt-2">
       <View className="">
         {results.reciters.length > 0 &&
-          renderResults(results.reciters, "Reciters")}
+          renderResults(results.reciters, "Reciter", {
+            reciterSlug: true,
+            recitationSlug: true,
+          })}
         {results.recitations.length > 0 &&
-          renderResults(results.recitations, "Recitations")}
-        {results.surahs.length > 0 && renderResults(results.surahs, "Surah")}
+          renderResults(results.recitations, "Reciters", {
+            recitationSlug: true,
+          })}
+        {results.surahs.length > 0 &&
+          renderResults(results.surahs, "Surah", { surahNumber: true })}
       </View>
     </View>
   );

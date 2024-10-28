@@ -81,7 +81,7 @@ const Slider = () => {
 
   return (
     <View className="py-5 mx-auto my-5" style={{ width }}>
-      <Text className="px-5 mb-4 text-3xl font-semibold text-green-500 dark:text-green-500">
+      <Text className="px-2 mx-auto mb-4 text-4xl font-semibold text-green-500 border-b-4 border-gray-300 rounded-lg dark:border-gray-500 dark:text-green-500">
         {t("listeningNow")}
       </Text>
 
