@@ -23,7 +23,7 @@ export default function Recitations() {
                 navigation.navigate("Reciters", { recitationSlug: rec.slug })
               }
               key={rec.slug}
-              className="flex items-center w-[90%] justify-center p-3 border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700"
+              className="flex-row items-center w-[90%] justify-center p-3 border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700"
             >
               <View className="overflow-hidden ">
                 <Text className="text-xl font-semibold text-gray-700 dark:text-slate-50">

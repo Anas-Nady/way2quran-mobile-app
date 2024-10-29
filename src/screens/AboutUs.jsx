@@ -16,7 +16,7 @@ const AboutUsList = () => {
       <HeadingScreen headingTxt={translate("aboutTitle")} />
 
       <View
-        className="flex flex-col gap-4 mx-auto py-9"
+        className="flex-col gap-4 mx-auto py-9"
         style={{ width: width * 0.9 }}
       >
         {Array.from({ length: 5 }, (_, index) => (
