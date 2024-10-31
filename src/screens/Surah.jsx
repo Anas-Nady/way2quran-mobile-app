@@ -76,7 +76,12 @@ export default function Surah() {
             >
               <Text className="mb-1 text-2xl font-medium leading-normal text-gray-700 dark:text-gray-300 font-arabic">
                 {verse.textArabic}{" "}
-                <Text className={`font-verses text-5xl`}>{verse.id}</Text>
+                <Text
+                  style={{ fontFamily: "Quran-verse" }}
+                  className={`font-verses text-5xl`}
+                >
+                  {+verse.id}
+                </Text>
               </Text>
               {getCurrentLanguage() === "en" && (
                 <Text className="mb-1 text-2xl font-medium leading-normal text-gray-700 dark:text-gray-300 font-english">

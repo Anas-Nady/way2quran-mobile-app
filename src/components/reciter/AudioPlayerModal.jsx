@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
@@ -74,7 +74,7 @@ const AudioPlayerModal = () => {
     playerState.surahIndex,
   ]);
 
-  const togglePlayPause = async () => {
+  const togglePlayPause = useCallback(async () => {
     try {
       if (playerState.isPlaying) {
         // Pause the audio if it's currently playing
@@ -109,7 +109,7 @@ const AudioPlayerModal = () => {
     } catch (error) {
       console.error("Error handling audio playback:", error);
     }
-  };
+  }, [currentTime, playerState, setPlayerState]);
 
   const handleSeek = async (value) => {
     if (playerState.playbackObject) {
@@ -161,8 +161,6 @@ const AudioPlayerModal = () => {
   };
 
   if (!playerState.isModalVisible) return null;
-
-  //
 
   const closeModal = async () => {
     // Stop playback if it's playing

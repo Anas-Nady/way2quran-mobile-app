@@ -9,7 +9,6 @@ import TabBar from "../components/TabBar";
 import AudioPlayerModal from "../components/reciter/AudioPlayerModal";
 import { AppNavigator } from "../navigationConfig";
 import { useState, useCallback } from "react";
-import ScrollToTop from "./ScrollToTop";
 import { getCurrentLanguage } from "../services/i18next";
 
 function getPlayerModalHeight(playerState) {
