@@ -1,8 +1,7 @@
 import { View, Text, ScrollView } from "react-native";
 import HeadingScreen from "./../components/HeadingScreen";
-import { Entypo } from "@expo/vector-icons";
 import GoBackButton from "../components/ui/GoBackButton";
-import { useTranslate } from "../helper/i18nHelper";
+import { useTranslate } from "../helpers/i18nHelper";
 import { useContext } from "react";
 import { ScreenDimensionsContext } from "../contexts/ScreenDimensionsProvider";
 

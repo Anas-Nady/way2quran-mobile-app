@@ -10,6 +10,7 @@ import AudioPlayerModal from "../components/reciter/AudioPlayerModal";
 import { AppNavigator } from "../navigationConfig";
 import { useState, useCallback } from "react";
 import ScrollToTop from "./ScrollToTop";
+import { getCurrentLanguage } from "../services/i18next";
 
 function getPlayerModalHeight(playerState) {
   if (playerState.isModalVisible) {
@@ -38,7 +39,9 @@ function Layout({ playerState }) {
   return (
     <TouchableWithoutFeedback onPress={closeMenu}>
       <SafeAreaView
-        className={`flex-1 bg-slate-200 dark:bg-gray-800`}
+        className={`${
+          getCurrentLanguage() === "ar" ? "font-arabic" : "font-english"
+        } flex-1 bg-slate-200 dark:bg-gray-800`}
         style={{ position: "relative" }}
       >
         <StatusBar backgroundColor="#22c55e" barStyle="light-content" />

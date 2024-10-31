@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { View, Text, useWindowDimensions } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
-import { useTranslate } from "./../helper/i18nHelper.js";
+import { useTranslate } from "./../helpers/i18nHelper.js";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 

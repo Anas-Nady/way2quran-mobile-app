@@ -4,10 +4,12 @@ import GoBackButton from "../components/ui/GoBackButton";
 import HeadingScreen from "../components/HeadingScreen";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { getAllBookmarks, removeBookmark } from "../helper/bookmarkHandlers";
+import { getAllBookmarks, removeBookmark } from "../helpers/bookmarkHandlers";
 import EmptyState from "../components/ui/EmptyState";
 import ConfirmationDialog from "../components/ui/ConfirmationDialog";
-import { useTranslate } from "../helper/i18nHelper";
+import { useTranslate } from "../helpers/i18nHelper";
+import { flexDirection } from "../helpers/flexDirection";
+import getName from "../helpers/getName";
 
 export default function Favorites() {
   const TYPE = "Favorites";
@@ -58,11 +60,11 @@ export default function Favorites() {
         className="mx-auto w-[90%] flex-1"
       >
         <HeadingScreen headingTxt={translate("favorites")} />
-        <View className="flex-row-reverse flex-wrap items-center justify-center flex-1">
+        <View className="">
           {bookmarks.map((bookmark) => (
             <View
               key={bookmark.reciterSlug}
-              className="flex-row-reverse w-full px-3 py-2 my-2 bg-white border border-gray-300 rounded-xl dark:bg-gray-700 dark:border-gray-500"
+              className={`${flexDirection()} w-full px-3 py-2 my-2 bg-white border border-gray-300 rounded-xl dark:bg-gray-700 dark:border-gray-500`}
             >
               <TouchableOpacity
                 onPress={() =>
@@ -71,7 +73,7 @@ export default function Favorites() {
                     recitationSlug: bookmark.recitationSlug,
                   })
                 }
-                className="flex-row-reverse items-center justify-center flex-1"
+                className={`${flexDirection()} justify-center flex-1`}
               >
                 <Image
                   className="rounded-full"
@@ -79,10 +81,10 @@ export default function Favorites() {
                   source={{
                     uri: bookmark.photo,
                   }}
-                  alt={bookmark.reciterName}
+                  alt={getName(bookmark)}
                 />
-                <Text className="flex-1 mx-3 text-lg font-semibold text-gray-900 dark:text-white">
-                  {bookmark.reciterName}
+                <Text className="flex-1 mx-3 mt-2 text-lg font-semibold text-gray-900 dark:text-white">
+                  {getName(bookmark)}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => handleDelete(bookmark)}>

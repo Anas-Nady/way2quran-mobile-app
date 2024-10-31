@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { useTranslate } from "./../../helper/i18nHelper";
+import { useTranslate } from "./../../helpers/i18nHelper";
 
 export default function TopReciterBadge() {
   const translate = useTranslate("ReciterScreen");

@@ -94,7 +94,8 @@
     "home": "الرئيسية",
     "playlist": "قائمتك",
     "favorites": "المفضلة",
-    "prayerTimes": "مواقيت الصلاة"
+    "mushaf": "المصحف",
+    "prayerTimes": "المواقيت"
   },
 
   "PlaylistScreen": {
@@ -130,5 +131,19 @@
     "isha": "العشاء",
     "locationPermissionError": "لم يتم منح إذن الموقع",
     "fetchError": "فشل في جلب مواقيت الصلاة"
+  },
+
+  "screens": {
+    "islamicEvents": "المناسبات الإسلامية"
+  },
+
+  "events": {
+    "ramadan": "رمضان",
+    "hijriDate": "التاريخ الهجري",
+    "gregorianDate": "التاريخ الميلادي"
+  },
+
+  "errors": {
+    "fetchFailed": "فشل في جلب المناسبات الإسلامية"
   }
 }

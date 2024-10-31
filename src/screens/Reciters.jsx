@@ -10,7 +10,8 @@ import Pagination from "../components/ui/Pagination";
 import NotFoundResults from "../components/ui/NotFoundResults";
 import { getReciters } from "../services/api";
 import Error from "../components/ui/Error";
-import getRecitationType from "./../helper/getRecitationType";
+import getRecitationType from "./../helpers/getRecitationType";
+import getName from "../helpers/getName";
 
 export default function Reciters() {
   const route = useRoute();
@@ -73,7 +74,7 @@ export default function Reciters() {
             showsVerticalScrollIndicator={false}
             className="flex-1 mx-auto w-[90%]"
           >
-            <HeadingScreen headingTxt={recitation?.arabicName || ""} />
+            <HeadingScreen headingTxt={getName(recitation)} />
 
             <View className="flex-row-reverse flex-wrap items-center justify-center py-7">
               {state.reciters?.length > 0 ? (

@@ -1,9 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Animated } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { flexDirection } from "../../helpers/flexDirection";
+import { ScreenDimensionsContext } from "../../contexts/ScreenDimensionsProvider";
 
-const Alert = ({ message, type = "success", duration = 3000, onClose }) => {
+const Alert = ({ message, type = "success", duration = 4000, onClose }) => {
   const [fadeAnim] = useState(new Animated.Value(0));
+  const { screenWidth: width, screenHeight: height } = useContext(
+    ScreenDimensionsContext
+  );
 
   useEffect(() => {
     Animated.sequence([
@@ -36,22 +41,32 @@ const Alert = ({ message, type = "success", duration = 3000, onClose }) => {
     <Animated.View
       style={{
         opacity: fadeAnim,
+        position: "absolute",
+        top: height * 0.5,
+        left: width * 0.5,
+        zIndex: 100,
+        transform: [
+          { translateX: -(width * 0.4) },
+          { translateY: -(height * 0.4) },
+        ],
+        width: width * 0.8,
       }}
-      className="absolute z-50 top-4 left-4 right-4"
     >
-      <View className="flex-row-reverse items-center p-4 bg-gray-200 border border-gray-400 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-500">
+      <View
+        className={`${flexDirection()} w-full mx-auto items-center p-4 bg-gray-200 border border-gray-400 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-500`}
+      >
         <Ionicons
           name={getIconName()}
           size={24}
           color="#22c55e"
-          className="mr-3"
+          className="mx-1"
         />
-        <Text className="flex-1 text-base font-semibold text-gray-800 dark:text-white">
+        <Text className="flex-1 px-2 text-base font-semibold text-center text-gray-800 dark:text-white">
           {message}
         </Text>
         <TouchableOpacity
           onPress={onClose}
-          className="p-1 ml-5 border border-gray-400 rounded-full dark:border-gray-500"
+          className="p-1 border border-gray-400 rounded-full dark:border-gray-500"
         >
           <Ionicons name="close" size={24} color="#6B7280" />
         </TouchableOpacity>

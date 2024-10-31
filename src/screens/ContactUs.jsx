@@ -8,7 +8,7 @@ import {
 import ContactUsForm from "../components/ContactUsForm";
 import HeadingScreen from "../components/HeadingScreen";
 import GoBackButton from "../components/ui/GoBackButton";
-import { useTranslate } from "../helper/i18nHelper";
+import { useTranslate } from "../helpers/i18nHelper";
 
 export default function ContactUs() {
   const translate = useTranslate("ContactUsScreen");

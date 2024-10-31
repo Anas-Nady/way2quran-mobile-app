@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Image, Linking } from "react-native";
-import getName from "../helper/getName";
+import getName from "../helpers/getName";
 import { getCurrentLanguage } from "../services/i18next";
 import { ScreenDimensionsContext } from "../contexts/ScreenDimensionsProvider";
 import { useContext } from "react";
@@ -11,7 +11,7 @@ export default function QuranPDFCard({ quran }) {
     Linking.openURL(quran.downloadLink);
   };
 
-  const quranName = getName(quran, getCurrentLanguage());
+  const quranName = getName(quran);
 
   const cardWidth = width > 768 ? width * 0.4 : width * 0.9; // 0.45 for tablet, 0.9 for mobile
 

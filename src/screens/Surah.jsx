@@ -5,6 +5,8 @@ import HeadingScreen from "../components/HeadingScreen";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import GoBackButton from "../components/ui/GoBackButton";
+import getName from "../helpers/getName";
+import { getCurrentLanguage } from "../services/i18next";
 
 export default function Surah() {
   const route = useRoute();
@@ -31,19 +33,25 @@ export default function Surah() {
         ref={scrollViewRef}
         className="flex-1 w-full px-4 bg-white dark:bg-gray-800"
       >
-        <HeadingScreen headingTxt={surahInfo?.arabicName} />
+        <HeadingScreen headingTxt={getName(surahInfo)} />
 
         {/* Surah Info */}
-        <View className="flex-col flex-1 w-[90%] py-7 mx-auto border-b-2 border-gray-400 dark:border-gray-700">
+        <View className="flex-col flex-1 w-[90%] py-2 my-5 mx-auto border-b-2 border-gray-400 dark:border-gray-700">
           {surahInfo.verses.map((verse) => (
             <View
               key={verse.id}
-              className="w-full pt-5 my-2 border-b-2 border-gray-300 dark:border-gray-700"
+              className="w-full py-3 my-2 border-b-2 border-gray-300 dark:border-gray-700"
             >
-              <Text className="mb-1 text-2xl font-medium leading-normal text-gray-700 dark:text-gray-200 font-arabic">
+              <Text className="mb-1 text-2xl font-medium leading-normal text-gray-700 dark:text-gray-300 font-arabic">
                 {verse.textArabic}{" "}
                 <Text className={`font-verses text-5xl`}>{verse.id}</Text>
               </Text>
+              {getCurrentLanguage() === "en" && (
+                <Text className="mb-1 text-2xl font-medium leading-normal text-gray-700 dark:text-gray-300 font-english">
+                  {verse.textEnglish}{" "}
+                  <Text className={`font-verses text-5xl`}>{verse.id}</Text>
+                </Text>
+              )}
             </View>
           ))}
 
@@ -65,7 +73,7 @@ export default function Surah() {
                 color={surahNumber === 1 ? "transparent" : "gray"}
               />
               <Text className="text-lg font-medium text-gray-800 dark:text-white">
-                {surahs[surahNumber - 1]?.arabicName || ""}
+                {getName(surahs[surahNumber - 1]) || ""}
               </Text>
             </TouchableOpacity>
 
@@ -80,7 +88,7 @@ export default function Surah() {
               } items-center justify-center px-2 py-2 rounded`}
             >
               <Text className="text-lg font-medium text-gray-800 dark:text-white">
-                {surahs[surahNumber + 1]?.arabicName || ""}
+                {getName(surahs[surahNumber + 1]) || ""}
               </Text>
               <AntDesign
                 name="arrowleft"

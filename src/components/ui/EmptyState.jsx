@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import { useTranslate } from "../../helper/i18nHelper";
+import { useTranslate } from "../../helpers/i18nHelper";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function EmptyState({ message }) {

@@ -5,7 +5,7 @@ import TextAreaInput from "./ui/TextAreaInput";
 import Button from "./ui/Button";
 import ToastMessage from "./ui/ToastMessage";
 import { createMessage } from "../services/api";
-import { useTranslate } from "../helper/i18nHelper";
+import { useTranslate } from "../helpers/i18nHelper";
 
 const validateEmail = (email) => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

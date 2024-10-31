@@ -16,7 +16,11 @@ export default function Surahs() {
 
     const regexArabic = new RegExp(searchQuery.replace(/ا/g, "[اأإآ]"), "i");
 
-    return SurahsList.filter((surah) => regexArabic.test(surah.arabicName));
+    return SurahsList.filter(
+      (surah) =>
+        regexArabic.test(surah.arabicName) ||
+        regexArabic.test(surah.englishName)
+    );
   }, [searchQuery]);
 
   const handleTextDebounce = (text) => {
@@ -30,7 +34,7 @@ export default function Surahs() {
         <View className="items-center justify-center flex-1 mx-auto w-[90%]">
           <HeadingScreen headingTxt={t("quranicSurahs")} />
           <SearchInput handleTextDebounce={handleTextDebounce} />
-          <View className="flex-row-reverse flex-wrap items-center my-2">
+          <View className="flex-row-reverse flex-wrap items-center gap-2 my-2 ">
             {filteredSurahs.map((surah) => (
               <SurahCard key={surah.slug} surah={surah} />
             ))}

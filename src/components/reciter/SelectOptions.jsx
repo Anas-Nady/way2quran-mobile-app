@@ -1,7 +1,10 @@
 import { useColorScheme } from "nativewind";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { I18nManager, View } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
+import { flexDirection } from "../../helpers/flexDirection";
+import getName from "../../helpers/getName";
+import { getCurrentLanguage } from "../../services/i18next";
 
 export default function SelectOptions({
   setRecitation,
@@ -19,7 +22,7 @@ export default function SelectOptions({
       marginTop: 10,
       backgroundColor: isDarkMode ? "#374151" : "white",
       // position: "relative",
-      flexDirection: "row-reverse",
+      flexDirection: getCurrentLanguage() === "ar" ? "row-reverse" : "row",
     },
     inputStyles: {
       color: isDarkMode ? "#E5E7EB" : "#333",
@@ -46,7 +49,7 @@ export default function SelectOptions({
 
   const recitationOptions = recitations?.map((rec) => ({
     key: rec?.recitationInfo?.slug,
-    value: rec?.recitationInfo?.arabicName,
+    value: getName(rec?.recitationInfo),
   }));
 
   return (

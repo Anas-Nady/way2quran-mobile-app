@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import ReciterImg from "./ReciterImg";
+import getName from "./../../helpers/getName";
 
 const ReciterCard = ({ reciter, handleNavigateClick }) => {
   if (!reciter) {
@@ -13,8 +14,8 @@ const ReciterCard = ({ reciter, handleNavigateClick }) => {
           <ReciterImg uri={reciter.photo} />
         </View>
       </View>
-      <Text className="my-1 text-2xl font-semibold text-center text-gray-900 dark:text-white">
-        {reciter.arabicName}
+      <Text className="px-5 my-1 text-2xl font-semibold text-center text-gray-900 dark:text-gray-100">
+        {getName(reciter)}
       </Text>
     </TouchableOpacity>
   );

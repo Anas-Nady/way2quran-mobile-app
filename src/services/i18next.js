@@ -20,12 +20,12 @@ export const getDirection = () => {
 
 const intiInfo = {
   compatibilityJSON: "v3",
-  lng: "ar",
+  lng: "en",
   fallbackLng: "en",
   debug: false,
   resources: languageResources,
   interpolation: {
-    escapeValue: false, // React already escapes by default
+    escapeValue: false,
   },
 };
 

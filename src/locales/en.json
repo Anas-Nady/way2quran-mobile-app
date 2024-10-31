@@ -2,8 +2,8 @@
   "titleHome": "Way2quran",
   "title": "Way2quran: Recitations of the Holy Quran from around the Islamic world",
   "listeningNow": "Listening Now",
-  "wayTo": "way2",
-  "quran": "quran",
+  "wayTo": "Way2",
+  "quran": "Quran",
   "notFoundData": "There are currently no data to display on this page.",
   "downloadQuranPdf": "Download Quran",
   "quranicSurahs": "Quranic Surahs",
@@ -92,9 +92,10 @@
 
   "TabBar": {
     "home": "Home",
-    "playlist": "Your List",
+    "playlist": "Lists",
     "favorites": "Favorites",
-    "prayerTimes": "Prayer Times"
+    "mushaf": "Mushaf",
+    "prayerTimes": "Prayers"
   },
 
   "PlaylistScreen": {
@@ -130,5 +131,19 @@
     "isha": "Isha",
     "locationPermissionError": "Location permission not granted",
     "fetchError": "Failed to fetch prayer times"
+  },
+
+  "screens": {
+    "islamicEvents": "Islamic Events"
+  },
+
+  "events": {
+    "ramadan": "Ramadan",
+    "hijriDate": "Hijri Date",
+    "gregorianDate": "Gregorian Date"
+  },
+
+  "errors": {
+    "fetchFailed": "Failed to fetch Islamic events"
   }
 }

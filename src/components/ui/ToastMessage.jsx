@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Animated } from "react-native";
 import { Ionicons } from "@expo/vector-icons"; // Assuming you're using Expo for icons
+import { flexDirection } from "../../helpers/flexDirection";
 
 const ToastMessage = ({
   success = false,
@@ -42,9 +43,18 @@ const ToastMessage = ({
         zIndex: 50,
       }}
     >
-      <View className="flex-row-reverse items-center p-4 bg-white border border-gray-300 rounded-lg shadow dark:border-gray-600 dark:bg-gray-800">
+      <View
+        style={{
+          position: "absolute",
+          zIndex: 50,
+          top: 2,
+          left: "50%",
+          transform: [{ translateX: -50 }],
+        }}
+        className={`${flexDirection()} items-center p-4 gap-3 bg-white border border-gray-300 rounded-lg shadow dark:border-gray-600 dark:bg-gray-800`}
+      >
         <View
-          className={`items-center justify-center w-8 h-8 rounded-lg ${
+          className={`w-8 h-8 rounded-lg ${
             success
               ? "bg-green-100 dark:bg-green-800"
               : error
@@ -58,12 +68,12 @@ const ToastMessage = ({
             color={success ? "#10B981" : error ? "#EF4444" : "#6B7280"}
           />
         </View>
-        <Text className="flex-1 ml-3 font-bold text-gray-900 text-md dark:text-white">
+        <Text className="flex-1 px-3 font-bold text-gray-900 text-md dark:text-white">
           {message}
         </Text>
         <TouchableOpacity
           onPress={() => setIsOpen(false)}
-          className="ml-auto bg-white rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800"
+          className="bg-white rounded-lg p-1.5 h-8 w-8 dark:bg-gray-800"
         >
           <Ionicons name="close" size={20} color="#6B7280" />
         </TouchableOpacity>

@@ -3,7 +3,7 @@ import { View, Text, TextInput } from "react-native";
 const Input = ({ labelText, id, type, value, onChangeText }) => {
   return (
     <View className="w-full mb-5">
-      <Text className="mb-2 text-lg font-medium text-center text-gray-900 dark:text-white">
+      <Text className="mb-2 text-lg font-medium text-center text-gray-900 dark:text-gray-200">
         {labelText}
       </Text>
       <TextInput

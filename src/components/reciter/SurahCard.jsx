@@ -10,15 +10,19 @@ import {
   playAudio,
   playNextAudio,
   resumeAudio,
-} from "../../helper/audioPlayerHelper";
+} from "../../helpers/audioPlayerHelper";
 import { useAudioPlayer } from "../../contexts/AudioPlayerContext";
 import {
   isBookmarkExists,
   addBookmark,
   getBookmarkData,
-} from "../../helper/bookmarkHandlers";
+} from "../../helpers/bookmarkHandlers";
 import Alert from "../ui/Alert";
-import { useTranslate } from "../../helper/i18nHelper";
+import { useTranslate } from "../../helpers/i18nHelper";
+import getName from "./../../helpers/getName.js";
+import { flexDirection } from "../../helpers/flexDirection.js";
+import { I18nManager } from "react-native";
+import { getCurrentLanguage } from "../../services/i18next.js";
 
 const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -171,6 +175,7 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
         reciter: {
           slug: reciter.slug,
           arabicName: reciter.arabicName,
+          englishName: reciter.englishName,
           photo: reciter.photo,
         },
         recitation: {
@@ -201,16 +206,20 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
           onClose={() => setAlert(null)}
         />
       )}
-      <View className="flex-row-reverse items-center justify-between p-4 my-2 bg-white border border-gray-400 rounded-lg dark:border-gray-500 dark:bg-gray-700">
+      <View
+        className={`${flexDirection()} items-center justify-between p-4 my-2 bg-white border border-gray-400 rounded-lg dark:border-gray-500 dark:bg-gray-700`}
+      >
         <TouchableOpacity
-          className="flex-row-reverse items-center"
+          className={`${flexDirection()} items-center`}
           onPress={() =>
             navigation.navigate("Surah", { surahNumber: surah?.surahNumber })
           }
         >
           <View
             style={{ transform: [{ rotate: "45deg" }] }}
-            className="flex-row-reverse items-center justify-center ml-4 bg-gray-200 w-9 h-9 dark:bg-green-600"
+            className={`${flexDirection()} items-center justify-center ${
+              getCurrentLanguage() === "ar" ? "ml-2.5" : "mr-2.5"
+            } bg-gray-200 w-9 h-9 dark:bg-green-600`}
           >
             <Text
               style={{ transform: [{ rotate: "-45deg" }] }}
@@ -219,15 +228,13 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
               {surah?.surahNumber}
             </Text>
           </View>
-          <View>
-            <Text className="text-lg font-semibold text-gray-800 dark:text-white">
-              {surah?.surahInfo?.arabicName}
-            </Text>
-          </View>
+          <Text className="text-lg font-semibold text-gray-800 dark:text-white">
+            {getName(surah?.surahInfo)}
+          </Text>
         </TouchableOpacity>
         <View
           style={{ gap: 9 }}
-          className="flex-row-reverse items-center justify-center"
+          className={`${flexDirection()} items-center justify-center`}
         >
           {/* Audio Play Button */}
           <TouchableOpacity onPress={() => togglePlayback(surah)}>

@@ -3,7 +3,8 @@ import { View, Text, ScrollView } from "react-native";
 import * as Location from "expo-location";
 import Loading from "./../components/ui/Loading";
 import Error from "./../components/ui/Error";
-import { useTranslate } from "./../helper/i18nHelper.js";
+import { useTranslate } from "./../helpers/i18nHelper.js";
+import { flexDirection } from "../helpers/flexDirection.js";
 
 const PrayerTimes = () => {
   const translate = useTranslate("PrayerTimes");
@@ -96,38 +97,48 @@ const PrayerTimes = () => {
         <Text className="mb-2 text-3xl font-bold text-center text-gray-800 dark:text-white">
           {translate("title")}
         </Text>
-        <Text className="mb-6 text-lg text-center text-gray-600 dark:text-gray-400">
+        <Text className="px-2 py-1 mb-6 text-lg text-center text-green-600 rounded-xl dark:text-green-500">
           {address}
         </Text>
-        <View className="p-6 bg-gray-100 border border-gray-300 rounded-lg shadow-md dark:bg-gray-700 dark:border-gray-500">
-          {Object.entries(prayerTimes).map(([prayer, time]) => (
-            <View
-              key={prayer}
-              className="flex-row-reverse items-center justify-between gap-3 mb-4 "
-            >
-              <View>
+
+        <View className="p-6 border border-gray-300 rounded-lg dark:border-gray-500">
+          {Object.entries(prayerTimes).map(([prayer, time]) => {
+            const isPassed =
+              prayer !== nextPrayer && getNextPrayer(prayerTimes) !== prayer;
+
+            return (
+              <View
+                key={prayer}
+                className={`${flexDirection()} items-center justify-between gap-3 border border-gray-400 dark:border-gray-500 px-3 py-1 pb-4 my-3 rounded
+                  ${isPassed ? "dark:bg-gray-700" : ""} 
+                  ${
+                    prayer === nextPrayer ? "bg-green-50 dark:bg-gray-800" : ""
+                  }`}
+              >
+                <View>
+                  <Text
+                    className={`text-xl font-semibold ${
+                      prayer === nextPrayer
+                        ? "font-bold text-green-500 dark:text-green-500"
+                        : "text-gray-700 dark:text-gray-300"
+                    }`}
+                  >
+                    {translate(`${prayer.toLowerCase()}`)}
+                    {":"}
+                  </Text>
+                </View>
                 <Text
-                  className={`text-lg ${
+                  className={`text-xl font-semibold ${
                     prayer === nextPrayer
                       ? "font-bold text-green-500 dark:text-green-500"
                       : "text-gray-700 dark:text-gray-300"
                   }`}
                 >
-                  {translate(`${prayer.toLowerCase()}`)}
-                  {":"}
+                  {time}
                 </Text>
               </View>
-              <Text
-                className={`text-lg ${
-                  prayer === nextPrayer
-                    ? "font-bold text-green-500 dark:text-green-500"
-                    : "text-gray-700 dark:text-gray-300"
-                }`}
-              >
-                {time}
-              </Text>
-            </View>
-          ))}
+            );
+          })}
         </View>
       </View>
     </ScrollView>

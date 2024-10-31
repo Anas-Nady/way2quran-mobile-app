@@ -7,9 +7,10 @@ import {
   pauseAudio,
   playNextAudio,
   resumeAudio,
-} from "../../helper/audioPlayerHelper";
-import formatTime from "../../helper/formatTime";
+} from "../../helpers/audioPlayerHelper";
+import formatTime from "../../helpers/formatTime";
 import { useColorScheme } from "nativewind";
+import getName from "../../helpers/getName";
 
 const AudioPlayerModal = () => {
   const { playerState, setPlayerState, toggleModalExpansion } =
@@ -317,10 +318,10 @@ const AudioPlayerModal = () => {
             />
             <View className="mr-3">
               <Text className="text-[16px] font-bold text-gray-700 dark:text-gray-100 text-right">
-                {playerState.reciter?.arabicName}
+                {getName(playerState.reciter)}
               </Text>
               <Text className="text-gray-700 text-[14px] dark:text-gray-100 text-right">
-                {playerState.currentAudio?.surahInfo?.arabicName}
+                {getName(playerState.currentAudio?.surahInfo)}
               </Text>
             </View>
           </View>

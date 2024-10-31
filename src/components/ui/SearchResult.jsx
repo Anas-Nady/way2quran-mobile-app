@@ -3,7 +3,8 @@ import { View, Text, TouchableOpacity } from "react-native";
 import Error from "./Error";
 import EmptyState from "./EmptyState";
 import Loading from "./Loading";
-import { useTranslate } from "../../helper/i18nHelper";
+import { useTranslate } from "../../helpers/i18nHelper";
+import getName from "./../../helpers/getName";
 
 export default function SearchResult({ results, loading, error }) {
   const navigation = useNavigation();
@@ -21,7 +22,7 @@ export default function SearchResult({ results, loading, error }) {
         dynamicParams.recitationSlug = item.slug;
       } else if (params.surahNumber) {
         dynamicParams.surahNumber = item.number;
-        console.log(item)
+        console.log(item);
       }
 
       return (
@@ -33,7 +34,7 @@ export default function SearchResult({ results, loading, error }) {
           tabIndex={0}
         >
           <Text className="pt-1 pb-2 text-xl font-medium text-gray-800 border-b border-gray-400 dark:text-gray-100 text-start dark:border-gray-500">
-            {item?.arabicName}
+            {getName(item)}
           </Text>
         </TouchableOpacity>
       );

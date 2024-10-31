@@ -2,8 +2,7 @@ import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
 import recitations from "./../constants/recitations";
 import { useNavigation } from "@react-navigation/native";
-import { getCurrentLanguage } from "./../services/i18next";
-import getName from "./../helper/getName";
+import getName from "./../helpers/getName";
 import HeadingScreen from "./../components/HeadingScreen";
 import GoBackButton from "../components/ui/GoBackButton";
 
@@ -27,7 +26,7 @@ export default function Recitations() {
             >
               <View className="overflow-hidden ">
                 <Text className="text-xl font-semibold text-gray-700 dark:text-slate-50">
-                  {getName(rec, getCurrentLanguage())}
+                  {getName(rec)}
                 </Text>
               </View>
             </TouchableOpacity>

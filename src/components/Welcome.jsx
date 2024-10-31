@@ -2,7 +2,7 @@ import { View, Text, Image, ImageBackground } from "react-native";
 import bgImage from "./../assets/images/bg-img.png";
 import { useContext } from "react";
 import { ScreenDimensionsContext } from "../contexts/ScreenDimensionsProvider";
-import { useTranslate } from "../helper/i18nHelper";
+import { useTranslate } from "../helpers/i18nHelper";
 
 export default function Welcome() {
   const translate = useTranslate("Welcome");

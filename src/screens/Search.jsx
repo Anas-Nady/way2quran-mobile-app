@@ -4,7 +4,7 @@ import { searchItems } from "../services/api";
 import SearchInput from "../components/ui/SearchInput";
 import SearchResult from "../components/ui/SearchResult";
 import { debounce } from "lodash";
-import { useTranslate } from "../helper/i18nHelper";
+import { useTranslate } from "../helpers/i18nHelper";
 import GoBackButton from "../components/ui/GoBackButton";
 
 export default function Search() {

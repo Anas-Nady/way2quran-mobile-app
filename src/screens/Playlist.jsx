@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import HeadingScreen from "./../components/HeadingScreen";
 import GoBackButton from "../components/ui/GoBackButton";
-import { getAllBookmarks, removeBookmark } from "../helper/bookmarkHandlers";
+import { getAllBookmarks, removeBookmark } from "../helpers/bookmarkHandlers";
 import EmptyState from "../components/ui/EmptyState";
 import { useAudioPlayer } from "../contexts/AudioPlayerContext";
 import {
@@ -11,10 +11,12 @@ import {
   playAudio,
   playNextAudio,
   resumeAudio,
-} from "../helper/audioPlayerHelper";
+} from "../helpers/audioPlayerHelper";
 import { Audio } from "expo-av";
 import ConfirmationDialog from "../components/ui/ConfirmationDialog";
-import { useTranslate } from "../helper/i18nHelper";
+import { useTranslate } from "../helpers/i18nHelper";
+import getName from "../helpers/getName";
+import { flexDirection } from "../helpers/flexDirection";
 
 const PlaylistCard = ({
   data,
@@ -28,22 +30,24 @@ const PlaylistCard = ({
     return [...data.surahs].sort((a, b) => a.surahNumber - b.surahNumber);
   }, [data.surahs]);
 
+  console.log(data.reciter);
+
   return (
     <TouchableOpacity
       onPress={onToggleSurahs}
       className="mb-4 bg-white border border-gray-400 shadow-md dark:border-gray-500 dark:bg-gray-700 rounded-xl"
     >
-      <View className="flex-row-reverse items-center justify-between p-4">
+      <View className={`${flexDirection()} items-center justify-between p-4`}>
         <Image
           source={{ uri: data.reciter.photo }}
           className="w-20 h-20 rounded-full"
         />
         <View className="flex-1 mx-2">
           <Text className="text-xl font-bold text-gray-800 dark:text-gray-200">
-            {data.reciter.arabicName}
+            {getName(data.reciter)}
           </Text>
           <Text className="text-sm text-gray-600 dark:text-gray-200">
-            {data.recitation?.recitationInfo?.arabicName}
+            {getName(data.recitation?.recitationInfo)}
           </Text>
         </View>
         <View className="flex-row-reverse items-center justify-between gap-3">
@@ -69,13 +73,13 @@ const PlaylistCard = ({
           <Text className="p-1 px-2 mx-auto -mt-3 font-bold text-white bg-green-700 rounded-full text-md dark:text-white">
             {sortedSurahs.length}
           </Text>
-          <View className="flex-row-reverse flex-wrap gap-2 p-4">
+          <View className={`${flexDirection()} flex-wrap gap-2 p-4`}>
             {sortedSurahs.map((surah) => (
               <Text
                 key={surah?.surahNumber}
                 className="flex-grow p-1 font-semibold text-center text-gray-100 bg-green-700 rounded text-md dark:text-gray-50"
               >
-                {surah?.surahInfo?.arabicName}
+                {getName(surah?.surahInfo)}
               </Text>
             ))}
           </View>

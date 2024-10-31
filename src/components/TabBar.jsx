@@ -1,7 +1,8 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useTranslate } from "./../helper/i18nHelper.js";
+import { useTranslate } from "../helpers/i18nHelper.js";
+import { flexDirection } from "../helpers/flexDirection.js";
 
 export default function TabBar() {
   const navigation = useNavigation();
@@ -20,6 +21,11 @@ export default function TabBar() {
       icon: "favorite",
     },
     {
+      label: translate("mushaf"),
+      routeName: "Surahs",
+      icon: "menu-book",
+    },
+    {
       label: translate("prayerTimes"),
       routeName: "PrayerTimes",
       icon: "access-time",
@@ -28,7 +34,7 @@ export default function TabBar() {
 
   return (
     <View className="w-[90%] bg-white dark:bg-gray-700 rounded-full mx-auto py-1 px-4">
-      <View className="flex-row-reverse items-center justify-between mx-4">
+      <View className={`${flexDirection()} items-center justify-between mx-1`}>
         {tabsLinks.map((tab, i) => (
           <TouchableOpacity
             key={i}

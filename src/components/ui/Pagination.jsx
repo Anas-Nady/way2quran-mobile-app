@@ -56,7 +56,7 @@ const PaginationButton = ({ text, onPress, isActive }) => {
 
 const styles = StyleSheet.create({
   paginationContainer: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     justifyContent: "center",
     flexWrap: "wrap",
     marginTop: 10,

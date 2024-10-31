@@ -19,10 +19,11 @@ import {
   addBookmark,
   removeBookmark,
   isBookmarkExists,
-} from "../helper/bookmarkHandlers";
+} from "../helpers/bookmarkHandlers";
 import SelectOptions from "../components/reciter/SelectOptions";
 import Alert from "../components/ui/Alert";
-import { useTranslate } from "./../helper/i18nHelper.js";
+import { useTranslate } from "./../helpers/i18nHelper.js";
+import getName from "../helpers/getName.js";
 
 const ReciterScreen = () => {
   const route = useRoute();
@@ -74,7 +75,7 @@ const ReciterScreen = () => {
     fetchReciter();
     checkFavoriteStatus();
     checkPlaylistStatus();
-  }, [recitationSlug, selectedRecitationSlug]);
+  }, [reciterSlug, recitationSlug, selectedRecitationSlug]);
 
   const checkFavoriteStatus = async () => {
     const favoriteStatus = await isBookmarkExists("Favorites", reciterSlug);
@@ -97,7 +98,8 @@ const ReciterScreen = () => {
     } else {
       const savedData = {
         type: "Favorites",
-        reciterName: state.reciter.arabicName,
+        arabicName: state.reciter.arabicName,
+        englishName: state.reciter.englishName,
         photo: state.reciter.photo,
         reciterSlug,
         recitationSlug: selectedRecitationSlug,
@@ -117,7 +119,7 @@ const ReciterScreen = () => {
   };
 
   return (
-    <View className="flex-1 bg-white dark:bg-slate-800">
+    <View className="relative flex-1 bg-white dark:bg-slate-800">
       {alert && (
         <Alert
           message={alert.message}
@@ -147,7 +149,7 @@ const ReciterScreen = () => {
               <ReciterImg uri={state.reciter?.photo} />
               <View className="my-2">
                 <Text className="text-3xl font-semibold text-gray-700 dark:text-white">
-                  {state.reciter?.arabicName}
+                  {getName(state.reciter)}
                 </Text>
                 {state.reciter?.isTopReciter && <TopReciterBadge />}
                 <View className="flex-row-reverse items-center justify-center gap-2 mt-2">
@@ -163,7 +165,7 @@ const ReciterScreen = () => {
             <SelectOptions
               setRecitation={setSelectedRecitationSlug}
               recitations={state.reciter?.recitations}
-              recitationName={currentRecitation?.recitationInfo?.arabicName}
+              recitationName={getName(currentRecitation?.recitationInfo)}
             />
 
             {/* Download All Button */}
@@ -187,6 +189,7 @@ const ReciterScreen = () => {
                   reciter={{
                     photo: state.reciter?.photo,
                     arabicName: state.reciter.arabicName,
+                    englishName: state.reciter.englishName,
                     slug: state.reciter?.slug,
                   }}
                 />
