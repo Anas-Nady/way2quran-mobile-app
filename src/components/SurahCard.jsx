@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, TouchableOpacity } from "react-native";
-import getName from "../helper/getName";
+import getName from "../helpers/getName";
 import { flexDirection } from "../helpers/flexDirection";
 import { useContext } from "react";
 import { ScreenDimensionsContext } from "../contexts/ScreenDimensionsProvider";
@@ -17,7 +17,9 @@ export default function SurahCard({ surah }) {
     >
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate("Surah", { surahNumber: surah.number })
+          navigation.navigate("Surah", {
+            surahNumber: surah.number,
+          })
         }
         className={`${flexDirection()} items-center gap-4`}
       >

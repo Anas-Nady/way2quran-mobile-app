@@ -30,8 +30,6 @@ const PlaylistCard = ({
     return [...data.surahs].sort((a, b) => a.surahNumber - b.surahNumber);
   }, [data.surahs]);
 
-  console.log(data.reciter);
-
   return (
     <TouchableOpacity
       onPress={onToggleSurahs}

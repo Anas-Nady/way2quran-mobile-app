@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { flexDirection } from "../../helpers/flexDirection";
 import { ScreenDimensionsContext } from "../../contexts/ScreenDimensionsProvider";
 
-const Alert = ({ message, type = "success", duration = 4000, onClose }) => {
+const Alert = ({ message, type = "success", duration = 2500, onClose }) => {
   const [fadeAnim] = useState(new Animated.Value(0));
   const { screenWidth: width, screenHeight: height } = useContext(
     ScreenDimensionsContext
@@ -41,15 +41,16 @@ const Alert = ({ message, type = "success", duration = 4000, onClose }) => {
     <Animated.View
       style={{
         opacity: fadeAnim,
-        position: "absolute",
-        top: height * 0.5,
-        left: width * 0.5,
+        position: "fixed",
+        top: height * 0.1,
+        left: width * 0.1,
         zIndex: 100,
         transform: [
-          { translateX: -(width * 0.4) },
-          { translateY: -(height * 0.4) },
+          { translateX: -(width * 0.1) },
+          { translateY: -(height * 0.1) },
         ],
-        width: width * 0.8,
+        width: width * 0.9,
+        margin: "auto",
       }}
     >
       <View

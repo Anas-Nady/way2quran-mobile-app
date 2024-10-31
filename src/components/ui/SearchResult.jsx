@@ -22,7 +22,6 @@ export default function SearchResult({ results, loading, error }) {
         dynamicParams.recitationSlug = item.slug;
       } else if (params.surahNumber) {
         dynamicParams.surahNumber = item.number;
-        console.log(item);
       }
 
       return (

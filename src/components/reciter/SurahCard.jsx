@@ -21,7 +21,6 @@ import Alert from "../ui/Alert";
 import { useTranslate } from "../../helpers/i18nHelper";
 import getName from "./../../helpers/getName.js";
 import { flexDirection } from "../../helpers/flexDirection.js";
-import { I18nManager } from "react-native";
 import { getCurrentLanguage } from "../../services/i18next.js";
 
 const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {

@@ -20,8 +20,8 @@ export const getDirection = () => {
 
 const intiInfo = {
   compatibilityJSON: "v3",
-  lng: "en",
-  fallbackLng: "en",
+  lng: "ar",
+  fallbackLng: "ar",
   debug: false,
   resources: languageResources,
   interpolation: {

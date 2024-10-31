@@ -120,13 +120,6 @@ const ReciterScreen = () => {
 
   return (
     <View className="relative flex-1 bg-white dark:bg-slate-800">
-      {alert && (
-        <Alert
-          message={alert.message}
-          type={alert.type}
-          onClose={() => setAlert(null)}
-        />
-      )}
       <View className="flex-row-reverse items-center justify-between">
         <GoBackButton />
         <TouchableOpacity onPress={handleFavoriteToggle} className="px-5 mt-4">
@@ -137,6 +130,13 @@ const ReciterScreen = () => {
           />
         </TouchableOpacity>
       </View>
+      {alert && (
+        <Alert
+          message={alert.message}
+          type={alert.type}
+          onClose={() => setAlert(null)}
+        />
+      )}
       <ScrollView style={{ position: "relative" }} className="flex-1 w-full">
         {state.loading ? (
           <Loading />

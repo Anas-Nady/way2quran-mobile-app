@@ -7,6 +7,7 @@ import { AntDesign } from "@expo/vector-icons";
 import GoBackButton from "../components/ui/GoBackButton";
 import getName from "../helpers/getName";
 import { getCurrentLanguage } from "../services/i18next";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Surah() {
   const route = useRoute();
@@ -15,9 +16,38 @@ export default function Surah() {
   const surahNumber = parseInt(route.params?.surahNumber);
   const surahInfo = surahs[surahNumber];
 
+  const handleScroll = async (event) => {
+    const currentOffsetY = event.nativeEvent.contentOffset.y;
+
+    // Save the current scroll position to AsyncStorage
+    try {
+      await AsyncStorage.setItem(
+        `scrollTo-${surahNumber}`,
+        currentOffsetY.toString()
+      );
+    } catch (error) {
+      console.error("Failed to save scroll position:", error);
+    }
+  };
+
   useEffect(() => {
-    // Scroll to top when the component mounts or updates
-    scrollViewRef.current?.scrollTo({ y: 0, animated: true });
+    const getSavedScrollPosition = async () => {
+      try {
+        const savedScrollPosition = await AsyncStorage.getItem(
+          `scrollTo-${surahNumber}`
+        );
+        if (savedScrollPosition !== null) {
+          scrollViewRef.current.scrollTo({
+            y: parseInt(savedScrollPosition),
+            animated: true,
+          });
+        }
+      } catch (error) {
+        console.error("Error retrieving scroll position:", error);
+      }
+    };
+
+    getSavedScrollPosition();
   }, [surahNumber]);
 
   const navigateToSurah = (number) => {
@@ -31,6 +61,8 @@ export default function Surah() {
       <GoBackButton />
       <ScrollView
         ref={scrollViewRef}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
         className="flex-1 w-full px-4 bg-white dark:bg-gray-800"
       >
         <HeadingScreen headingTxt={getName(surahInfo)} />
