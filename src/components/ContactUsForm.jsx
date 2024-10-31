@@ -3,9 +3,9 @@ import { View } from "react-native";
 import Input from "./ui/Input";
 import TextAreaInput from "./ui/TextAreaInput";
 import Button from "./ui/Button";
-import ToastMessage from "./ui/ToastMessage";
 import { createMessage } from "../services/api";
 import { useTranslate } from "../helpers/i18nHelper";
+import Alert from "./ui/Alert";
 
 const validateEmail = (email) => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -65,41 +65,61 @@ export default function ContactUsForm() {
     }
   };
 
+  const handleToastMessageClose = () => {
+    setState({ ...state, error: "", success: "" });
+  };
+
   return (
-    <View className="px-5">
-      {state.error && <ToastMessage error={true} message={state.error} />}
-      {state.success && <ToastMessage success={true} message={state.success} />}
-      <View className="w-full mx-auto">
-        <Input
-          labelText={translate("name")}
-          id="senderName"
-          type="text"
-          value={senderName}
-          onChangeText={setSenderName}
+    <>
+      {state.error && (
+        <Alert
+          type="error"
+          onClose={handleToastMessageClose}
+          message={state.error}
         />
-        <Input
-          labelText={translate("email")}
-          id="senderEmail"
-          type="email"
-          value={senderEmail}
-          onChangeText={setSenderEmail}
+      )}
+      {state.success && (
+        <Alert
+          type="success"
+          onClose={handleToastMessageClose}
+          message={state.success}
         />
-        <TextAreaInput
-          name="message"
-          value={content}
-          label={translate("textarea")}
-          onChangeText={setContent}
-        />
-        <View className="items-center justify-center">
-          <Button
-            disabled={state.loading}
-            onPress={handleSendMessage}
-            text={
-              state.loading ? translate("sending") : translate("sendMessageBtn")
-            }
+      )}
+      <View className="relative px-5">
+        <View className="w-full mx-auto">
+          <Input
+            labelText={translate("name")}
+            id="senderName"
+            type="text"
+            value={senderName}
+            onChangeText={setSenderName}
           />
+          <Input
+            labelText={translate("email")}
+            id="senderEmail"
+            type="email"
+            value={senderEmail}
+            onChangeText={setSenderEmail}
+          />
+          <TextAreaInput
+            name="message"
+            value={content}
+            label={translate("textarea")}
+            onChangeText={setContent}
+          />
+          <View className="items-center justify-center">
+            <Button
+              disabled={state.loading}
+              onPress={handleSendMessage}
+              text={
+                state.loading
+                  ? translate("sending")
+                  : translate("sendMessageBtn")
+              }
+            />
+          </View>
         </View>
       </View>
-    </View>
+    </>
   );
 }

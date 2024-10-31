@@ -1,4 +1,5 @@
 import { View, Text, TextInput } from "react-native";
+import { getCurrentLanguage } from "../../services/i18next";
 
 const Input = ({ labelText, id, type, value, onChangeText }) => {
   return (
@@ -12,7 +13,9 @@ const Input = ({ labelText, id, type, value, onChangeText }) => {
         value={value}
         onChangeText={onChangeText}
         keyboardType={type === "email" ? "email-address" : "default"}
-        className="p-2.5 w-full text-lg text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:border-orange-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+        className={`${
+          getCurrentLanguage() === "ar" ? "text-right" : "text-left"
+        } p-2.5 w-full text-lg text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:border-orange-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white`}
       />
     </View>
   );

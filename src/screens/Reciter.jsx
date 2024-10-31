@@ -33,8 +33,11 @@ const ReciterScreen = () => {
   const [selectedRecitationSlug, setSelectedRecitationSlug] =
     useState(recitationSlug);
   const [recitations, setRecitations] = useState([]);
-  const [isFavourite, setIsFavourite] = useState(false);
-  const [isInPlaylist, setIsInPlaylist] = useState(false);
+  const [favouriteState, setFavouriteState] = useState({
+    isFavourite: false,
+    loading: true,
+  });
+
   const [alert, setAlert] = useState(null);
 
   const [state, setState] = useState({
@@ -74,27 +77,32 @@ const ReciterScreen = () => {
 
     fetchReciter();
     checkFavoriteStatus();
-    checkPlaylistStatus();
   }, [reciterSlug, recitationSlug, selectedRecitationSlug]);
 
   const checkFavoriteStatus = async () => {
     const favoriteStatus = await isBookmarkExists("Favorites", reciterSlug);
-    setIsFavourite(favoriteStatus);
-  };
-
-  const checkPlaylistStatus = async () => {
-    const bookmarkKey = `${reciterSlug}_${selectedRecitationSlug}`;
-    const playlistStatus = await isBookmarkExists("Playlist", bookmarkKey);
-    setIsInPlaylist(playlistStatus);
+    setFavouriteState((prev) => ({
+      ...prev,
+      isFavourite: favoriteStatus,
+      loading: false,
+    }));
   };
 
   const handleFavoriteToggle = async () => {
-    if (isFavourite) {
-      await removeBookmark("Favorites", reciterSlug);
-      setAlert({
-        message: translate("removedFromFavorites"),
-        type: "success",
-      });
+    setFavouriteState((prev) => ({ ...prev, loading: true }));
+    if (favouriteState.isFavourite) {
+      try {
+        await removeBookmark("Favorites", reciterSlug);
+        setAlert({
+          message: translate("removedFromFavorites"),
+          type: "success",
+        });
+      } catch (error) {
+        setAlert({
+          message: error?.message || "An error occurred. Please try again.",
+          type: "error",
+        });
+      }
     } else {
       const savedData = {
         type: "Favorites",
@@ -104,13 +112,24 @@ const ReciterScreen = () => {
         reciterSlug,
         recitationSlug: selectedRecitationSlug,
       };
-      await addBookmark("Favorites", reciterSlug, savedData);
-      setAlert({
-        message: translate("addedToFavorites"),
-        type: "success",
-      });
+      try {
+        await addBookmark("Favorites", reciterSlug, savedData);
+        setAlert({
+          message: translate("addedToFavorites"),
+          type: "success",
+        });
+      } catch (error) {
+        setAlert({
+          message: error?.message || "An error occurred. Please try again.",
+          type: "error",
+        });
+      }
     }
-    setIsFavourite((prev) => !prev);
+    setFavouriteState((prev) => ({
+      ...prev,
+      isFavourite: !prev.isFavourite,
+      loading: false,
+    }));
   };
 
   const handleDownloadAll = () => {
@@ -122,11 +141,15 @@ const ReciterScreen = () => {
     <View className="relative flex-1 bg-white dark:bg-slate-800">
       <View className="flex-row-reverse items-center justify-between">
         <GoBackButton />
-        <TouchableOpacity onPress={handleFavoriteToggle} className="px-5 mt-4">
+        <TouchableOpacity
+          disabled={favouriteState.loading}
+          onPress={handleFavoriteToggle}
+          className="px-5 mt-4"
+        >
           <AntDesign
             name="heart"
             size={40}
-            color={isFavourite ? "#22c55e" : "#9ca3af"}
+            color={favouriteState.isFavourite ? "#22c55e" : "#9ca3af"}
           />
         </TouchableOpacity>
       </View>

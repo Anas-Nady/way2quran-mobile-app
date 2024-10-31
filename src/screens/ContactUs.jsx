@@ -20,9 +20,9 @@ export default function ContactUs() {
       className="flex-1 w-full p-3 bg-white dark:bg-slate-800"
     >
       <GoBackButton />
-      <ScrollView className="w-full">
+      <ScrollView className="relative w-full">
         <HeadingScreen headingTxt={translate("contactTitle")} />
-        <View className="p-4 mx-auto w-[90%]">
+        <View className="relative w-full p-4 mx-auto">
           <Text className="mb-5 text-base text-center text-gray-600 dark:text-gray-400">
             {translate("contactDescription")}
           </Text>
