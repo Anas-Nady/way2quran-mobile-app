@@ -18,7 +18,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/icon.png",
+        "foregroundImage": "./src/assets/logo.png",
         "backgroundColor": "#374151"
       },
       "package": "com.anasnady.way2quran"
@@ -28,9 +28,7 @@
       "output": "static",
       "favicon": "./src/assets/images/icon.png"
     },
-    "plugins": [
-      "expo-router"
-    ],
+    "plugins": ["expo-router"],
     "experiments": {
       "typedRoutes": true
     },

@@ -69,14 +69,14 @@ const PlaylistCard = ({
       </View>
       {expanded && (
         <View className="border-t border-gray-600">
-          <Text className="p-1 px-2 mx-auto -mt-3 font-bold text-white rounded-full text-md">
+          <Text className="p-1 px-2 mx-auto -mt-3 font-bold text-white border border-gray-500 rounded-full text-md">
             {sortedSurahs.length}
           </Text>
           <View className={`${flexDirection()} flex-wrap gap-2 p-4`}>
             {sortedSurahs.map((surah) => (
               <Text
                 key={surah?.surahNumber}
-                className="flex-grow p-1 font-semibold text-center rounded text-md text-gray-50"
+                className="flex-grow p-1 font-semibold text-center border border-gray-500 rounded text-md text-gray-50"
               >
                 {getName(surah?.surahInfo)}
               </Text>
