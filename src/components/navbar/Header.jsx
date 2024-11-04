@@ -17,17 +17,17 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
           position: "relative",
           zIndex: 1,
         }}
-        className={`w-full bg-slate-200 dark:bg-gray-800 border-b-2 border-gray-300 dark:border-gray-500 flex-col`}
+        className={`w-full bg-gray-800 border-b-2 border-gray-500 flex-col`}
       >
         <View className={`${flexDirection()} items-center justify-between p-3`}>
           <TouchableOpacity
             onPress={toggleMenu}
-            className="px-2 py-1 bg-white rounded dark:bg-gray-600"
+            className="px-2 py-1 bg-gray-600 rounded"
           >
             <Feather className="flex" name="menu" size={30} color={"white"} />
           </TouchableOpacity>
           <AppTitle />
-          <View className="px-2 bg-white rounded dark:bg-gray-600">
+          <View className="px-2 bg-gray-600 rounded search-icon">
             <TouchableOpacity
               onPress={() => navigation.navigate("Search")}
               className="my-2"
@@ -45,7 +45,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
               left: 0,
               zIndex: 10,
             }}
-            className="w-full px-3 py-2 bg-gray-200 border-b border-gray-300 dark:border-gray-500 dark:bg-gray-800"
+            className="w-full px-3 py-2 bg-gray-800 border-b border-gray-500"
             entering={FadeIn.delay(20).springify()}
           >
             <Menu closeMenu={toggleMenu} />

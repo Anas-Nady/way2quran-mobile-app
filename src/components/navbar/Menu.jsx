@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, I18nManager } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslate } from "../../helpers/i18nHelper";
 import { flexDirection } from "../../helpers/flexDirection";
@@ -43,9 +43,7 @@ export default function Menu({ closeMenu }) {
           className={`${flexDirection()} my-2`}
           key={i}
         >
-          <Text className="text-lg font-bold text-gray-800 dark:text-gray-200">
-            {link.label}
-          </Text>
+          <Text className="text-lg font-bold text-gray-200">{link.label}</Text>
         </TouchableOpacity>
       ))}
     </View>

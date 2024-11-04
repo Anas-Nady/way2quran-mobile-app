@@ -21,7 +21,7 @@ export default function QuranPDFCard({ quran }) {
       style={{ width: cardWidth }}
       className="my-2"
     >
-      <View className="flex-col border border-gray-300 quran-pdf dark:border-gray-600">
+      <View className="flex-col border border-gray-600 quran-pdf">
         <View className="items-center justify-center flex-1 p-2 overflow-hidden">
           <Image
             source={{
@@ -31,7 +31,7 @@ export default function QuranPDFCard({ quran }) {
             style={{ width: "100%", height: 540 }}
           />
         </View>
-        <Text className="py-2 text-xl font-semibold text-center text-gray-700 bg-gray-300 line-clamp-1 dark:bg-gray-600 dark:text-white">
+        <Text className="py-2 text-xl font-semibold text-center text-white bg-gray-600 line-clamp-1">
           {quranName}
         </Text>
       </View>

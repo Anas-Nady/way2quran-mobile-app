@@ -6,7 +6,7 @@ import {
   Reciters,
   Recitations,
   Search,
-  Surahs,
+  Mushaf,
   Surah,
   ContactUs,
   DownloadQuranPDF,
@@ -29,7 +29,7 @@ export function AppNavigator() {
       <Stack.Screen name="Reciter" component={Reciter} />
       <Stack.Screen name="AboutUs" component={AboutUs} />
       <Stack.Screen name="ContactUs" component={ContactUs} />
-      <Stack.Screen name="Surahs" component={Surahs} />
+      <Stack.Screen name="Mushaf" component={Mushaf} />
       <Stack.Screen name="Surah" component={Surah} />
       <Stack.Screen name="Playlist" component={Playlist} />
       <Stack.Screen name="Favorites" component={Favorites} />

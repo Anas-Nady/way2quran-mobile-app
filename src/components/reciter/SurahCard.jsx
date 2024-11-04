@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, Linking } from "react-native";
 import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
-import SocialMediaShare from "./SocialMediaShare";
 import { useNavigation } from "@react-navigation/native";
-import { useColorScheme } from "nativewind";
 import { Audio } from "expo-av";
 import {
   pauseAudio,
@@ -24,13 +22,11 @@ import { flexDirection } from "../../helpers/flexDirection.js";
 import { getCurrentLanguage } from "../../services/i18next.js";
 
 const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
-  const [modalVisible, setModalVisible] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [alert, setAlert] = useState(null);
   const translate = useTranslate("SurahCard");
 
   const navigation = useNavigation();
-  const { colorScheme } = useColorScheme();
 
   const { playerState, setPlayerState } = useAudioPlayer();
 
@@ -39,7 +35,7 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
     Linking.openURL(surah?.downloadUrl);
   };
 
-  const iconColor = colorScheme === "dark" ? "#fff" : "#4B5563";
+  const iconColor = "#fff";
 
   const togglePlayback = async (surah) => {
     // if there is no audio play -> create one for the first time.
@@ -198,16 +194,16 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
 
   return (
     <>
-      {alert && (
-        <Alert
-          message={alert.message}
-          type={alert.type}
-          onClose={() => setAlert(null)}
-        />
-      )}
       <View
-        className={`${flexDirection()} items-center justify-between p-4 my-2 bg-white border border-gray-400 rounded-lg dark:border-gray-500 dark:bg-gray-700`}
+        className={`${flexDirection()} relative items-center justify-between p-4 my-2 border rounded-lg border-gray-500 bg-gray-700`}
       >
+        {alert && (
+          <Alert
+            message={alert.message}
+            type={alert.type}
+            onClose={() => setAlert(null)}
+          />
+        )}
         <TouchableOpacity
           className={`${flexDirection()} items-center`}
           onPress={() =>
@@ -218,16 +214,16 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
             style={{ transform: [{ rotate: "45deg" }] }}
             className={`${flexDirection()} items-center justify-center ${
               getCurrentLanguage() === "ar" ? "ml-2.5" : "mr-2.5"
-            } bg-gray-200 w-9 h-9 dark:bg-green-600`}
+            } w-9 h-9 bg-green-600`}
           >
             <Text
               style={{ transform: [{ rotate: "-45deg" }] }}
-              className="font-semibold text-center text-gray-700 text-md dark:text-white"
+              className="font-semibold text-center text-white text-md"
             >
               {surah?.surahNumber}
             </Text>
           </View>
-          <Text className="text-lg font-semibold text-gray-800 dark:text-white">
+          <Text className="text-lg font-semibold text-white">
             {getName(surah?.surahInfo)}
           </Text>
         </TouchableOpacity>
@@ -263,10 +259,6 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <SocialMediaShare
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-      />
     </>
   );
 };

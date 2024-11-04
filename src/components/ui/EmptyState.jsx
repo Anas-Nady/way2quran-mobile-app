@@ -9,10 +9,10 @@ export default function EmptyState({ message }) {
     <View className="flex-1 p-5">
       <View className="items-center justify-center flex-1">
         <Ionicons name="search-outline" size={80} color="#9CA3AF" />
-        <Text className="mt-5 text-3xl font-bold text-gray-700 dark:text-gray-100">
+        <Text className="mt-5 text-3xl font-bold text-gray-100">
           {translate("title")}
         </Text>
-        <Text className="mt-5 text-lg font-semibold text-center text-gray-500 dark:text-gray-200">
+        <Text className="mt-5 text-lg font-semibold text-center text-gray-200">
           {message}
         </Text>
       </View>

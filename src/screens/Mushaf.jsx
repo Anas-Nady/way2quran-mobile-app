@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useContext } from "react";
 import { View, ScrollView } from "react-native";
 import HeadingScreen from "../components/HeadingScreen";
 import { useTranslation } from "react-i18next";
@@ -6,10 +6,13 @@ import GoBackButton from "../components/ui/GoBackButton";
 import SurahsList from "../constants/surahsList";
 import SearchInput from "../components/ui/SearchInput";
 import SurahCard from "../components/SurahCard";
+import { flexDirection } from "../helpers/flexDirection";
+import { ScreenDimensionsContext } from "../contexts/ScreenDimensionsProvider";
 
-export default function Surahs() {
+export default function Mushaf() {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
+  const { screenWidth: width } = useContext(ScreenDimensionsContext);
 
   const filteredSurahs = useMemo(() => {
     if (!searchQuery?.trim()) return SurahsList;
@@ -28,19 +31,22 @@ export default function Surahs() {
   };
 
   return (
-    <View className="flex-1 w-full bg-white dark:bg-gray-800">
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      className="flex-1 w-full p-4 mx-auto bg-gray-800"
+    >
       <GoBackButton />
-      <ScrollView>
-        <View className="items-center justify-center flex-1 mx-auto w-[90%]">
-          <HeadingScreen headingTxt={t("quranicSurahs")} />
-          <SearchInput handleTextDebounce={handleTextDebounce} />
-          <View className="flex-row-reverse flex-wrap items-center gap-2 my-2 ">
-            {filteredSurahs.map((surah) => (
-              <SurahCard key={surah.slug} surah={surah} />
-            ))}
-          </View>
+      <HeadingScreen headingTxt={t("mushaf")} />
+      <View className="items-center justify-center flex-1">
+        <SearchInput handleTextDebounce={handleTextDebounce} />
+        <View
+          className={`${flexDirection()} flex-wrap items-center gap-2 my-1`}
+        >
+          {filteredSurahs.map((surah) => (
+            <SurahCard key={surah.slug} surah={surah} />
+          ))}
         </View>
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 }

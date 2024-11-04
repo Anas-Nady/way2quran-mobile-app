@@ -6,7 +6,7 @@
   "quran": "القرآن",
   "notFoundData": "لا يوجد حاليا بيانات لعرضها في هذه الصفحة",
   "downloadQuranPdf": "تحميل المصحف",
-  "quranicSurahs": "السور القرآنية",
+  "mushaf": "المصحف الشريف",
   "whatYouWantToRead": "ماذا تريد أن تقرأ؟",
   "search": "بحث...",
   "noResultsFound": "لا يوجد نتائج",
@@ -77,7 +77,6 @@
   },
 
   "Footer": {
-    "quranicSurahs": "السور القرآنية",
     "contactTitle": "تواصل معنا",
     "aboutTitle": "من نحن",
     "allRightsReserved": "جميع الحقوق محفوظة."
@@ -131,19 +130,5 @@
     "isha": "العشاء",
     "locationPermissionError": "لم يتم منح إذن الموقع",
     "fetchError": "فشل في جلب مواقيت الصلاة"
-  },
-
-  "screens": {
-    "islamicEvents": "المناسبات الإسلامية"
-  },
-
-  "events": {
-    "ramadan": "رمضان",
-    "hijriDate": "التاريخ الهجري",
-    "gregorianDate": "التاريخ الميلادي"
-  },
-
-  "errors": {
-    "fetchFailed": "فشل في جلب المناسبات الإسلامية"
   }
 }

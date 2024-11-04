@@ -13,7 +13,7 @@ export default function ReciterImg({
 
   return (
     <View
-      className={`${sizeClass} rounded-full overflow-hidden border-2 border-gray-400 dark:border-gray-400`}
+      className={`${sizeClass} rounded-full overflow-hidden border-2 border-gray-400`}
     >
       <Image
         source={srcImg}

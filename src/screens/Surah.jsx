@@ -58,23 +58,24 @@ export default function Surah() {
 
   return (
     <>
-      <GoBackButton />
       <ScrollView
         ref={scrollViewRef}
         onScroll={handleScroll}
+        showsVerticalScrollIndicator={false}
         scrollEventThrottle={16}
-        className="flex-1 w-full px-4 bg-white dark:bg-gray-800"
+        className="flex-1 w-full p-4 mx-auto bg-gray-800"
       >
+        <GoBackButton />
         <HeadingScreen headingTxt={getName(surahInfo)} />
 
         {/* Surah Info */}
-        <View className="flex-col flex-1 w-[90%] py-2 my-5 mx-auto border-b-2 border-gray-400 dark:border-gray-700">
+        <View className="flex-col flex-1 w-[90%] py-2 my-5 mx-auto border-b-2 border-gray-700">
           {surahInfo.verses.map((verse) => (
             <View
               key={verse.id}
-              className="w-full py-3 my-2 border-b-2 border-gray-300 dark:border-gray-700"
+              className="w-full py-3 my-2 border-b-2 border-gray-700"
             >
-              <Text className="mb-1 text-2xl font-medium leading-normal text-gray-700 dark:text-gray-300 font-arabic">
+              <Text className="mb-1 text-2xl font-medium leading-normal text-gray-300 font-arabic">
                 {verse.textArabic}{" "}
                 <Text
                   style={{ fontFamily: "Quran-verse" }}
@@ -84,7 +85,7 @@ export default function Surah() {
                 </Text>
               </Text>
               {getCurrentLanguage() === "en" && (
-                <Text className="mb-1 text-2xl font-medium leading-normal text-gray-700 dark:text-gray-300 font-english">
+                <Text className="mb-1 text-2xl font-medium leading-normal text-gray-300 font-english">
                   {verse.textEnglish}{" "}
                   <Text className={`font-verses text-5xl`}>{verse.id}</Text>
                 </Text>
@@ -101,7 +102,7 @@ export default function Surah() {
               className={`${
                 surahNumber === 1
                   ? "invisible"
-                  : "flex-row-reverse border border-gray-300 dark:border-gray-500"
+                  : "flex-row-reverse border border-gray-500"
               } items-center justify-center px-2 py-2 rounded`}
             >
               <AntDesign
@@ -109,7 +110,7 @@ export default function Surah() {
                 size={24}
                 color={surahNumber === 1 ? "transparent" : "gray"}
               />
-              <Text className="text-lg font-medium text-gray-800 dark:text-white">
+              <Text className="text-lg font-medium text-white">
                 {getName(surahs[surahNumber - 1]) || ""}
               </Text>
             </TouchableOpacity>
@@ -121,10 +122,10 @@ export default function Surah() {
               className={`${
                 surahNumber === 114
                   ? "invisible"
-                  : "flex-row-reverse border border-gray-300 dark:border-gray-500"
+                  : "flex-row-reverse border border-gray-500"
               } items-center justify-center px-2 py-2 rounded`}
             >
-              <Text className="text-lg font-medium text-gray-800 dark:text-white">
+              <Text className="text-lg font-medium text-white">
                 {getName(surahs[surahNumber + 1]) || ""}
               </Text>
               <AntDesign

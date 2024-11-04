@@ -5,7 +5,7 @@ const { width } = Dimensions.get("window");
 
 export default function TrendingReciters() {
   return (
-    <View className="p-3 bg-white dark:bg-gray-900" style={{ width }}>
+    <View className="p-3 bg-gray-900" style={{ width }}>
       <Slider />
     </View>
   );

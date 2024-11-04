@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useContext } from "react";
 import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import HeadingScreen from "./../components/HeadingScreen";
@@ -17,6 +17,7 @@ import ConfirmationDialog from "../components/ui/ConfirmationDialog";
 import { useTranslate } from "../helpers/i18nHelper";
 import getName from "../helpers/getName";
 import { flexDirection } from "../helpers/flexDirection";
+import { ScreenDimensionsContext } from "../contexts/ScreenDimensionsProvider";
 
 const PlaylistCard = ({
   data,
@@ -33,7 +34,7 @@ const PlaylistCard = ({
   return (
     <TouchableOpacity
       onPress={onToggleSurahs}
-      className="mb-4 bg-white border border-gray-400 shadow-md dark:border-gray-500 dark:bg-gray-700 rounded-xl"
+      className="mb-4 bg-gray-700 border border-gray-500 rounded-xl"
     >
       <View className={`${flexDirection()} items-center justify-between p-4`}>
         <Image
@@ -41,10 +42,10 @@ const PlaylistCard = ({
           className="w-20 h-20 rounded-full"
         />
         <View className="flex-1 mx-2">
-          <Text className="text-xl font-bold text-gray-800 dark:text-gray-200">
+          <Text className="text-xl font-bold text-gray-200">
             {getName(data.reciter)}
           </Text>
-          <Text className="text-sm text-gray-600 dark:text-gray-200">
+          <Text className="text-sm text-gray-200">
             {getName(data.recitation?.recitationInfo)}
           </Text>
         </View>
@@ -67,15 +68,15 @@ const PlaylistCard = ({
         </View>
       </View>
       {expanded && (
-        <View className="border-t border-gray-300 dark:border-gray-600">
-          <Text className="p-1 px-2 mx-auto -mt-3 font-bold text-white bg-green-700 rounded-full text-md dark:text-white">
+        <View className="border-t border-gray-600">
+          <Text className="p-1 px-2 mx-auto -mt-3 font-bold text-white rounded-full text-md">
             {sortedSurahs.length}
           </Text>
           <View className={`${flexDirection()} flex-wrap gap-2 p-4`}>
             {sortedSurahs.map((surah) => (
               <Text
                 key={surah?.surahNumber}
-                className="flex-grow p-1 font-semibold text-center text-gray-100 bg-green-700 rounded text-md dark:text-gray-50"
+                className="flex-grow p-1 font-semibold text-center rounded text-md text-gray-50"
               >
                 {getName(surah?.surahInfo)}
               </Text>
@@ -93,6 +94,7 @@ export default function Playlist() {
   const [expandedPlaylist, setExpandedPlaylist] = useState(null);
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const translate = useTranslate("PlaylistScreen");
+  const { screenWidth: width } = useContext(ScreenDimensionsContext);
 
   const { playerState, setPlayerState } = useAudioPlayer();
 
@@ -231,33 +233,38 @@ export default function Playlist() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-gray-100 dark:bg-gray-800">
-      <GoBackButton />
-      <HeadingScreen headingTxt={translate("playlists")} />
-      <View className="p-4">
-        {playlists?.map((data) => (
-          <PlaylistCard
-            key={data.key}
-            data={data}
-            expanded={expandedPlaylist === data.key} // only expand the selected one
-            onToggleSurahs={() => handleToggleSurahs(data.key)}
-            onDelete={() => handleDelete(data)}
-            onPlay={handlePlayPlaylist}
-            isCurrentlyPlaying={isCurrentlyPlaying(data)}
-            reciter={data.reciter}
-            recitation={data.recitation}
-          />
-        ))}
-        {playlists.length === 0 && (
-          <EmptyState message={translate("emptyState")} />
-        )}
-      </View>
-      <ConfirmationDialog
-        isVisible={isDialogVisible}
-        onConfirm={onConfirmDelete}
-        onCancel={onCancelDelete}
-        message={translate("deleteConfirmation")}
-      />
-    </ScrollView>
+    <View style={{ width }} className="flex-1 w-full bg-gray-800">
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        className="flex-1 w-full p-4 mx-auto"
+      >
+        <GoBackButton />
+        <HeadingScreen headingTxt={translate("playlists")} />
+        <View>
+          {playlists?.map((data) => (
+            <PlaylistCard
+              key={data.key}
+              data={data}
+              expanded={expandedPlaylist === data.key} // only expand the selected one
+              onToggleSurahs={() => handleToggleSurahs(data.key)}
+              onDelete={() => handleDelete(data)}
+              onPlay={handlePlayPlaylist}
+              isCurrentlyPlaying={isCurrentlyPlaying(data)}
+              reciter={data.reciter}
+              recitation={data.recitation}
+            />
+          ))}
+          {playlists.length === 0 && (
+            <EmptyState message={translate("emptyState")} />
+          )}
+        </View>
+        <ConfirmationDialog
+          isVisible={isDialogVisible}
+          onConfirm={onConfirmDelete}
+          onCancel={onCancelDelete}
+          message={translate("deleteConfirmation")}
+        />
+      </ScrollView>
+    </View>
   );
 }

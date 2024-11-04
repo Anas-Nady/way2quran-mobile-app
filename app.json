@@ -5,9 +5,9 @@
     "description": "استماع وتحميل تلاوات للقرآن الكريم من أنحاء العالم الإسلامي",
     "version": "1.0.0",
     "orientation": "default",
-    "icon": "./src/assets/images/icon.png",
+    "icon": "./src/assets/logo.png",
     "scheme": "way2quran",
-    "userInterfaceStyle": "dark",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./src/assets/images/bg.jpg",
       "resizeMode": "contain",
@@ -28,7 +28,9 @@
       "output": "static",
       "favicon": "./src/assets/images/icon.png"
     },
-    "plugins": ["expo-router"],
+    "plugins": [
+      "expo-router"
+    ],
     "experiments": {
       "typedRoutes": true
     },
@@ -37,7 +39,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "2acace1d-7c47-4d2b-8b11-09629a7f99f5"
+        "projectId": "48a677c9-bb19-490e-b5a3-4aab62d7536b"
       }
     }
   }

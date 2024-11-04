@@ -56,12 +56,10 @@ export default function Search() {
   };
 
   return (
-    <View className="flex-1 bg-white dark:bg-gray-800">
+    <ScrollView className="flex-1 p-4 bg-gray-800">
       <GoBackButton />
-      <ScrollView className="my-7">
-        <SearchInput handleTextDebounce={handleTextDebounce} />
-        <SearchResult results={results} loading={loading} error={error} />
-      </ScrollView>
-    </View>
+      <SearchInput handleTextDebounce={handleTextDebounce} />
+      <SearchResult results={results} loading={loading} error={error} />
+    </ScrollView>
   );
 }

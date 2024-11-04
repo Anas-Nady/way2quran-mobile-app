@@ -17,9 +17,7 @@ const SelectOptions = ({
         onClose();
       }}
     >
-      <Text className="text-lg text-gray-800 dark:text-white">
-        {item.label}
-      </Text>
+      <Text className="text-lg text-white">{item.label}</Text>
     </TouchableOpacity>
   );
 
@@ -31,9 +29,9 @@ const SelectOptions = ({
       onRequestClose={onClose}
     >
       <View className="justify-end flex-1 bg-black bg-opacity-50">
-        <View className="bg-white rounded-t-lg dark:bg-gray-800">
+        <View className="bg-gray-800 rounded-t-lg">
           <View className="flex-row-reverse items-center justify-between p-4 border-b border-gray-200">
-            <Text className="text-xl font-semibold text-gray-800 dark:text-white">
+            <Text className="text-xl font-semibold text-white">
               {placeholder}
             </Text>
             <TouchableOpacity onPress={onClose}>

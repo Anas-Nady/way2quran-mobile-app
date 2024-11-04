@@ -5,6 +5,7 @@ import Loading from "./../components/ui/Loading";
 import Error from "./../components/ui/Error";
 import { useTranslate } from "./../helpers/i18nHelper.js";
 import { flexDirection } from "../helpers/flexDirection.js";
+import GoBackButton from "../components/ui/GoBackButton.jsx";
 
 const PrayerTimes = () => {
   const translate = useTranslate("PrayerTimes");
@@ -92,16 +93,17 @@ const PrayerTimes = () => {
   }
 
   return (
-    <ScrollView className="flex-1 py-5 bg-white dark:bg-gray-800">
-      <View className="w-[90%] mx-auto flex-1 justify-center my-5">
-        <Text className="mb-2 text-3xl font-bold text-center text-gray-800 dark:text-white">
+    <ScrollView className="flex-1 w-full p-4 py-5 bg-gray-800">
+      <GoBackButton />
+      <View className="justify-center flex-1 my-5 ">
+        <Text className="mb-2 text-3xl font-bold text-center text-white">
           {translate("title")}
         </Text>
-        <Text className="px-2 py-1 mb-6 text-lg text-center text-green-600 rounded-xl dark:text-green-500">
+        <Text className="px-2 py-1 mb-6 text-lg text-center text-green-500 rounded-xl">
           {address}
         </Text>
 
-        <View className="p-6 border border-gray-300 rounded-lg dark:border-gray-500">
+        <View className="p-6 mb-2 border border-gray-500 rounded-lg">
           {Object.entries(prayerTimes).map(([prayer, time]) => {
             const isPassed =
               prayer !== nextPrayer && getNextPrayer(prayerTimes) !== prayer;
@@ -109,18 +111,16 @@ const PrayerTimes = () => {
             return (
               <View
                 key={prayer}
-                className={`${flexDirection()} items-center justify-between gap-3 border border-gray-400 dark:border-gray-500 px-3 py-1 pb-4 my-3 rounded
-                  ${isPassed ? "dark:bg-gray-700" : ""} 
-                  ${
-                    prayer === nextPrayer ? "bg-green-50 dark:bg-gray-800" : ""
-                  }`}
+                className={`${flexDirection()} items-center justify-between gap-3 border border-gray-500 px-3 py-1 pb-4 my-3 rounded
+                  ${isPassed ? "bg-gray-700" : ""} 
+                  ${prayer === nextPrayer ? "bg-gray-800" : ""}`}
               >
                 <View>
                   <Text
                     className={`text-xl font-semibold ${
                       prayer === nextPrayer
-                        ? "font-bold text-green-500 dark:text-green-500"
-                        : "text-gray-700 dark:text-gray-300"
+                        ? "font-bold text-green-500"
+                        : "text-gray-300"
                     }`}
                   >
                     {translate(`${prayer.toLowerCase()}`)}
@@ -130,8 +130,8 @@ const PrayerTimes = () => {
                 <Text
                   className={`text-xl font-semibold ${
                     prayer === nextPrayer
-                      ? "font-bold text-green-500 dark:text-green-500"
-                      : "text-gray-700 dark:text-gray-300"
+                      ? "font-bold text-green-500"
+                      : "text-gray-300"
                   }`}
                 >
                   {time}

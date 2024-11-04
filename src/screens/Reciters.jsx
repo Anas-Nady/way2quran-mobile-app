@@ -12,6 +12,7 @@ import { getReciters } from "../services/api";
 import Error from "../components/ui/Error";
 import getRecitationType from "./../helpers/getRecitationType";
 import getName from "../helpers/getName";
+import { flexDirection } from "../helpers/flexDirection";
 
 export default function Reciters() {
   const route = useRoute();
@@ -63,20 +64,22 @@ export default function Reciters() {
 
   return (
     <>
-      <View className="flex-1 w-full bg-white dark:bg-gray-800">
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        className="flex-1 w-full p-4 mx-auto bg-gray-800"
+      >
         <GoBackButton />
         {state.loading ? (
           <Loading />
         ) : state.error ? (
           <Error message={state.error} />
         ) : (
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            className="flex-1 mx-auto w-[90%]"
-          >
+          <>
             <HeadingScreen headingTxt={getName(recitation)} />
 
-            <View className="flex-row-reverse flex-wrap items-center justify-center py-7">
+            <View
+              className={`${flexDirection()} flex-wrap items-center justify-center py-7`}
+            >
               {state.reciters?.length > 0 ? (
                 state.reciters?.map((reciter) => (
                   <ReciterCard
@@ -99,9 +102,9 @@ export default function Reciters() {
               totalPages={totalPages}
               onPageChange={handlePageChange}
             />
-          </ScrollView>
+          </>
         )}
-      </View>
+      </ScrollView>
     </>
   );
 }

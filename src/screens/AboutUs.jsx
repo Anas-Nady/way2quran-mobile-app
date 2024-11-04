@@ -2,25 +2,25 @@ import { View, Text, ScrollView } from "react-native";
 import HeadingScreen from "./../components/HeadingScreen";
 import GoBackButton from "../components/ui/GoBackButton";
 import { useTranslate } from "../helpers/i18nHelper";
-import { useContext } from "react";
-import { ScreenDimensionsContext } from "../contexts/ScreenDimensionsProvider";
 
 const AboutUsList = () => {
   const translate = useTranslate("AboutScreen");
-  const { screenWidth: width } = useContext(ScreenDimensionsContext);
 
   return (
-    <ScrollView className="flex-col flex-1 w-full bg-white dark:bg-gray-800">
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      className="flex-1 w-full p-4 bg-gray-800"
+    >
       <GoBackButton />
       <HeadingScreen headingTxt={translate("aboutTitle")} />
 
-      <View
-        className="flex-col gap-4 mx-auto py-9"
-        style={{ width: width * 0.9 }}
-      >
+      <View className="">
         {Array.from({ length: 5 }, (_, index) => (
-          <View key={index + 1} className="p-3 bg-gray-700 rounded">
-            <Text className="text-xl font-medium leading-normal text-green-500 dark:text-green-500">
+          <View
+            key={index + 1}
+            className="p-3 my-1.5 bg-gray-700 border border-gray-600 rounded"
+          >
+            <Text className="text-xl font-medium leading-normal text-green-500">
               {translate(`about_${index + 1}`)}
             </Text>
           </View>

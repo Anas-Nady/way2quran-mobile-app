@@ -1,8 +1,6 @@
-import { useColorScheme } from "nativewind";
 import { useTranslation } from "react-i18next";
-import { I18nManager, View } from "react-native";
+import { View } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
-import { flexDirection } from "../../helpers/flexDirection";
 import getName from "../../helpers/getName";
 import { getCurrentLanguage } from "../../services/i18next";
 
@@ -12,26 +10,24 @@ export default function SelectOptions({
   recitationName,
 }) {
   const { t } = useTranslation();
-  const { colorScheme } = useColorScheme();
-  const isDarkMode = colorScheme === "dark";
 
   const selectListStyles = {
     boxStyles: {
-      borderColor: isDarkMode ? "#4B5563" : "#ccc",
+      borderColor: "#4B5563",
       borderRadius: 8,
       marginTop: 10,
-      backgroundColor: isDarkMode ? "#374151" : "white",
+      backgroundColor: "#374151",
       // position: "relative",
       flexDirection: getCurrentLanguage() === "ar" ? "row-reverse" : "row",
     },
     inputStyles: {
-      color: isDarkMode ? "#E5E7EB" : "#333",
+      color: "#E5E7EB",
       fontSize: 18,
       fontWeight: "bold",
     },
     dropdownStyles: {
-      borderColor: isDarkMode ? "#4B5563" : "#ccc",
-      backgroundColor: isDarkMode ? "#1F2937" : "white",
+      borderColor: "#4B5563",
+      backgroundColor: "#1F2937",
       position: "absolute",
       zIndex: 9,
       width: "100%",
@@ -41,7 +37,7 @@ export default function SelectOptions({
       paddingVertical: 10,
     },
     dropdownTextStyles: {
-      color: isDarkMode ? "#E5E7EB" : "#333",
+      color: "#E5E7EB",
       fontSize: 18,
       fontWeight: "bold",
     },

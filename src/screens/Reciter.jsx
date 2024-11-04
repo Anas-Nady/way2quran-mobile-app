@@ -24,6 +24,7 @@ import SelectOptions from "../components/reciter/SelectOptions";
 import Alert from "../components/ui/Alert";
 import { useTranslate } from "./../helpers/i18nHelper.js";
 import getName from "../helpers/getName.js";
+import { flexDirection } from "../helpers/flexDirection.js";
 
 const ReciterScreen = () => {
   const route = useRoute();
@@ -89,7 +90,6 @@ const ReciterScreen = () => {
   };
 
   const handleFavoriteToggle = async () => {
-    setFavouriteState((prev) => ({ ...prev, loading: true }));
     if (favouriteState.isFavourite) {
       try {
         await removeBookmark("Favorites", reciterSlug);
@@ -138,13 +138,16 @@ const ReciterScreen = () => {
   };
 
   return (
-    <View className="relative flex-1 bg-white dark:bg-slate-800">
-      <View className="flex-row-reverse items-center justify-between">
+    <ScrollView
+      style={{ position: "relative" }}
+      className="flex-1 w-full p-4 mx-auto bg-slate-800"
+      showsVerticalScrollIndicator={false}
+    >
+      <View className={`${flexDirection()} items-center justify-between`}>
         <GoBackButton />
         <TouchableOpacity
           disabled={favouriteState.loading}
           onPress={handleFavoriteToggle}
-          className="px-5 mt-4"
         >
           <AntDesign
             name="heart"
@@ -160,68 +163,68 @@ const ReciterScreen = () => {
           onClose={() => setAlert(null)}
         />
       )}
-      <ScrollView style={{ position: "relative" }} className="flex-1 w-full">
-        {state.loading ? (
-          <Loading />
-        ) : state.error ? (
-          <Error message={state.error} />
-        ) : (
-          <View className="mx-auto w-[90%] flex-1">
-            {/* Reciter Info */}
-            <View className="flex-col items-center w-full">
-              <ReciterImg uri={state.reciter?.photo} />
-              <View className="my-2">
-                <Text className="text-3xl font-semibold text-gray-700 dark:text-white">
-                  {getName(state.reciter)}
+      {state.loading ? (
+        <Loading />
+      ) : state.error ? (
+        <Error message={state.error} />
+      ) : (
+        <View className="">
+          {/* Reciter Info */}
+          <View className="flex-col items-center w-full">
+            <ReciterImg uri={state.reciter?.photo} />
+            <View className="my-2">
+              <Text className="text-3xl font-semibold text-white">
+                {getName(state.reciter)}
+              </Text>
+              {state.reciter?.isTopReciter && <TopReciterBadge />}
+              <View
+                className={`${flexDirection()} items-center justify-center gap-2 mt-2`}
+              >
+                <Ionicons name="eye-outline" size={25} color="#6B7280" />
+                <Text className="mb-1 ml-1 text-lg font-semibold text-white">
+                  {state.reciter?.totalViewers?.toLocaleString()}
                 </Text>
-                {state.reciter?.isTopReciter && <TopReciterBadge />}
-                <View className="flex-row-reverse items-center justify-center gap-2 mt-2">
-                  <Ionicons name="eye-outline" size={25} color="#6B7280" />
-                  <Text className="mb-1 ml-1 text-lg font-semibold text-gray-700 dark:text-white">
-                    {state.reciter?.totalViewers?.toLocaleString()}
-                  </Text>
-                </View>
               </View>
             </View>
-
-            {/* Select Options */}
-            <SelectOptions
-              setRecitation={setSelectedRecitationSlug}
-              recitations={state.reciter?.recitations}
-              recitationName={getName(currentRecitation?.recitationInfo)}
-            />
-
-            {/* Download All Button */}
-            <TouchableOpacity
-              onPress={handleDownloadAll}
-              className="flex-row-reverse items-center justify-center p-4 mt-4 bg-white border border-gray-400 rounded-md dark:bg-gray-700 dark:border-gray-500"
-            >
-              <Text className="ml-2 text-lg font-semibold text-center text-gray-800 dark:text-white">
-                {translate("downloadAll")}
-              </Text>
-            </TouchableOpacity>
-
-            {/* Surahs List  */}
-            <View className="w-full">
-              {currentRecitation?.audioFiles?.map((surah, i) => (
-                <SurahCard
-                  key={surah?.surahInfo?.slug}
-                  surah={surah}
-                  surahIndex={i}
-                  recitation={currentRecitation}
-                  reciter={{
-                    photo: state.reciter?.photo,
-                    arabicName: state.reciter.arabicName,
-                    englishName: state.reciter.englishName,
-                    slug: state.reciter?.slug,
-                  }}
-                />
-              ))}
-            </View>
           </View>
-        )}
-      </ScrollView>
-    </View>
+
+          {/* Select Options */}
+          <SelectOptions
+            setRecitation={setSelectedRecitationSlug}
+            recitations={state.reciter?.recitations}
+            recitationName={getName(currentRecitation?.recitationInfo)}
+          />
+
+          {/* Download All Button */}
+          <TouchableOpacity
+            onPress={handleDownloadAll}
+            className="flex-row-reverse items-center justify-center p-4 mt-4 bg-gray-700 border border-gray-500 rounded-md"
+          >
+            <Text className="ml-2 text-lg font-semibold text-center text-white">
+              {translate("downloadAll")}
+            </Text>
+          </TouchableOpacity>
+
+          {/* Surahs List  */}
+          <View className="w-full">
+            {currentRecitation?.audioFiles?.map((surah, i) => (
+              <SurahCard
+                key={surah?.surahInfo?.slug}
+                surah={surah}
+                surahIndex={i}
+                recitation={currentRecitation}
+                reciter={{
+                  photo: state.reciter?.photo,
+                  arabicName: state.reciter.arabicName,
+                  englishName: state.reciter.englishName,
+                  slug: state.reciter?.slug,
+                }}
+              />
+            ))}
+          </View>
+        </View>
+      )}
+    </ScrollView>
   );
 };
 

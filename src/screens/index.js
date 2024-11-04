@@ -7,7 +7,7 @@ import Reciter from "./Reciter";
 import Search from "./Search";
 import DownloadQuranPDF from "./DownloadQuranPDF";
 import Surah from "./Surah";
-import Surahs from "./Surahs";
+import Mushaf from "./Mushaf";
 import Playlist from "./Playlist";
 import Favorites from "./Favorites";
 import PrayerTimes from "./PrayerTimes";
@@ -22,7 +22,7 @@ export {
   Search,
   DownloadQuranPDF,
   Surah,
-  Surahs,
+  Mushaf,
   Playlist,
   Favorites,
   PrayerTimes,

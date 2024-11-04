@@ -9,15 +9,17 @@ import {
   resumeAudio,
 } from "../../helpers/audioPlayerHelper";
 import formatTime from "../../helpers/formatTime";
-import { useColorScheme } from "nativewind";
 import getName from "../../helpers/getName";
+import { flexDirection, textDirection } from "../../helpers/flexDirection";
+import { getCurrentLanguage } from "../../services/i18next";
+import truncateName from "../../helpers/getTruncatedName";
 
 const AudioPlayerModal = () => {
   const { playerState, setPlayerState, toggleModalExpansion } =
     useAudioPlayer();
   const [currentTime, setCurrentTime] = useState(0);
-  const { colorScheme } = useColorScheme();
-  const iconColor = colorScheme === "dark" ? "white" : "#4B5563";
+  const iconColor = "white";
+  const isRTL = getCurrentLanguage() === "ar";
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -188,12 +190,12 @@ const AudioPlayerModal = () => {
 
   return (
     <View
-      className={`bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 border-b-0 rounded-t-3xl ${
+      className={`bg-gray-800 border border-gray-500 border-b-0 rounded-t-3xl ${
         playerState?.isModalExpanded ? "h-[165px] p-5" : "h-[80px] p-2"
       }`}
     >
       <TouchableOpacity
-        className="absolute z-10 rounded-full top-2 left-3"
+        className={`absolute z-10 rounded-full top-2 left-3`}
         onPress={toggleModalExpansion}
       >
         <Feather
@@ -209,7 +211,7 @@ const AudioPlayerModal = () => {
 
       {playerState?.isModalExpanded && (
         <TouchableOpacity
-          className="absolute z-10 top-2 right-3"
+          className={`absolute z-10 top-2 right-3`}
           onPress={closeModal}
         >
           <AntDesign name="closecircleo" size={24} color={iconColor} />
@@ -219,19 +221,29 @@ const AudioPlayerModal = () => {
       {playerState?.isModalExpanded ? (
         // Expanded view content
         <>
-          <View className="flex-row-reverse items-center justify-end mr-6">
-            <View className="flex-row-reverse items-center flex-1 gap-2">
+          <View
+            className={`${flexDirection()} items-center justify-end ${
+              isRTL ? "mr-6" : "mx-4"
+            }`}
+          >
+            <View className={`${flexDirection()} items-center flex-1 gap-2`}>
               <Image
                 source={{ uri: playerState.reciter?.photo }}
                 className="rounded-full w-14 h-14"
               />
               <View className="flex-1">
-                <Text className="text-[20px] font-bold text-gray-700 dark:text-gray-100 text-right">
-                  {playerState.reciter?.arabicName}
+                <Text
+                  className={`${textDirection()} text-[20px] font-bold text-gray-100`}
+                >
+                  {getName(playerState.reciter)}
                 </Text>
-                <Text className="text-gray-700 mt-1 text-[16px] dark:text-gray-100 text-right">
-                  {playerState.currentAudio?.surahInfo?.arabicName} -{" "}
-                  {playerState?.recitation?.recitationInfo?.arabicName}
+                <Text
+                  className={`mt-1 text-[16px] text-gray-100 line-clamp-1 ${textDirection()}`}
+                >
+                  {getName(playerState.currentAudio?.surahInfo)} -{" "}
+                  {truncateName(
+                    getName(playerState?.recitation?.recitationInfo)
+                  )}
                 </Text>
               </View>
             </View>
@@ -242,7 +254,7 @@ const AudioPlayerModal = () => {
               width: "100%",
               height: 25,
               marginVertical: 10,
-              transform: [{ scaleX: -1 }],
+              transform: isRTL ? [{ scaleX: -1 }] : [],
             }}
             minimumValue={0}
             maximumValue={playerState.soundObject?.durationMillis / 1000 || 0}
@@ -253,11 +265,15 @@ const AudioPlayerModal = () => {
             thumbTintColor="#22c55e"
           />
 
-          <View className="flex-row-reverse items-center justify-between w-full">
-            <Text className="text-sm text-gray-800 dark:text-white">
+          <View
+            className={`${flexDirection()} items-center justify-between w-full`}
+          >
+            <Text className="text-sm text-white">
               {formatTime(currentTime)}
             </Text>
-            <View className="flex-row-reverse items-center justify-center gap-2">
+            <View
+              className={`flex-row-reverse items-center justify-center gap-2`}
+            >
               <TouchableOpacity
                 onPress={handlePrevSurah}
                 disabled={playerState.surahIndex === 0}
@@ -294,34 +310,43 @@ const AudioPlayerModal = () => {
                 />
               </TouchableOpacity>
             </View>
-            <Text className="text-sm text-gray-800 dark:text-white">
+            <Text className="text-sm text-white">
               {formatTime(playerState.soundObject?.durationMillis / 1000 || 0)}
             </Text>
           </View>
         </>
       ) : (
         // Collapsed view content
-        <View className="flex-row-reverse">
-          <TouchableOpacity onPress={togglePlayPause} className="ml-4">
-            <Ionicons
-              name={playerState.isPlaying ? "pause-circle" : "play-circle"}
-              size={33}
-              color="#22c55e"
-            />
-          </TouchableOpacity>
-          <View className="flex-row-reverse items-center">
+        <View className={`${flexDirection()} mx-9 items-center`}>
+          <View className={`${flexDirection()} items-center`}>
             <Image
               source={{ uri: playerState.reciter?.photo }}
               className="w-12 h-12 rounded-full"
             />
-            <View className="mr-3">
-              <Text className="text-[16px] font-bold text-gray-700 dark:text-gray-100 text-right">
+            <View className="flex-1 mx-1">
+              <Text
+                className={`${textDirection()} text-[16px] font-bold text-gray-100`}
+              >
                 {getName(playerState.reciter)}
               </Text>
-              <Text className="text-gray-700 text-[14px] dark:text-gray-100 text-right">
-                {getName(playerState.currentAudio?.surahInfo)}
+              <Text className={`text-[14px] text-gray-100 ${textDirection()}`}>
+                {getName(playerState.currentAudio?.surahInfo)} -{" "}
+                {truncateName(
+                  getName(playerState?.recitation?.recitationInfo),
+                  15
+                )}
               </Text>
             </View>
+            <TouchableOpacity
+              onPress={togglePlayPause}
+              className={`${isRTL ? '"mr-4"' : "ml-4"}`}
+            >
+              <Ionicons
+                name={playerState.isPlaying ? "pause-circle" : "play-circle"}
+                size={33}
+                color="#22c55e"
+              />
+            </TouchableOpacity>
           </View>
         </View>
       )}

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { useTranslation } from "react-i18next";
 
 const NotFoundResults = ({ searchTerm, onGoBack }) => {

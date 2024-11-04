@@ -3,6 +3,7 @@ import ReciterCard from "./../reciter/ReciterCard";
 import { useNavigation } from "@react-navigation/native";
 import { useContext } from "react";
 import { ScreenDimensionsContext } from "../../contexts/ScreenDimensionsProvider";
+import { flexDirection } from "../../helpers/flexDirection";
 
 const SlideItem = ({ item }) => {
   const { screenWidth: width } = useContext(ScreenDimensionsContext);
@@ -13,7 +14,7 @@ const SlideItem = ({ item }) => {
 
   return (
     <View
-      className="flex-row-reverse items-center justify-center"
+      className={`${flexDirection()} items-center justify-center`}
       style={{ width: itemWidth }}
     >
       <ReciterCard

@@ -9,20 +9,21 @@ export default function DownloadQuranPDF() {
   const { t } = useTranslation();
 
   return (
-    <>
+    <ScrollView
+      className="flex-1 w-full p-4 bg-gray-800"
+      showsVerticalScrollIndicator={false}
+    >
       <GoBackButton />
-      <ScrollView className="flex-1 w-full bg-white dark:bg-gray-800">
-        <View className="flex-col items-center justify-center mx-auto w-[90%]">
-          <View className="flex-col flex-wrap items-center justify-center">
-            <HeadingScreen headingTxt={t("downloadQuranPdf")} />
-          </View>
-          <View className="flex-col flex-wrap justify-between">
-            {listQuranPdf.map((quran) => (
-              <QuranPDFCard quran={quran} key={quran.slug} />
-            ))}
-          </View>
+      <View className="flex-col items-center justify-center mx-auto w-[90%]">
+        <View className="flex-col flex-wrap items-center justify-center">
+          <HeadingScreen headingTxt={t("downloadQuranPdf")} />
         </View>
-      </ScrollView>
-    </>
+        <View className="flex-col flex-wrap justify-between">
+          {listQuranPdf.map((quran) => (
+            <QuranPDFCard quran={quran} key={quran.slug} />
+          ))}
+        </View>
+      </View>
+    </ScrollView>
   );
 }

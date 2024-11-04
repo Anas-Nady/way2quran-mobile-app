@@ -5,7 +5,7 @@ import Slider from "../components/listeningNow/Slider";
 
 export default function HomeScreen() {
   return (
-    <View className="flex-1 w-full bg-slate-50 dark:bg-gray-800">
+    <View className="flex-1 w-full bg-gray-800">
       <ScrollView className="flex-1" style={{ position: "relative" }}>
         <Welcome />
         <Slider />

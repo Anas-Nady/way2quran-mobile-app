@@ -11,28 +11,29 @@ export default function Recitations() {
   const navigation = useNavigation();
 
   return (
-    <View className="flex-1 w-full bg-white dark:bg-gray-800">
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <GoBackButton />
-        <HeadingScreen headingTxt={t("frequentRecitations")} />
-        <View className="flex-col items-center justify-center w-full gap-3 py-7 recitation-card">
-          {recitations.slice(3).map((rec) => (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("Reciters", { recitationSlug: rec.slug })
-              }
-              key={rec.slug}
-              className="flex-row items-center w-[90%] justify-center p-3 border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700"
-            >
-              <View className="overflow-hidden ">
-                <Text className="text-xl font-semibold text-gray-700 dark:text-slate-50">
-                  {getName(rec)}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </ScrollView>
-    </View>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      className="flex-1 w-full p-4 mx-auto bg-gray-800"
+    >
+      <GoBackButton />
+      <HeadingScreen headingTxt={t("frequentRecitations")} />
+      <View className="flex-col items-center justify-center w-full gap-3 py-7 recitation-card">
+        {recitations.slice(3).map((rec) => (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("Reciters", { recitationSlug: rec.slug })
+            }
+            key={rec.slug}
+            className="flex-row items-center w-[90%] justify-center p-3 border rounded-lg bg-gray-800 border-gray-700"
+          >
+            <View className="overflow-hidden ">
+              <Text className="text-xl font-semibold text-slate-50">
+                {getName(rec)}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </ScrollView>
   );
 }

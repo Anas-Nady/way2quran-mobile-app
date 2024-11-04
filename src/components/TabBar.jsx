@@ -22,7 +22,7 @@ export default function TabBar() {
     },
     {
       label: translate("mushaf"),
-      routeName: "Surahs",
+      routeName: "Mushaf",
       icon: "menu-book",
     },
     {
@@ -33,8 +33,8 @@ export default function TabBar() {
   ];
 
   return (
-    <View className="w-[90%] bg-white dark:bg-gray-700 rounded-full mx-auto py-1 px-4">
-      <View className={`${flexDirection()} items-center justify-between mx-1`}>
+    <View className="w-[95%] bg-gray-700 rounded-full mx-auto py-1 px-4">
+      <View className={`${flexDirection()} items-center justify-between `}>
         {tabsLinks.map((tab, i) => (
           <TouchableOpacity
             key={i}

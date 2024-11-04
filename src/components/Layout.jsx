@@ -40,7 +40,7 @@ function Layout({ playerState }) {
       <SafeAreaView
         className={`${
           getCurrentLanguage() === "ar" ? "font-arabic" : "font-english"
-        } flex-1 bg-slate-200 dark:bg-gray-800`}
+        }  flex-1 bg-gray-800`}
         style={{ position: "relative" }}
       >
         <StatusBar backgroundColor="#22c55e" barStyle="light-content" />

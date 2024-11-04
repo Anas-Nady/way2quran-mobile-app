@@ -24,7 +24,7 @@ export default function NoInternetScreen() {
   const iconSize = width < 375 ? 60 : 80;
 
   return (
-    <View className="items-center justify-center flex-1 p-5 bg-gray-100 dark:bg-gray-900">
+    <View className="items-center justify-center flex-1 p-5 bg-gray-900">
       <View className="flex-col items-center py-6">
         <Ionicons
           name="cloud-offline"
@@ -33,11 +33,11 @@ export default function NoInternetScreen() {
           color={"white"}
         />
         <Text
-          className={`${fontSize} font-bold mb-2.5 text-center text-gray-800 dark:text-gray-200`}
+          className={`${fontSize} font-bold mb-2.5 text-center text-gray-200`}
         >
           {translate("title")}
         </Text>
-        <Text className="mb-5 text-base text-center text-gray-600 dark:text-gray-400">
+        <Text className="mb-5 text-base text-center text-gray-400">
           {translate("message")}
         </Text>
       </View>

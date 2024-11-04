@@ -52,19 +52,18 @@ export default function Favorites() {
   };
 
   return (
-    <View className="flex-1 w-full bg-white dark:bg-gray-800">
-      <GoBackButton />
-
+    <View className="flex-1 w-full bg-gray-800">
       <ScrollView
         showsVerticalScrollIndicator={false}
-        className="mx-auto w-[90%] flex-1"
+        className="mx-auto w-[90%] flex-1 my-4"
       >
+        <GoBackButton />
         <HeadingScreen headingTxt={translate("favorites")} />
         <View className="">
           {bookmarks.map((bookmark) => (
             <View
               key={bookmark.reciterSlug}
-              className={`${flexDirection()} w-full px-3 py-2 my-2 bg-white border border-gray-300 rounded-xl dark:bg-gray-700 dark:border-gray-500`}
+              className={`${flexDirection()} w-full px-3 py-2 my-2 border rounded-xl bg-gray-700 border-gray-500`}
             >
               <TouchableOpacity
                 onPress={() =>
@@ -83,7 +82,7 @@ export default function Favorites() {
                   }}
                   alt={getName(bookmark)}
                 />
-                <Text className="flex-1 mx-3 mt-2 text-lg font-semibold text-gray-900 dark:text-white">
+                <Text className="flex-1 mx-3 mt-2 text-lg font-semibold text-white">
                   {getName(bookmark)}
                 </Text>
               </TouchableOpacity>

@@ -15,7 +15,7 @@ const Footer = () => {
   ];
 
   return (
-    <View className="bg-white w-full dark:bg-gray-800 border-t-[2px] border-gray-300 dark:border-gray-600 py-5">
+    <View className=" w-full bg-gray-800 border-t-[2px] border-gray-600 py-5">
       <View>
         <AppTitle />
         <View
@@ -26,7 +26,7 @@ const Footer = () => {
               key={link.href}
               onPress={() => navigation.navigate(link.href)}
             >
-              <Text className="text-xl font-medium text-orange-500 dark:text-orange-500">
+              <Text className="text-xl font-medium text-orange-500">
                 {link.title}
               </Text>
             </TouchableOpacity>
@@ -34,7 +34,7 @@ const Footer = () => {
         </View>
       </View>
       <View className="mx-auto">
-        <Text className="font-medium text-gray-700 text-md dark:text-slate-300">
+        <Text className="font-medium text-md text-slate-300">
           {translate("allRightsReserved")} © {currentYear}
         </Text>
       </View>
