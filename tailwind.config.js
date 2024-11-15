@@ -7,13 +7,13 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        arabic: ["Noto-Naskh-Arabic", "serif"],
+        arabic: ["Noto-Kufi-Arabic", "serif"],
         english: ["Public-Sans", "sans-serif"],
         verses: ["Quran-verse", "sans-serif"],
       },
       colors: {
-        primary: "#2f9935",
-        secondary: "#b18036",
+        primary: "#339933",
+        secondary: "#f69002",
       },
     },
   },

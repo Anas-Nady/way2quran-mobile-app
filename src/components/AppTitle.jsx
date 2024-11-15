@@ -9,7 +9,7 @@ const AppTitle = () => {
   return (
     <TouchableOpacity onPress={() => navigation.navigate("Home")}>
       <View className="self-center -tracking-wider whitespace-nowrap">
-        <Text className="text-3xl text-orange-500">
+        <Text className="text-3xl font-semibold text-secondary">
           {t("wayTo")}
           <Text className="font-semibold text-green-500"> {t("quran")}</Text>
         </Text>

@@ -28,7 +28,7 @@ export default function TabBar() {
     {
       label: translate("prayerTimes"),
       routeName: "PrayerTimes",
-      icon: "access-time",
+      icon: "mosque",
     },
   ];
 

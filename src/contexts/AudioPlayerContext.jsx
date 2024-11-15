@@ -11,11 +11,12 @@ export const AudioPlayerProvider = ({ children }) => {
     isPlaying: false,
     surahIndex: -1,
     isModalVisible: false,
-    isModalExpanded: true,
+    isModalExpanded: false,
     isAutoPlayEnabled: false,
     reciter: null,
     recitation: null,
     modalHeight: 80,
+    playLoading: false,
   });
 
   const toggleModalExpansion = () => {

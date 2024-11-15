@@ -6,8 +6,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import GoBackButton from "../components/ui/GoBackButton";
 import getName from "../helpers/getName";
-import { getCurrentLanguage } from "../services/i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { currentLanguage } from "../helpers/flexDirection";
 
 export default function Surah() {
   const route = useRoute();
@@ -84,7 +84,7 @@ export default function Surah() {
                   {+verse.id}
                 </Text>
               </Text>
-              {getCurrentLanguage() === "en" && (
+              {currentLanguage === "en" && (
                 <Text className="mb-1 text-2xl font-medium leading-normal text-gray-300 font-english">
                   {verse.textEnglish}{" "}
                   <Text className={`font-verses text-5xl`}>{verse.id}</Text>

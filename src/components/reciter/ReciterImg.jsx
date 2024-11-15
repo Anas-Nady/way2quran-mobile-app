@@ -8,7 +8,7 @@ export default function ReciterImg({
   alt = "Way2quran",
   otherClasses = "",
 }) {
-  const sizeClass = "w-[220px] h-[220px]";
+  const sizeClass = "w-[200px] h-[200px]";
   const srcImg = uri === defaultReciterPhoto ? logo : { uri };
 
   return (
@@ -17,8 +17,8 @@ export default function ReciterImg({
     >
       <Image
         source={srcImg}
-        width={220}
-        height={220}
+        width={200}
+        height={200}
         resizeMode={uri === defaultReciterPhoto ? "contain" : "cover"}
         alt={alt}
         className={`${otherClasses} ${getObjectFitClass(uri)} w-full h-full`}

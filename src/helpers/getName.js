@@ -1,13 +1,11 @@
-import { getCurrentLanguage } from "../services/i18next";
-
-const currentLang = getCurrentLanguage();
+import { currentLanguage } from "./flexDirection";
 
 const getName = function (obj) {
   if (!obj) return "";
 
-  if (currentLang === "en") {
+  if (currentLanguage === "en") {
     return obj.englishName;
-  } else if (currentLang === "ar") {
+  } else if (currentLanguage === "ar") {
     return obj.arabicName;
   }
   return "default name";

@@ -38,7 +38,7 @@ export default function Reciters() {
         const res = await getReciters({
           recitationSlug,
           currentPage,
-          pageSize: 50,
+          pageSize: 30,
         });
         const data = await res.json();
 

@@ -7,7 +7,7 @@ SplashScreen.preventAutoHideAsync();
 
 export function useCustomFonts() {
   const [fontsLoaded, error] = useFonts({
-    "Noto-Naskh-Arabic": require("./../assets/fonts/NotoNaskhArabic.ttf"),
+    "Noto-Kufi-Arabic": require("./../assets/fonts/NotoKufiArabic.ttf"),
     "Public-Sans": require("./../assets/fonts/PublicSans.ttf"),
     "Quran-verse": require("./../assets/fonts/AyatQuran.ttf"),
   });

@@ -19,7 +19,6 @@ import Alert from "../ui/Alert";
 import { useTranslate } from "../../helpers/i18nHelper";
 import getName from "./../../helpers/getName.js";
 import { flexDirection } from "../../helpers/flexDirection.js";
-import { getCurrentLanguage } from "../../services/i18next.js";
 
 const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -38,6 +37,7 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
   const iconColor = "#fff";
 
   const togglePlayback = async (surah) => {
+    setPlayerState((prev) => ({ ...prev, playLoading: true }));
     // if there is no audio play -> create one for the first time.
     if (playerState.soundObject === null) {
       const playback = await new Audio.Sound();
@@ -45,12 +45,13 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
 
       return setPlayerState({
         ...playerState,
+        playLoading: false,
         playbackObject: playback,
         currentAudio: surah,
         soundObject: status,
         isPlaying: true,
         isModalVisible: true,
-        isAutoPlayEnabled: false, // handle this feature
+        isAutoPlayEnabled: false,
         surahIndex,
         reciter,
         recitation,
@@ -66,6 +67,7 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
       const status = await pauseAudio(playerState.playbackObject);
       return setPlayerState({
         ...playerState,
+        playLoading: false,
         soundObject: status,
         isPlaying: false,
       });
@@ -80,13 +82,14 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
       const status = await resumeAudio(playerState.playbackObject);
       return setPlayerState({
         ...playerState,
+        playLoading: false,
         soundObject: status,
         isPlaying: true,
         isModalVisible: true,
       });
     }
 
-    // switching to another Surah
+    // switching to another Surah - Stop current audio before playing new one
     if (
       playerState.soundObject.isLoaded &&
       playerState.currentAudio?.surahNumber !== surah.surahNumber
@@ -94,11 +97,12 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
       const status = await playNextAudio(playerState.playbackObject, surah.url);
       return setPlayerState({
         ...playerState,
+        playLoading: false,
         currentAudio: surah,
         soundObject: status,
         isPlaying: true,
         isModalVisible: true,
-        isAutoPlayEnabled: false, // handle this feature
+        isAutoPlayEnabled: false,
         surahIndex,
         reciter,
         recitation,
@@ -212,9 +216,7 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
         >
           <View
             style={{ transform: [{ rotate: "45deg" }] }}
-            className={`${flexDirection()} items-center justify-center ${
-              getCurrentLanguage() === "ar" ? "ml-2.5" : "mr-2.5"
-            } w-9 h-9 bg-green-600`}
+            className={`${flexDirection()} items-center justify-center mr-2.5 w-9 h-9 bg-green-600`}
           >
             <Text
               style={{ transform: [{ rotate: "-45deg" }] }}
@@ -232,7 +234,10 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
           className={`${flexDirection()} items-center justify-center`}
         >
           {/* Audio Play Button */}
-          <TouchableOpacity onPress={() => togglePlayback(surah)}>
+          <TouchableOpacity
+            disabled={playerState.playLoading}
+            onPress={() => togglePlayback(surah)}
+          >
             <Ionicons
               name={
                 isCurrentlyPlaying()

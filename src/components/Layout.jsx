@@ -9,7 +9,7 @@ import TabBar from "../components/TabBar";
 import AudioPlayerModal from "../components/reciter/AudioPlayerModal";
 import { AppNavigator } from "../navigationConfig";
 import { useState, useCallback } from "react";
-import { getCurrentLanguage } from "../services/i18next";
+import { currentLanguage } from "../helpers/flexDirection";
 
 function getPlayerModalHeight(playerState) {
   if (playerState.isModalVisible) {
@@ -39,7 +39,7 @@ function Layout({ playerState }) {
     <TouchableWithoutFeedback onPress={closeMenu}>
       <SafeAreaView
         className={`${
-          getCurrentLanguage() === "ar" ? "font-arabic" : "font-english"
+          currentLanguage === "ar" ? "font-arabic" : "font-english"
         }  flex-1 bg-gray-800`}
         style={{ position: "relative" }}
       >

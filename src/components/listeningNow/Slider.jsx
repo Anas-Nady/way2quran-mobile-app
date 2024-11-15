@@ -32,7 +32,7 @@ const Slider = () => {
           recitationSlug: "hafs-an-asim",
           isTopReciter: true,
           sortBy: "-totalVisitors",
-          pageSize: 9,
+          pageSize: 6,
         });
 
         if (!res.ok) {

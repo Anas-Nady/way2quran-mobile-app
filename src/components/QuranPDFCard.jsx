@@ -1,6 +1,5 @@
 import { View, Text, TouchableOpacity, Image, Linking } from "react-native";
 import getName from "../helpers/getName";
-import { getCurrentLanguage } from "../services/i18next";
 import { ScreenDimensionsContext } from "../contexts/ScreenDimensionsProvider";
 import { useContext } from "react";
 

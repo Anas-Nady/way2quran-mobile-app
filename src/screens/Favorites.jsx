@@ -59,7 +59,7 @@ export default function Favorites() {
       >
         <GoBackButton />
         <HeadingScreen headingTxt={translate("favorites")} />
-        <View className="">
+        <View>
           {bookmarks.map((bookmark) => (
             <View
               key={bookmark.reciterSlug}

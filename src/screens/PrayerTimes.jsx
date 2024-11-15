@@ -96,14 +96,14 @@ const PrayerTimes = () => {
     <ScrollView className="flex-1 w-full p-4 py-5 bg-gray-800">
       <GoBackButton />
       <View className="justify-center flex-1 my-5 ">
-        <Text className="mb-2 text-3xl font-bold text-center text-white">
+        <Text className="mb-2 text-4xl font-bold text-center text-white">
           {translate("title")}
         </Text>
         <Text className="px-2 py-1 mb-6 text-lg text-center text-green-500 rounded-xl">
           {address}
         </Text>
 
-        <View className="p-6 mb-2 border border-gray-500 rounded-lg">
+        <View className="p-6 mb-2 border border-green-500 rounded-lg">
           {Object.entries(prayerTimes).map(([prayer, time]) => {
             const isPassed =
               prayer !== nextPrayer && getNextPrayer(prayerTimes) !== prayer;
@@ -113,13 +113,13 @@ const PrayerTimes = () => {
                 key={prayer}
                 className={`${flexDirection()} items-center justify-between gap-3 border border-gray-500 px-3 py-1 pb-4 my-3 rounded
                   ${isPassed ? "bg-gray-700" : ""} 
-                  ${prayer === nextPrayer ? "bg-gray-800" : ""}`}
+                  ${prayer === nextPrayer ? "bg-green-500 border-none" : ""}`}
               >
                 <View>
                   <Text
                     className={`text-xl font-semibold ${
                       prayer === nextPrayer
-                        ? "font-bold text-green-500"
+                        ? "font-bold text-white"
                         : "text-gray-300"
                     }`}
                   >
@@ -130,7 +130,7 @@ const PrayerTimes = () => {
                 <Text
                   className={`text-xl font-semibold ${
                     prayer === nextPrayer
-                      ? "font-bold text-green-500"
+                      ? "font-bold text-white"
                       : "text-gray-300"
                   }`}
                 >

@@ -11,7 +11,6 @@ import {
 import formatTime from "../../helpers/formatTime";
 import getName from "../../helpers/getName";
 import { flexDirection, textDirection } from "../../helpers/flexDirection";
-import { getCurrentLanguage } from "../../services/i18next";
 import truncateName from "../../helpers/getTruncatedName";
 
 const AudioPlayerModal = () => {
@@ -19,7 +18,6 @@ const AudioPlayerModal = () => {
     useAudioPlayer();
   const [currentTime, setCurrentTime] = useState(0);
   const iconColor = "white";
-  const isRTL = getCurrentLanguage() === "ar";
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -96,9 +94,8 @@ const AudioPlayerModal = () => {
       // Replay if the audio has finished or it's the first time playing
       if (currentTime === 0 || hasFinished) {
         setCurrentTime(0);
-        status = await playerState.playbackObject.playFromPositionAsync(0); // Replay from start
+        status = await playerState.playbackObject.playFromPositionAsync(0);
       } else {
-        // Resume from the current position if audio is paused but not finished
         status = await resumeAudio(playerState.playbackObject);
       }
 
@@ -165,7 +162,6 @@ const AudioPlayerModal = () => {
   if (!playerState.isModalVisible) return null;
 
   const closeModal = async () => {
-    // Stop playback if it's playing
     if (playerState.soundObject && playerState.isPlaying) {
       await playerState.playbackObject.stopAsync();
     }
@@ -221,11 +217,7 @@ const AudioPlayerModal = () => {
       {playerState?.isModalExpanded ? (
         // Expanded view content
         <>
-          <View
-            className={`${flexDirection()} items-center justify-end ${
-              isRTL ? "mr-6" : "mx-4"
-            }`}
-          >
+          <View className={`${flexDirection()} items-center justify-end mx-4`}>
             <View className={`${flexDirection()} items-center flex-1 gap-2`}>
               <Image
                 source={{ uri: playerState.reciter?.photo }}
@@ -233,17 +225,18 @@ const AudioPlayerModal = () => {
               />
               <View className="flex-1">
                 <Text
-                  className={`${textDirection()} text-[20px] font-bold text-gray-100`}
+                  className={`${textDirection()} text-[18px] font-bold text-gray-100`}
                 >
-                  {getName(playerState.reciter)}
+                  {truncateName(getName(playerState.reciter))}
                 </Text>
                 <Text
                   className={`mt-1 text-[16px] text-gray-100 line-clamp-1 ${textDirection()}`}
                 >
-                  {getName(playerState.currentAudio?.surahInfo)} -{" "}
+                  {getName(playerState.currentAudio?.surahInfo)}
+                  {/* -{" "}
                   {truncateName(
                     getName(playerState?.recitation?.recitationInfo)
-                  )}
+                  )} */}
                 </Text>
               </View>
             </View>
@@ -254,7 +247,7 @@ const AudioPlayerModal = () => {
               width: "100%",
               height: 25,
               marginVertical: 10,
-              transform: isRTL ? [{ scaleX: -1 }] : [],
+              transform: [{ scaleX: -1 }],
             }}
             minimumValue={0}
             maximumValue={playerState.soundObject?.durationMillis / 1000 || 0}
@@ -327,20 +320,18 @@ const AudioPlayerModal = () => {
               <Text
                 className={`${textDirection()} text-[16px] font-bold text-gray-100`}
               >
-                {getName(playerState.reciter)}
+                {truncateName(getName(playerState.reciter), 23)}
               </Text>
               <Text className={`text-[14px] text-gray-100 ${textDirection()}`}>
-                {getName(playerState.currentAudio?.surahInfo)} -{" "}
+                {getName(playerState.currentAudio?.surahInfo)}
+                {/* -{" "}
                 {truncateName(
                   getName(playerState?.recitation?.recitationInfo),
                   15
-                )}
+                )} */}
               </Text>
             </View>
-            <TouchableOpacity
-              onPress={togglePlayPause}
-              className={`${isRTL ? '"mr-4"' : "ml-4"}`}
-            >
+            <TouchableOpacity onPress={togglePlayPause} className={`ml-4`}>
               <Ionicons
                 name={playerState.isPlaying ? "pause-circle" : "play-circle"}
                 size={33}

@@ -31,10 +31,12 @@ const PlaylistCard = ({
     return [...data.surahs].sort((a, b) => a.surahNumber - b.surahNumber);
   }, [data.surahs]);
 
+  const { playerState } = useAudioPlayer();
+
   return (
     <TouchableOpacity
       onPress={onToggleSurahs}
-      className="mb-4 bg-gray-700 border border-gray-500 rounded-xl"
+      className="w-full mb-4 bg-gray-700 border border-gray-500 rounded-xl"
     >
       <View className={`${flexDirection()} items-center justify-between p-4`}>
         <Image
@@ -50,7 +52,10 @@ const PlaylistCard = ({
           </Text>
         </View>
         <View className="flex-row-reverse items-center justify-between gap-3">
-          <TouchableOpacity onPress={() => onPlay(data)}>
+          <TouchableOpacity
+            disabled={playerState.playLoading}
+            onPress={() => onPlay(data)}
+          >
             <Ionicons
               name={
                 isCurrentlyPlaying
@@ -94,7 +99,9 @@ export default function Playlist() {
   const [expandedPlaylist, setExpandedPlaylist] = useState(null);
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const translate = useTranslate("PlaylistScreen");
-  const { screenWidth: width } = useContext(ScreenDimensionsContext);
+  const { screenWidth: width, screenHeight: height } = useContext(
+    ScreenDimensionsContext
+  );
 
   const { playerState, setPlayerState } = useAudioPlayer();
 
@@ -120,6 +127,7 @@ export default function Playlist() {
   };
 
   const handlePlayPlaylist = async (playlist) => {
+    setPlayerState((prev) => ({ ...prev, playLoading: true }));
     if (playlist.surahs?.length === 0) {
       // Handle empty playlist
       return;
@@ -149,6 +157,7 @@ export default function Playlist() {
 
       setPlayerState({
         ...playerState,
+        playLoading: false,
         playbackObject: playback,
         currentAudio: startSurah,
         soundObject: status,
@@ -168,6 +177,7 @@ export default function Playlist() {
       const status = await pauseAudio(playerState.playbackObject);
       setPlayerState({
         ...playerState,
+        playLoading: false,
         soundObject: status,
         isPlaying: false,
       });
@@ -179,6 +189,7 @@ export default function Playlist() {
       const status = await resumeAudio(playerState.playbackObject);
       setPlayerState({
         ...playerState,
+        playLoading: false,
         soundObject: status,
         isPlaying: true,
         isModalVisible: true,
@@ -191,6 +202,7 @@ export default function Playlist() {
       );
       setPlayerState({
         ...playerState,
+        playLoading: false,
         currentAudio: startSurah,
         soundObject: status,
         reciter: playlist.reciter,
@@ -233,10 +245,10 @@ export default function Playlist() {
   };
 
   return (
-    <View style={{ width }} className="flex-1 w-full bg-gray-800">
+    <View className="flex-1 w-full bg-gray-800">
       <ScrollView
         showsVerticalScrollIndicator={false}
-        className="flex-1 w-full p-4 mx-auto"
+        className="mx-auto w-[90%] flex-1 my-4"
       >
         <GoBackButton />
         <HeadingScreen headingTxt={translate("playlists")} />
@@ -258,13 +270,13 @@ export default function Playlist() {
             <EmptyState message={translate("emptyState")} />
           )}
         </View>
-        <ConfirmationDialog
-          isVisible={isDialogVisible}
-          onConfirm={onConfirmDelete}
-          onCancel={onCancelDelete}
-          message={translate("deleteConfirmation")}
-        />
       </ScrollView>
+      <ConfirmationDialog
+        isVisible={isDialogVisible}
+        onConfirm={onConfirmDelete}
+        onCancel={onCancelDelete}
+        message={translate("deleteConfirmation")}
+      />
     </View>
   );
 }

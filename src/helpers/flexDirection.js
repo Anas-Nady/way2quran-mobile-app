@@ -1,9 +1,12 @@
 import { getCurrentLanguage } from "../services/i18next";
 
+export const currentLanguage = getCurrentLanguage();
+export const isRTL = currentLanguage === "ar";
+
 export const flexDirection = () => {
-  return getCurrentLanguage() === "ar" ? "flex-row-reverse" : "flex-row";
+  return "flex-row";
 };
 
 export const textDirection = () => {
-  return getCurrentLanguage() === "ar" ? "text-right" : "text-left";
+  return "text-left";
 };

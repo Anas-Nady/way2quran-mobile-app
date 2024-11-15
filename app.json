@@ -5,30 +5,49 @@
     "description": "استماع وتحميل تلاوات للقرآن الكريم من أنحاء العالم الإسلامي",
     "version": "1.0.0",
     "orientation": "default",
-    "icon": "./src/assets/logo.png",
+    "sdkVersion": "51.0.0",
+    "icon": "./src/assets/playstore.png",
     "scheme": "way2quran",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./src/assets/images/bg.jpg",
+      "image": "./src/assets/images/bg.png",
       "resizeMode": "contain",
       "backgroundColor": "#fff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": ["audio"]
+      },
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
+    "assetBundlePatterns": ["**/*"],
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/logo.png",
         "backgroundColor": "#374151"
       },
-      "package": "com.anasnady.way2quran"
+      "package": "com.anasnady.way2quran",
+      "permissions": ["ACCESS_FINE_LOCATION", "FOREGROUND_SERVICE"]
     },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./src/assets/images/icon.png"
-    },
-    "plugins": ["expo-router"],
+    "plugins": [
+      "expo-router",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+      ],
+      [
+        "expo-av",
+        {
+          "microphonePermission": false,
+          "backgroundMode": true
+        }
+      ]
+    ],
     "experiments": {
       "typedRoutes": true
     },

@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
     flexDirection: "row-reverse",
     justifyContent: "center",
     flexWrap: "wrap",
-    marginTop: 10,
     marginBottom: 10,
+    paddingBottom: 15,
   },
   pageButton: {
     paddingHorizontal: 10,

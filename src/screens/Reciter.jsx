@@ -143,19 +143,6 @@ const ReciterScreen = () => {
       className="flex-1 w-full p-4 mx-auto bg-slate-800"
       showsVerticalScrollIndicator={false}
     >
-      <View className={`${flexDirection()} items-center justify-between`}>
-        <GoBackButton />
-        <TouchableOpacity
-          disabled={favouriteState.loading}
-          onPress={handleFavoriteToggle}
-        >
-          <AntDesign
-            name="heart"
-            size={40}
-            color={favouriteState.isFavourite ? "#22c55e" : "#9ca3af"}
-          />
-        </TouchableOpacity>
-      </View>
       {alert && (
         <Alert
           message={alert.message}
@@ -168,61 +155,81 @@ const ReciterScreen = () => {
       ) : state.error ? (
         <Error message={state.error} />
       ) : (
-        <View className="">
-          {/* Reciter Info */}
-          <View className="flex-col items-center w-full">
-            <ReciterImg uri={state.reciter?.photo} />
-            <View className="my-2">
-              <Text className="text-3xl font-semibold text-white">
-                {getName(state.reciter)}
-              </Text>
-              {state.reciter?.isTopReciter && <TopReciterBadge />}
-              <View
-                className={`${flexDirection()} items-center justify-center gap-2 mt-2`}
-              >
-                <Ionicons name="eye-outline" size={25} color="#6B7280" />
-                <Text className="mb-1 ml-1 text-lg font-semibold text-white">
-                  {state.reciter?.totalViewers?.toLocaleString()}
+        <>
+          <View className={`${flexDirection()} items-center justify-between`}>
+            <GoBackButton />
+            <TouchableOpacity
+              disabled={favouriteState.loading}
+              onPress={handleFavoriteToggle}
+            >
+              <AntDesign
+                name="heart"
+                size={40}
+                color={favouriteState.isFavourite ? "#22c55e" : "#9ca3af"}
+              />
+            </TouchableOpacity>
+          </View>
+          <View className="reciter">
+            {/* Reciter Info */}
+            <View className="flex-col items-center w-full">
+              <ReciterImg uri={state.reciter?.photo} />
+              <View className="my-2">
+                <Text className="text-3xl font-semibold text-white">
+                  {getName(state.reciter)}
                 </Text>
+                {state.reciter?.isTopReciter && <TopReciterBadge />}
+                <View
+                  className={`${flexDirection()} items-center justify-center gap-2 mt-2`}
+                >
+                  <Ionicons name="eye-outline" size={25} color="#6B7280" />
+                  <Text className="mb-1 ml-1 text-lg font-semibold text-white">
+                    {state.reciter?.totalViewers?.toLocaleString()}
+                  </Text>
+                </View>
               </View>
             </View>
-          </View>
 
-          {/* Select Options */}
-          <SelectOptions
-            setRecitation={setSelectedRecitationSlug}
-            recitations={state.reciter?.recitations}
-            recitationName={getName(currentRecitation?.recitationInfo)}
-          />
-
-          {/* Download All Button */}
-          <TouchableOpacity
-            onPress={handleDownloadAll}
-            className="flex-row-reverse items-center justify-center p-4 mt-4 bg-gray-700 border border-gray-500 rounded-md"
-          >
-            <Text className="ml-2 text-lg font-semibold text-center text-white">
-              {translate("downloadAll")}
-            </Text>
-          </TouchableOpacity>
-
-          {/* Surahs List  */}
-          <View className="w-full">
-            {currentRecitation?.audioFiles?.map((surah, i) => (
-              <SurahCard
-                key={surah?.surahInfo?.slug}
-                surah={surah}
-                surahIndex={i}
-                recitation={currentRecitation}
-                reciter={{
-                  photo: state.reciter?.photo,
-                  arabicName: state.reciter.arabicName,
-                  englishName: state.reciter.englishName,
-                  slug: state.reciter?.slug,
-                }}
+            {/* Select Options */}
+            {state.reciter?.recitations?.length > 1 ? (
+              <SelectOptions
+                setRecitation={setSelectedRecitationSlug}
+                recitations={state.reciter?.recitations}
+                recitationName={getName(currentRecitation?.recitationInfo)}
               />
-            ))}
+            ) : (
+              <Text className="w-full p-2 mx-auto text-2xl font-semibold text-center text-gray-100 border border-gray-600 rounded">
+                {getName(currentRecitation?.recitationInfo)}
+              </Text>
+            )}
+            {/* Download All Button */}
+            <TouchableOpacity
+              onPress={handleDownloadAll}
+              className="flex-row-reverse items-center justify-center p-4 mt-4 bg-gray-700 border border-gray-500 rounded-md"
+            >
+              <Text className="ml-2 text-lg font-semibold text-center text-white">
+                {translate("downloadAll")}
+              </Text>
+            </TouchableOpacity>
+
+            {/* Surahs List  */}
+            <View className="w-full">
+              {currentRecitation?.audioFiles?.map((surah, i) => (
+                <SurahCard
+                  key={surah?.surahInfo?.slug}
+                  surah={surah}
+                  surahIndex={i}
+                  recitation={currentRecitation}
+                  reciter={{
+                    photo: state.reciter?.photo,
+                    arabicName: state.reciter.arabicName,
+                    englishName: state.reciter.englishName,
+                    slug: state.reciter?.slug,
+                  }}
+                />
+              ))}
+            </View>
           </View>
-        </View>
+        </>
       )}
     </ScrollView>
   );

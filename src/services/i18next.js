@@ -14,10 +14,6 @@ export const toggleLanguage = (locale) => {
 
 export const getCurrentLanguage = () => i18n.language;
 
-export const getDirection = () => {
-  return i18n.language === "ar" ? "right" : "left";
-};
-
 const intiInfo = {
   compatibilityJSON: "v3",
   lng: "ar",

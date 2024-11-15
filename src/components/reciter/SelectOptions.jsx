@@ -2,7 +2,6 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import getName from "../../helpers/getName";
-import { getCurrentLanguage } from "../../services/i18next";
 
 export default function SelectOptions({
   setRecitation,
@@ -18,7 +17,7 @@ export default function SelectOptions({
       marginTop: 10,
       backgroundColor: "#374151",
       // position: "relative",
-      flexDirection: getCurrentLanguage() === "ar" ? "row-reverse" : "row",
+      flexDirection: "row",
     },
     inputStyles: {
       color: "#E5E7EB",
