@@ -11,7 +11,15 @@ import {
 import formatTime from "../../helpers/formatTime";
 import getName from "../../helpers/getName";
 import { flexDirection, textDirection } from "../../helpers/flexDirection";
-import truncateName from "../../helpers/getTruncatedName";
+import { Audio } from "expo-av";
+
+const enableBackgroundAudio = async () => {
+  await Audio.setAudioModeAsync({
+    allowsRecordingIOS: false,
+    staysActiveInBackground: true,
+    playsInSilentModeIOS: true,
+  });
+};
 
 const AudioPlayerModal = () => {
   const { playerState, setPlayerState, toggleModalExpansion } =
@@ -20,6 +28,9 @@ const AudioPlayerModal = () => {
   const iconColor = "white";
 
   useEffect(() => {
+    if (playerState.isPlaying) {
+      enableBackgroundAudio();
+    }
     const interval = setInterval(() => {
       if (playerState.playbackObject && playerState.isPlaying) {
         playerState.playbackObject.getStatusAsync().then((status) => {
@@ -225,12 +236,13 @@ const AudioPlayerModal = () => {
               />
               <View className="flex-1">
                 <Text
+                  numberOfLines={1}
                   className={`${textDirection()} text-[18px] font-bold text-gray-100`}
                 >
-                  {truncateName(getName(playerState.reciter))}
+                  {getName(playerState.reciter)}
                 </Text>
                 <Text
-                  className={`mt-1 text-[16px] text-gray-100 line-clamp-1 ${textDirection()}`}
+                  className={`mt-1 text-[15px] font-semibold text-gray-100 line-clamp-1 ${textDirection()}`}
                 >
                   {getName(playerState.currentAudio?.surahInfo)}
                   {/* -{" "}
@@ -318,11 +330,14 @@ const AudioPlayerModal = () => {
             />
             <View className="flex-1 mx-1">
               <Text
+                numberOfLines={1}
                 className={`${textDirection()} text-[16px] font-bold text-gray-100`}
               >
-                {truncateName(getName(playerState.reciter), 23)}
+                {getName(playerState.reciter)}
               </Text>
-              <Text className={`text-[14px] text-gray-100 ${textDirection()}`}>
+              <Text
+                className={`text-[15px] font-semibold text-gray-100 ${textDirection()}`}
+              >
                 {getName(playerState.currentAudio?.surahInfo)}
                 {/* -{" "}
                 {truncateName(

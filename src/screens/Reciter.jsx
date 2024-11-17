@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Linking,
+  ActivityIndicator,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
@@ -30,6 +31,11 @@ const ReciterScreen = () => {
   const route = useRoute();
   const { recitationSlug, reciterSlug } = route.params || {};
   const translate = useTranslate("ReciterScreen");
+  const [state, setState] = useState({
+    reciter: {},
+    loading: true,
+    error: null,
+  });
 
   const [selectedRecitationSlug, setSelectedRecitationSlug] =
     useState(recitationSlug);
@@ -40,12 +46,7 @@ const ReciterScreen = () => {
   });
 
   const [alert, setAlert] = useState(null);
-
-  const [state, setState] = useState({
-    reciter: {},
-    loading: true,
-    error: null,
-  });
+  const [isChangingRecitation, setIsChangingRecitation] = useState(false);
 
   const currentRecitation = recitations?.find(
     (rec) => rec.recitationInfo.slug === selectedRecitationSlug
@@ -63,14 +64,20 @@ const ReciterScreen = () => {
 
         if (!res.ok) {
           const data = await res.json();
-          // do something here
           setState({ reciter: null, loading: false, error: data.message });
           return;
         }
 
         const data = await res.json();
-        setState({ reciter: data.reciter, loading: false, error: null });
-        setRecitations(data.reciter.recitations);
+        const reciterData = data.reciter || {};
+        const recitationsData = reciterData.recitations || [];
+
+        setState({ reciter: reciterData, loading: false, error: null });
+        setRecitations(recitationsData);
+
+        if (!selectedRecitationSlug && recitationsData.length > 0) {
+          setSelectedRecitationSlug(recitationsData[0]?.recitationInfo?.slug);
+        }
       } catch (error) {
         setState({ reciter: null, loading: false, error: error.message });
       }
@@ -78,7 +85,7 @@ const ReciterScreen = () => {
 
     fetchReciter();
     checkFavoriteStatus();
-  }, [reciterSlug, recitationSlug, selectedRecitationSlug]);
+  }, [reciterSlug, recitationSlug]);
 
   const checkFavoriteStatus = async () => {
     const favoriteStatus = await isBookmarkExists("Favorites", reciterSlug);
@@ -137,6 +144,16 @@ const ReciterScreen = () => {
     Linking.openURL(downloadUrl);
   };
 
+  const handleRecitationChange = (newRecitationSlug) => {
+    setIsChangingRecitation(true);
+    setSelectedRecitationSlug(newRecitationSlug);
+
+    // Simulate loading time
+    setTimeout(() => {
+      setIsChangingRecitation(false);
+    }, 100);
+  };
+
   return (
     <ScrollView
       style={{ position: "relative" }}
@@ -155,7 +172,7 @@ const ReciterScreen = () => {
       ) : state.error ? (
         <Error message={state.error} />
       ) : (
-        <>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View className={`${flexDirection()} items-center justify-between`}>
             <GoBackButton />
             <TouchableOpacity
@@ -192,7 +209,7 @@ const ReciterScreen = () => {
             {/* Select Options */}
             {state.reciter?.recitations?.length > 1 ? (
               <SelectOptions
-                setRecitation={setSelectedRecitationSlug}
+                setRecitation={handleRecitationChange}
                 recitations={state.reciter?.recitations}
                 recitationName={getName(currentRecitation?.recitationInfo)}
               />
@@ -213,23 +230,29 @@ const ReciterScreen = () => {
 
             {/* Surahs List  */}
             <View className="w-full">
-              {currentRecitation?.audioFiles?.map((surah, i) => (
-                <SurahCard
-                  key={surah?.surahInfo?.slug}
-                  surah={surah}
-                  surahIndex={i}
-                  recitation={currentRecitation}
-                  reciter={{
-                    photo: state.reciter?.photo,
-                    arabicName: state.reciter.arabicName,
-                    englishName: state.reciter.englishName,
-                    slug: state.reciter?.slug,
-                  }}
-                />
-              ))}
+              {isChangingRecitation ? (
+                <View className="flex items-center justify-center py-10">
+                  <ActivityIndicator size="large" color="#22c55e" />
+                </View>
+              ) : (
+                currentRecitation?.audioFiles?.map((surah, i) => (
+                  <SurahCard
+                    key={surah?.surahInfo?.slug}
+                    surah={surah}
+                    surahIndex={i}
+                    recitation={currentRecitation}
+                    reciter={{
+                      photo: state.reciter?.photo,
+                      arabicName: state.reciter.arabicName,
+                      englishName: state.reciter.englishName,
+                      slug: state.reciter?.slug,
+                    }}
+                  />
+                ))
+              )}
             </View>
           </View>
-        </>
+        </ScrollView>
       )}
     </ScrollView>
   );

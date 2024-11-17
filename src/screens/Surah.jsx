@@ -1,5 +1,11 @@
-import React, { useRef, useEffect } from "react";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import React, { useRef, useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Animated,
+} from "react-native";
 import surahs from "./../constants/surahs";
 import HeadingScreen from "../components/HeadingScreen";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -16,8 +22,22 @@ export default function Surah() {
   const surahNumber = parseInt(route.params?.surahNumber);
   const surahInfo = surahs[surahNumber];
 
+  // const [progress, setProgress] = useState(new Animated.Value(0)); // Added state for progress
+
   const handleScroll = async (event) => {
     const currentOffsetY = event.nativeEvent.contentOffset.y;
+    // const contentHeight = event.nativeEvent.contentSize.height;
+    // const scrollHeight = event.nativeEvent.layoutMeasurement.height;
+
+    // // Calculate progress
+    // const newProgress = currentOffsetY / (contentHeight - scrollHeight);
+
+    // // Animate progress
+    // Animated.timing(progress, {
+    //   toValue: newProgress,
+    //   duration: 100,
+    //   useNativeDriver: false,
+    // }).start();
 
     // Save the current scroll position to AsyncStorage
     try {
@@ -58,6 +78,19 @@ export default function Surah() {
 
   return (
     <>
+      {/* <View className="bg-gray-700" style={{ height: 2, width: "100%" }}>
+        <Animated.View
+          className="bg-green-500"
+          style={{
+            height: "100%",
+            width: progress.interpolate({
+              inputRange: [0, 1],
+              outputRange: ["0%", "100%"],
+            }),
+            // backgroundColor: "green",
+          }}
+        />
+      </View> */}
       <ScrollView
         ref={scrollViewRef}
         onScroll={handleScroll}

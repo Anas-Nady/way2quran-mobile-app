@@ -1,9 +1,8 @@
-export const playAudio = async (playbackObj, uri) => {
+export const playAudio = async (playbackObj, uri, notificationInfo) => {
   try {
     return await playbackObj.loadAsync({ uri }, { shouldPlay: true });
   } catch (error) {
     console.log("Error in playAudio: ", error.message);
-    throw error; // Re-throw the error so it can be caught in the calling function
   }
 };
 

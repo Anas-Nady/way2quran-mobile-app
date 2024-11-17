@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "orientation": "default",
     "sdkVersion": "51.0.0",
-    "icon": "./src/assets/playstore.png",
+    "icon": "./src/assets/images/android-icon.png",
     "scheme": "way2quran",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -26,11 +26,12 @@
     "assetBundlePatterns": ["**/*"],
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/logo.png",
+        "foregroundImage": "./src/assets/images/android-icon.png",
         "backgroundColor": "#374151"
+        // "backgroundColor": "#374151"
       },
       "package": "com.anasnady.way2quran",
-      "permissions": ["ACCESS_FINE_LOCATION", "FOREGROUND_SERVICE"]
+      "permissions": ["ACCESS_FINE_LOCATION", "FOREGROUND_SERVICE", "WAKE_LOCK"]
     },
     "plugins": [
       "expo-router",
@@ -45,6 +46,14 @@
         {
           "microphonePermission": false,
           "backgroundMode": true
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./src/assets/logo.png",
+          "color": "#fff",
+          "sounds": ["./src/assets/sounds/notification.wav"]
         }
       ]
     ],

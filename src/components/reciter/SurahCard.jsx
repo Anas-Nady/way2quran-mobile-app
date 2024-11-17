@@ -40,8 +40,13 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
     setPlayerState((prev) => ({ ...prev, playLoading: true }));
     // if there is no audio play -> create one for the first time.
     if (playerState.soundObject === null) {
+      const notificationInfo = {
+        reciterName: getName(reciter),
+        surahName: getName(surah?.surahInfo),
+      };
+
       const playback = await new Audio.Sound();
-      const status = await playAudio(playback, surah.url);
+      const status = await playAudio(playback, surah.url, notificationInfo);
 
       return setPlayerState({
         ...playerState,

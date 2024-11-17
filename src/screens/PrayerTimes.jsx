@@ -6,6 +6,11 @@ import Error from "./../components/ui/Error";
 import { useTranslate } from "./../helpers/i18nHelper.js";
 import { flexDirection } from "../helpers/flexDirection.js";
 import GoBackButton from "../components/ui/GoBackButton.jsx";
+import {
+  calculateRemainingTime,
+  getNextPrayer,
+  getPrayerTimes,
+} from "../services/prayerTimes.js";
 
 const PrayerTimes = () => {
   const translate = useTranslate("PrayerTimes");
@@ -14,50 +19,40 @@ const PrayerTimes = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [nextPrayer, setNextPrayer] = useState(null);
+  const [remainingTime, setRemainingTime] = useState(null);
 
   useEffect(() => {
-    const fetchPrayerTimes = async () => {
+    const getLocationAndPrayerTimes = async () => {
       try {
-        let { status } = await Location.requestForegroundPermissionsAsync();
+        // Request location permissions
+        const { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== "granted") {
-          setError(translate("locationPermissionError"));
+          setError(translate("locationPermissionDenied"));
           setLoading(false);
           return;
         }
 
-        let location = await Location.getCurrentPositionAsync({});
-        const { latitude, longitude } = location.coords;
+        const location = await Location.getCurrentPositionAsync({});
 
-        // Fetch address
-        const [addressResponse] = await Location.reverseGeocodeAsync({
-          latitude,
-          longitude,
+        // Get address from coordinates
+        const addressResponse = await Location.reverseGeocodeAsync({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
         });
-        if (addressResponse) {
-          const { city, country } = addressResponse;
+
+        if (addressResponse[0]) {
+          const { city, country } = addressResponse[0];
           setAddress(`${city}, ${country}`);
         }
 
-        const response = await fetch(
-          `https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=2`
-        );
+        // Get prayer times using location
+        const times = await getPrayerTimes({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        });
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          setError(errorData?.data || translate("fetchError"));
-          setLoading(false);
-          return;
-        }
-
-        const data = await response.json();
-        const mainPrayers = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
-        const filteredTimes = Object.fromEntries(
-          Object.entries(data.data.timings).filter(([key]) =>
-            mainPrayers.includes(key)
-          )
-        );
-        setPrayerTimes(filteredTimes);
-        setNextPrayer(getNextPrayer(filteredTimes));
+        setPrayerTimes(times);
+        setNextPrayer(getNextPrayer(times));
         setLoading(false);
       } catch (error) {
         setError(error?.message || translate("fetchError"));
@@ -65,24 +60,19 @@ const PrayerTimes = () => {
       }
     };
 
-    fetchPrayerTimes();
+    getLocationAndPrayerTimes();
   }, []);
 
-  const getNextPrayer = (times) => {
-    const now = new Date();
-    const currentTime = now.getHours() * 60 + now.getMinutes();
+  useEffect(() => {
+    if (!prayerTimes || !nextPrayer) return;
 
-    for (const [prayer, time] of Object.entries(times)) {
-      const [hours, minutes] = time.split(":").map(Number);
-      const prayerTime = hours * 60 + minutes;
+    const timer = setInterval(() => {
+      const remaining = calculateRemainingTime(prayerTimes, nextPrayer);
+      setRemainingTime(remaining);
+    }, 1000);
 
-      if (prayerTime > currentTime) {
-        return prayer;
-      }
-    }
-
-    return Object.keys(times)[0]; // Return first prayer if all prayers have passed
-  };
+    return () => clearInterval(timer);
+  }, [prayerTimes, nextPrayer]);
 
   if (loading) {
     return <Loading />;
@@ -93,43 +83,57 @@ const PrayerTimes = () => {
   }
 
   return (
-    <ScrollView className="flex-1 w-full p-4 py-5 bg-gray-800">
+    <ScrollView className="flex-1 w-full p-4 py-3 bg-gray-800">
       <GoBackButton />
-      <View className="justify-center flex-1 my-5 ">
-        <Text className="mb-2 text-4xl font-bold text-center text-white">
+      <View className="justify-center flex-1 my-2">
+        <Text className="text-4xl font-bold text-center text-white ">
           {translate("title")}
         </Text>
-        <Text className="px-2 py-1 mb-6 text-lg text-center text-green-500 rounded-xl">
+        <Text className="px-2 py-1 text-lg text-center text-green-500 rounded-xl">
           {address}
         </Text>
+
+        {remainingTime && (
+          <Text className="px-2 py-1 mb-6 text-lg text-center text-white rounded-xl">
+            {translate("remainingTime")}{" "}
+            {translate(nextPrayer.name.toLowerCase())}: {remainingTime.hours}:
+            {String(remainingTime.minutes).padStart(2, "0")}:
+            {String(remainingTime.seconds).padStart(2, "0")}
+          </Text>
+        )}
 
         <View className="p-6 mb-2 border border-green-500 rounded-lg">
           {Object.entries(prayerTimes).map(([prayer, time]) => {
             const isPassed =
-              prayer !== nextPrayer && getNextPrayer(prayerTimes) !== prayer;
+              prayer !== nextPrayer?.name.toLowerCase() &&
+              getNextPrayer(prayerTimes)?.name.toLowerCase() !== prayer;
 
             return (
               <View
                 key={prayer}
                 className={`${flexDirection()} items-center justify-between gap-3 border border-gray-500 px-3 py-1 pb-4 my-3 rounded
                   ${isPassed ? "bg-gray-700" : ""} 
-                  ${prayer === nextPrayer ? "bg-green-500 border-none" : ""}`}
+                  ${
+                    prayer === nextPrayer?.name.toLowerCase()
+                      ? "bg-green-500 border-none"
+                      : ""
+                  }`}
               >
                 <View>
                   <Text
                     className={`text-xl font-semibold ${
-                      prayer === nextPrayer
+                      prayer === nextPrayer?.name.toLowerCase()
                         ? "font-bold text-white"
                         : "text-gray-300"
                     }`}
                   >
-                    {translate(`${prayer.toLowerCase()}`)}
+                    {translate(prayer)}
                     {":"}
                   </Text>
                 </View>
                 <Text
                   className={`text-xl font-semibold ${
-                    prayer === nextPrayer
+                    prayer === nextPrayer?.name.toLowerCase()
                       ? "font-bold text-white"
                       : "text-gray-300"
                   }`}

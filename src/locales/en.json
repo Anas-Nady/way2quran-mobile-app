@@ -129,6 +129,7 @@
     "maghrib": "Maghrib",
     "isha": "Isha",
     "locationPermissionError": "Location permission not granted",
-    "fetchError": "Failed to fetch prayer times"
+    "fetchError": "Failed to fetch prayer times",
+    "remainingTime": "Time remaining until"
   }
 }

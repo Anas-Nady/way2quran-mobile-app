@@ -1,23 +1,20 @@
-import { useEffect, useState } from "react";
+// import { useEffect } from "react";
 import { AudioPlayerProvider } from "../contexts/AudioPlayerContext";
-import NoInternetScreen from "../screens/No-Internet";
 import RootScreenContent from "../screens/root";
-import NetInfo from "@react-native-community/netinfo";
+// import { registerBackgroundNextPrayerTask } from "../services/backgroundTasks";
 
 function App() {
-  const [isConnected, setIsConnected] = useState(true);
-
-  useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener((state) => {
-      setIsConnected(state.isConnected);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  if (!isConnected) {
-    return <NoInternetScreen />;
-  }
+  // useEffect(() => {
+  //   // Register background task
+  //   const setupBackgroundTask = async () => {
+  //     try {
+  //       await registerBackgroundNextPrayerTask();
+  //     } catch (err) {
+  //       console.error("Failed to setup background task:", err);
+  //     }
+  //   };
+  //   setupBackgroundTask();
+  // }, []);
 
   return (
     <AudioPlayerProvider>

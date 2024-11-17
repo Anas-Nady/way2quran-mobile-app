@@ -129,6 +129,7 @@
     "maghrib": "المغرب",
     "isha": "العشاء",
     "locationPermissionError": "لم يتم منح إذن الموقع",
-    "fetchError": "فشل في جلب مواقيت الصلاة"
+    "fetchError": "فشل في جلب مواقيت الصلاة",
+    "remainingTime": "باقي من الوقت لصلاة"
   }
 }

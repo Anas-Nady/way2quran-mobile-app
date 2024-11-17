@@ -26,7 +26,7 @@ const Footer = () => {
               key={link.href}
               onPress={() => navigation.navigate(link.href)}
             >
-              <Text className="text-xl font-medium text-secondary">
+              <Text className="text-[19px] font-[600] text-secondary">
                 {link.title}
               </Text>
             </TouchableOpacity>
