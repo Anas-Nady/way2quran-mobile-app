@@ -73,7 +73,7 @@ export const AudioPlayerProvider = ({ children }) => {
               url: nextSurah.url,
               title: getName(nextSurah.surahInfo),
               artist: getName(playerState.reciter),
-              artwork: playerState.reciter?.photo,
+              artwork: playerState.reciter.photo,
               genre: "Quran",
             });
 
@@ -98,7 +98,7 @@ export const AudioPlayerProvider = ({ children }) => {
               url: prevSurah.url,
               title: getName(prevSurah.surahInfo),
               artist: getName(playerState.reciter),
-              artwork: playerState.reciter?.photo,
+              artwork: playerState.reciter.photo,
               genre: "Quran",
             });
 
@@ -132,7 +132,7 @@ export const AudioPlayerProvider = ({ children }) => {
             url: nextSurah.url,
             title: getName(nextSurah.surahInfo),
             artist: getName(playerState.reciter),
-            artwork: playerState.reciter?.photo,
+            artwork: playerState.reciter.photo,
             genre: "Quran",
           });
 

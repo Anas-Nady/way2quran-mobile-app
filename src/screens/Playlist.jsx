@@ -143,7 +143,7 @@ export default function Playlist() {
           url: sortedSurahs[0].url,
           title: getName(sortedSurahs[0].surahInfo),
           artist: getName(playlist.reciter),
-          artwork: playlist.reciter?.photo,
+          artwork: playlist.reciter.photo,
           genre: "Quran",
         });
 
@@ -191,7 +191,7 @@ export default function Playlist() {
         url: sortedSurahs[0].url,
         title: getName(sortedSurahs[0].surahInfo),
         artist: getName(playlist.reciter),
-        artwork: playlist.reciter?.photo,
+        artwork: playlist.reciter.photo,
         genre: "Quran",
       });
 

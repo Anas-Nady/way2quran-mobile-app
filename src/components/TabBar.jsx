@@ -1,8 +1,9 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslate } from "../helpers/i18nHelper.js";
 import { flexDirection } from "../helpers/flexDirection.js";
+import prayerTimesIcon from "./../assets/images/mosqueIcon.png";
 
 export default function TabBar() {
   const navigation = useNavigation();
@@ -25,11 +26,6 @@ export default function TabBar() {
       routeName: "Mushaf",
       icon: "menu-book",
     },
-    {
-      label: translate("prayerTimes"),
-      routeName: "PrayerTimes",
-      icon: "mosque",
-    },
   ];
 
   return (
@@ -48,6 +44,14 @@ export default function TabBar() {
             </View>
           </TouchableOpacity>
         ))}
+        <TouchableOpacity onPress={() => navigation.navigate("PrayerTimes")}>
+          <View className="flex-col items-center justify-center">
+            <Image source={prayerTimesIcon} width={24} />
+            <Text className="font-semibold text-green-500 text-md">
+              {translate("prayerTimes")}
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
