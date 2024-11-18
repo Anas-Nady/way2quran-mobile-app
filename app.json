@@ -3,7 +3,7 @@
     "name": "الطريق إلي القرآن",
     "slug": "way2quran",
     "description": "استماع وتحميل تلاوات للقرآن الكريم من أنحاء العالم الإسلامي",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "default",
     "sdkVersion": "51.0.0",
     "icon": "./src/assets/images/android-icon.png",
@@ -39,14 +39,6 @@
         "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
-        }
-      ],
-      [
-        "expo-notifications",
-        {
-          "icon": "./src/assets/logo.png",
-          "color": "#fff",
-          "sounds": ["./src/assets/sounds/notification.wav"]
         }
       ]
     ],

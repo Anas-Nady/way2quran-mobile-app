@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { getReciters } from "../../services/api";
 import { ScreenDimensionsContext } from "../../contexts/ScreenDimensionsProvider";
 import Error from "./../ui/Error";
+import { ActivityIndicator } from "react-native";
 
 const Slider = () => {
   const { screenWidth: width } = useContext(ScreenDimensionsContext);
@@ -87,6 +88,8 @@ const Slider = () => {
 
       {state.error ? (
         <Error message={state.error} />
+      ) : state.loading ? (
+        <ActivityIndicator size="large" color="#22c55e" />
       ) : (
         <ScrollView
           ref={scrollViewRef}

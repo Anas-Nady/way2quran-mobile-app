@@ -10,7 +10,7 @@ const SlideItem = ({ item }) => {
 
   const navigation = useNavigation();
 
-  const itemWidth = width > 768 ? width / 3 : width; // show 3 reciters for a tablet screen.
+  const itemWidth = width > 768 ? width / 3 : width;
 
   return (
     <View

@@ -9,6 +9,7 @@ module.exports = {
       fontFamily: {
         arabic: ["Noto-Kufi-Arabic", "serif"],
         english: ["Public-Sans", "sans-serif"],
+        quran: ["Noto-Naskh-Arabic", "serif"],
         verses: ["Quran-verse", "sans-serif"],
       },
       colors: {

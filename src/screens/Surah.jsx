@@ -13,7 +13,7 @@ import { AntDesign } from "@expo/vector-icons";
 import GoBackButton from "../components/ui/GoBackButton";
 import getName from "../helpers/getName";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { currentLanguage } from "../helpers/flexDirection";
+import { currentLanguage, flexDirection } from "../helpers/flexDirection";
 
 export default function Surah() {
   const route = useRoute();
@@ -22,22 +22,22 @@ export default function Surah() {
   const surahNumber = parseInt(route.params?.surahNumber);
   const surahInfo = surahs[surahNumber];
 
-  // const [progress, setProgress] = useState(new Animated.Value(0)); // Added state for progress
+  const [progress, setProgress] = useState(new Animated.Value(0)); // Added state for progress
 
   const handleScroll = async (event) => {
     const currentOffsetY = event.nativeEvent.contentOffset.y;
-    // const contentHeight = event.nativeEvent.contentSize.height;
-    // const scrollHeight = event.nativeEvent.layoutMeasurement.height;
+    const contentHeight = event.nativeEvent.contentSize.height;
+    const scrollHeight = event.nativeEvent.layoutMeasurement.height;
 
-    // // Calculate progress
-    // const newProgress = currentOffsetY / (contentHeight - scrollHeight);
+    // Calculate progress
+    const newProgress = currentOffsetY / (contentHeight - scrollHeight);
 
-    // // Animate progress
-    // Animated.timing(progress, {
-    //   toValue: newProgress,
-    //   duration: 100,
-    //   useNativeDriver: false,
-    // }).start();
+    // Animate progress
+    Animated.timing(progress, {
+      toValue: newProgress,
+      duration: 100,
+      useNativeDriver: false,
+    }).start();
 
     // Save the current scroll position to AsyncStorage
     try {
@@ -78,9 +78,12 @@ export default function Surah() {
 
   return (
     <>
-      {/* <View className="bg-gray-700" style={{ height: 2, width: "100%" }}>
+      <View
+        className={`${flexDirection()} bg-gray-700`}
+        style={{ height: 2, width: "100%" }}
+      >
         <Animated.View
-          className="bg-green-500"
+          className="bg-green-400"
           style={{
             height: "100%",
             width: progress.interpolate({
@@ -90,7 +93,7 @@ export default function Surah() {
             // backgroundColor: "green",
           }}
         />
-      </View> */}
+      </View>
       <ScrollView
         ref={scrollViewRef}
         onScroll={handleScroll}
@@ -108,8 +111,8 @@ export default function Surah() {
               key={verse.id}
               className="w-full py-3 my-2 border-b-2 border-gray-700"
             >
-              <Text className="mb-1 text-2xl font-medium leading-normal text-gray-300 font-arabic">
-                {verse.textArabic}{" "}
+              <Text className="mb-1 text-2xl font-medium leading-normal text-gray-300 font-quran">
+                {verse.textArabic}
                 <Text
                   style={{ fontFamily: "Quran-verse" }}
                   className={`font-verses text-5xl`}
