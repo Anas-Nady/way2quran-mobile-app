@@ -3,166 +3,93 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
 import { useAudioPlayer } from "../../contexts/AudioPlayerContext";
-import {
-  pauseAudio,
-  playNextAudio,
-  resumeAudio,
-} from "../../helpers/audioPlayerHelper";
 import formatTime from "../../helpers/formatTime";
 import getName from "../../helpers/getName";
 import { flexDirection, textDirection } from "../../helpers/flexDirection";
-import { Audio } from "expo-av";
+import TrackPlayer, { State, useProgress } from "react-native-track-player";
 
-const enableBackgroundAudio = async () => {
-  await Audio.setAudioModeAsync({
-    allowsRecordingIOS: false,
-    staysActiveInBackground: true,
-    playsInSilentModeIOS: true,
-  });
-};
-
+// AudioPlayerModal component
 const AudioPlayerModal = () => {
   const { playerState, setPlayerState, toggleModalExpansion } =
     useAudioPlayer();
-  const [currentTime, setCurrentTime] = useState(0);
+  const { position, duration } = useProgress();
   const iconColor = "white";
 
-  useEffect(() => {
-    if (playerState.isPlaying) {
-      enableBackgroundAudio();
-    }
-    const interval = setInterval(() => {
-      if (playerState.playbackObject && playerState.isPlaying) {
-        playerState.playbackObject.getStatusAsync().then((status) => {
-          setCurrentTime(status.positionMillis / 1000);
-        });
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [playerState.playbackObject, playerState.isPlaying]);
-
-  useEffect(() => {
-    if (playerState.playbackObject) {
-      const subscription = playerState.playbackObject.setOnPlaybackStatusUpdate(
-        async (status) => {
-          if (status.didJustFinish) {
-            setCurrentTime(0);
-
-            if (playerState.isAutoPlayEnabled) {
-              const isLastSurah =
-                playerState.surahIndex ===
-                playerState.recitation.audioFiles.length - 1;
-              if (isLastSurah) {
-                // Stop playback if it's the last surah
-                setPlayerState((prevState) => ({
-                  ...prevState,
-                  isPlaying: false,
-                }));
-              } else {
-                await handleNextSurah();
-              }
-            } else {
-              setPlayerState((prevState) => ({
-                ...prevState,
-                isPlaying: false,
-              }));
-            }
-          }
-        }
-      );
-
-      return () => {
-        if (subscription) {
-          subscription.remove();
-        }
-      };
-    }
-  }, [
-    playerState.playbackObject,
-    setPlayerState,
-    playerState.isAutoPlayEnabled,
-    playerState.surahIndex,
-  ]);
-
+  // Toggle play/pause functionality
   const togglePlayPause = useCallback(async () => {
     try {
-      if (playerState.isPlaying) {
-        // Pause the audio if it's currently playing
-        const status = await pauseAudio(playerState.playbackObject);
-        setPlayerState((prevState) => ({
-          ...prevState,
+      const playerState = await TrackPlayer.getState();
+
+      if (playerState === State.Playing) {
+        await TrackPlayer.pause();
+        setPlayerState((prev) => ({
+          ...prev,
           isPlaying: false,
-          soundObject: status,
         }));
-        return;
-      }
-
-      let status;
-      const hasFinished =
-        currentTime === playerState.soundObject?.durationMillis / 1000;
-
-      // Replay if the audio has finished or it's the first time playing
-      if (currentTime === 0 || hasFinished) {
-        setCurrentTime(0);
-        status = await playerState.playbackObject.playFromPositionAsync(0);
       } else {
-        status = await resumeAudio(playerState.playbackObject);
+        await TrackPlayer.play();
+        setPlayerState((prev) => ({
+          ...prev,
+          isPlaying: true,
+        }));
       }
-
-      // Update state after play/resume
-      setPlayerState((prevState) => ({
-        ...prevState,
-        isPlaying: true,
-        soundObject: status,
-      }));
     } catch (error) {
-      console.error("Error handling audio playback:", error);
+      console.error("Error handling playback:", error);
     }
-  }, [currentTime, playerState, setPlayerState]);
+  }, [setPlayerState]);
 
+  // Handle seeking the audio
   const handleSeek = async (value) => {
-    if (playerState.playbackObject) {
-      await playerState.playbackObject.setPositionAsync(value * 1000);
-      setCurrentTime(value);
-    }
+    await TrackPlayer.seekTo(value);
   };
 
+  // Handle playing the next surah
   const handleNextSurah = async () => {
     if (playerState.surahIndex < playerState.recitation.audioFiles.length - 1) {
-      setCurrentTime(0);
       const nextIdx = playerState.surahIndex + 1;
       const nextSurah = playerState?.recitation?.audioFiles[nextIdx];
 
-      const status = await playNextAudio(
-        playerState.playbackObject,
-        nextSurah.url
-      );
+      await TrackPlayer.reset();
+      await TrackPlayer.add({
+        id: nextSurah.surahNumber.toString(),
+        url: nextSurah.url,
+        title: getName(nextSurah.surahInfo),
+        artist: getName(playerState.reciter),
+        artwork: playerState.reciter?.photo,
+        genre: "Quran",
+      });
 
-      setPlayerState((prevState) => ({
-        ...prevState,
+      await TrackPlayer.play();
+
+      setPlayerState((prev) => ({
+        ...prev,
         currentAudio: nextSurah,
         isPlaying: true,
         surahIndex: nextIdx,
-        soundObject: status,
-      }));
-    } else {
-      // If it's the last surah, stop playback
-      setPlayerState((prevState) => ({
-        ...prevState,
-        isPlaying: false,
       }));
     }
   };
 
+  // Handle playing the previous surah
   const handlePrevSurah = async () => {
     if (playerState.surahIndex > 0) {
-      setCurrentTime(0);
       const prevIdx = playerState.surahIndex - 1;
       const prevSurah = playerState?.recitation?.audioFiles[prevIdx];
-      await playNextAudio(playerState.playbackObject, prevSurah.url);
-      setPlayerState((prevState) => ({
-        ...prevState,
+
+      await TrackPlayer.reset();
+      await TrackPlayer.add({
+        id: prevSurah.surahNumber.toString(),
+        url: prevSurah.url,
+        title: getName(prevSurah.surahInfo),
+        artist: getName(playerState.reciter),
+        artwork: playerState.reciter?.photo,
+        genre: "Quran",
+      });
+
+      await TrackPlayer.play();
+
+      setPlayerState((prev) => ({
+        ...prev,
         currentAudio: prevSurah,
         isPlaying: true,
         surahIndex: prevIdx,
@@ -170,19 +97,12 @@ const AudioPlayerModal = () => {
     }
   };
 
-  if (!playerState.isModalVisible) return null;
-
+  // Close modal and stop playback
   const closeModal = async () => {
-    if (playerState.soundObject && playerState.isPlaying) {
-      await playerState.playbackObject.stopAsync();
-    }
-
-    // Reset player state
+    await TrackPlayer.reset();
     setPlayerState((prev) => ({
       ...prev,
       audioFiles: [],
-      playbackObject: null,
-      soundObject: null,
       currentAudio: null,
       isPlaying: false,
       surahIndex: -1,
@@ -195,12 +115,15 @@ const AudioPlayerModal = () => {
     }));
   };
 
+  if (!playerState.isModalVisible) return null;
+
   return (
     <View
       className={`bg-gray-800 border border-gray-500 border-b-0 rounded-t-3xl ${
         playerState?.isModalExpanded ? "h-[165px] p-5" : "h-[80px] p-2"
       }`}
     >
+      {/* Modal Toggle Button */}
       <TouchableOpacity
         className={`absolute z-10 rounded-full top-2 left-3`}
         onPress={toggleModalExpansion}
@@ -216,6 +139,7 @@ const AudioPlayerModal = () => {
         />
       </TouchableOpacity>
 
+      {/* Close Modal Button */}
       {playerState?.isModalExpanded && (
         <TouchableOpacity
           className={`absolute z-10 top-2 right-3`}
@@ -225,9 +149,11 @@ const AudioPlayerModal = () => {
         </TouchableOpacity>
       )}
 
+      {/* Expanded View */}
       {playerState?.isModalExpanded ? (
         // Expanded view content
         <>
+          {/* Audio Details */}
           <View className={`${flexDirection()} items-center justify-end mx-4`}>
             <View className={`${flexDirection()} items-center flex-1 gap-2`}>
               <Image
@@ -245,15 +171,12 @@ const AudioPlayerModal = () => {
                   className={`mt-1 text-[15px] font-semibold text-gray-100 line-clamp-1 ${textDirection()}`}
                 >
                   {getName(playerState.currentAudio?.surahInfo)}
-                  {/* -{" "}
-                  {truncateName(
-                    getName(playerState?.recitation?.recitationInfo)
-                  )} */}
                 </Text>
               </View>
             </View>
           </View>
 
+          {/* Slider */}
           <Slider
             style={{
               width: "100%",
@@ -262,22 +185,21 @@ const AudioPlayerModal = () => {
               transform: [{ scaleX: -1 }],
             }}
             minimumValue={0}
-            maximumValue={playerState.soundObject?.durationMillis / 1000 || 0}
-            value={currentTime}
+            maximumValue={duration}
+            value={position}
             onSlidingComplete={handleSeek}
             minimumTrackTintColor="#22c55e"
             maximumTrackTintColor="#9ca3af"
             thumbTintColor="#22c55e"
           />
 
+          {/* Playback Controls */}
           <View
             className={`${flexDirection()} items-center justify-between w-full`}
           >
-            <Text className="text-sm text-white">
-              {formatTime(currentTime)}
-            </Text>
+            <Text className="text-sm text-white">{formatTime(position)}</Text>
             <View
-              className={`flex-row-reverse items-center justify-center gap-2`}
+              className={`${flexDirection()} items-center justify-center gap-2`}
             >
               <TouchableOpacity
                 onPress={handlePrevSurah}
@@ -315,9 +237,7 @@ const AudioPlayerModal = () => {
                 />
               </TouchableOpacity>
             </View>
-            <Text className="text-sm text-white">
-              {formatTime(playerState.soundObject?.durationMillis / 1000 || 0)}
-            </Text>
+            <Text className="text-sm text-white">{formatTime(duration)}</Text>
           </View>
         </>
       ) : (
@@ -339,11 +259,6 @@ const AudioPlayerModal = () => {
                 className={`text-[15px] font-semibold text-gray-100 ${textDirection()}`}
               >
                 {getName(playerState.currentAudio?.surahInfo)}
-                {/* -{" "}
-                {truncateName(
-                  getName(playerState?.recitation?.recitationInfo),
-                  15
-                )} */}
               </Text>
             </View>
             <TouchableOpacity onPress={togglePlayPause} className={`ml-4`}>

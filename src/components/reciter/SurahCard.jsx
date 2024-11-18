@@ -2,13 +2,6 @@ import { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, Linking } from "react-native";
 import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { Audio } from "expo-av";
-import {
-  pauseAudio,
-  playAudio,
-  playNextAudio,
-  resumeAudio,
-} from "../../helpers/audioPlayerHelper";
 import { useAudioPlayer } from "../../contexts/AudioPlayerContext";
 import {
   isBookmarkExists,
@@ -19,6 +12,7 @@ import Alert from "../ui/Alert";
 import { useTranslate } from "../../helpers/i18nHelper";
 import getName from "./../../helpers/getName.js";
 import { flexDirection } from "../../helpers/flexDirection.js";
+import TrackPlayer, { State } from "react-native-track-player";
 
 const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -38,80 +32,93 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
 
   const togglePlayback = async (surah) => {
     setPlayerState((prev) => ({ ...prev, playLoading: true }));
-    // if there is no audio play -> create one for the first time.
-    if (playerState.soundObject === null) {
+
+    try {
       const notificationInfo = {
         reciterName: getName(reciter),
         surahName: getName(surah?.surahInfo),
       };
 
-      const playback = await new Audio.Sound();
-      const status = await playAudio(playback, surah.url, notificationInfo);
+      // Check if this is the current track
+      const currentTrack = await TrackPlayer.getCurrentTrack();
+      const playerState = await TrackPlayer.getState();
 
-      return setPlayerState({
-        ...playerState,
+      // If no track is loaded yet
+      if (currentTrack === null) {
+        await TrackPlayer.reset();
+        await TrackPlayer.add({
+          id: surah.surahNumber.toString(),
+          url: surah.url,
+          title: notificationInfo.surahName,
+          artist: notificationInfo.reciterName,
+          artwork: reciter.photo,
+          genre: "Quran",
+        });
+
+        await TrackPlayer.play();
+
+        setPlayerState((prev) => ({
+          ...prev,
+          playLoading: false,
+          currentAudio: surah,
+          isPlaying: true,
+          isModalVisible: true,
+          isAutoPlayEnabled: false,
+          surahIndex,
+          reciter,
+          recitation,
+        }));
+        return;
+      }
+
+      // If this is the current track - handle play/pause
+      if (currentTrack === surah.surahNumber.toString()) {
+        if (playerState === State.Playing) {
+          await TrackPlayer.pause();
+          setPlayerState((prev) => ({
+            ...prev,
+            playLoading: false,
+            isPlaying: false,
+          }));
+        } else {
+          await TrackPlayer.play();
+          setPlayerState((prev) => ({
+            ...prev,
+            playLoading: false,
+            isPlaying: true,
+            isModalVisible: true,
+          }));
+        }
+        return;
+      }
+
+      // If switching to a different track
+      await TrackPlayer.reset();
+      await TrackPlayer.add({
+        id: surah.surahNumber.toString(),
+        url: surah.url,
+        title: notificationInfo.surahName,
+        artist: notificationInfo.reciterName,
+        artwork: reciter.photo,
+        genre: "Quran",
+      });
+
+      await TrackPlayer.play();
+
+      setPlayerState((prev) => ({
+        ...prev,
         playLoading: false,
-        playbackObject: playback,
         currentAudio: surah,
-        soundObject: status,
         isPlaying: true,
         isModalVisible: true,
         isAutoPlayEnabled: false,
         surahIndex,
         reciter,
         recitation,
-      });
-    }
-
-    // pause
-    if (
-      playerState.soundObject.isLoaded &&
-      playerState.soundObject.isPlaying &&
-      playerState.currentAudio?.surahNumber === surah.surahNumber
-    ) {
-      const status = await pauseAudio(playerState.playbackObject);
-      return setPlayerState({
-        ...playerState,
-        playLoading: false,
-        soundObject: status,
-        isPlaying: false,
-      });
-    }
-
-    // resume
-    if (
-      playerState.soundObject.isLoaded &&
-      !playerState.soundObject.isPlaying &&
-      playerState.currentAudio?.surahNumber === surah.surahNumber
-    ) {
-      const status = await resumeAudio(playerState.playbackObject);
-      return setPlayerState({
-        ...playerState,
-        playLoading: false,
-        soundObject: status,
-        isPlaying: true,
-        isModalVisible: true,
-      });
-    }
-
-    // switching to another Surah - Stop current audio before playing new one
-    if (
-      playerState.soundObject.isLoaded &&
-      playerState.currentAudio?.surahNumber !== surah.surahNumber
-    ) {
-      const status = await playNextAudio(playerState.playbackObject, surah.url);
-      return setPlayerState({
-        ...playerState,
-        playLoading: false,
-        currentAudio: surah,
-        soundObject: status,
-        isPlaying: true,
-        isModalVisible: true,
-        isAutoPlayEnabled: false,
-        surahIndex,
-        reciter,
-        recitation,
-      });
+      }));
+    } catch (error) {
+      console.error("Error playing track:", error);
+      setPlayerState((prev) => ({ ...prev, playLoading: false }));
     }
   };
 
@@ -221,7 +228,7 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
         >
           <View
             style={{ transform: [{ rotate: "45deg" }] }}
-            className={`${flexDirection()} items-center justify-center mr-2.5 w-9 h-9 bg-green-600`}
+            className={`${flexDirection()} items-center justify-center mx-2.5 w-9 h-9 bg-green-600`}
           >
             <Text
               style={{ transform: [{ rotate: "-45deg" }] }}

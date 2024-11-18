@@ -6,18 +6,11 @@ import GoBackButton from "../components/ui/GoBackButton";
 import { getAllBookmarks, removeBookmark } from "../helpers/bookmarkHandlers";
 import EmptyState from "../components/ui/EmptyState";
 import { useAudioPlayer } from "../contexts/AudioPlayerContext";
-import {
-  pauseAudio,
-  playAudio,
-  playNextAudio,
-  resumeAudio,
-} from "../helpers/audioPlayerHelper";
-import { Audio } from "expo-av";
+import TrackPlayer, { State } from "react-native-track-player/lib/src";
 import ConfirmationDialog from "../components/ui/ConfirmationDialog";
 import { useTranslate } from "../helpers/i18nHelper";
 import getName from "../helpers/getName";
 import { flexDirection } from "../helpers/flexDirection";
-import { ScreenDimensionsContext } from "../contexts/ScreenDimensionsProvider";
 
 const PlaylistCard = ({
   data,
@@ -99,9 +92,6 @@ export default function Playlist() {
   const [expandedPlaylist, setExpandedPlaylist] = useState(null);
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const translate = useTranslate("PlaylistScreen");
-  const { screenWidth: width, screenHeight: height } = useContext(
-    ScreenDimensionsContext
-  );
 
   const { playerState, setPlayerState } = useAudioPlayer();
 
@@ -128,99 +118,108 @@ export default function Playlist() {
 
   const handlePlayPlaylist = async (playlist) => {
     setPlayerState((prev) => ({ ...prev, playLoading: true }));
-    if (playlist.surahs?.length === 0) {
-      // Handle empty playlist
-      return;
-    }
 
-    // Sort the surahs by surahNumber
-    const sortedSurahs = [...playlist.surahs].sort(
-      (a, b) => a.surahNumber - b.surahNumber
-    );
+    try {
+      if (playlist.surahs?.length === 0) {
+        return;
+      }
 
-    let startSurah, startIndex;
-
-    // Check if we're resuming the same playlist
-    if (playerState.recitation?.audioFiles === sortedSurahs) {
-      // Resume from the current surah
-      startIndex = playerState.surahIndex;
-      startSurah = sortedSurahs[startIndex];
-    } else {
-      // Start from the beginning of the new playlist
-      startIndex = 0;
-      startSurah = sortedSurahs[0];
-    }
-
-    if (playerState.soundObject === null) {
-      const playback = await new Audio.Sound();
-      const status = await playAudio(playback, startSurah.url);
-
-      setPlayerState({
-        ...playerState,
-        playLoading: false,
-        playbackObject: playback,
-        currentAudio: startSurah,
-        soundObject: status,
-        reciter: playlist.reciter,
-        recitation: { ...playlist.recitation, audioFiles: sortedSurahs },
-        surah: startSurah,
-        surahIndex: startIndex,
-        isAutoPlayEnabled: true,
-        isPlaying: true,
-        isModalVisible: true,
-      });
-    } else if (
-      playerState.isPlaying &&
-      playerState.recitation?.audioFiles === sortedSurahs
-    ) {
-      // Pause current playlist
-      const status = await pauseAudio(playerState.playbackObject);
-      setPlayerState({
-        ...playerState,
-        playLoading: false,
-        soundObject: status,
-        isPlaying: false,
-      });
-    } else if (
-      !playerState.isPlaying &&
-      playerState.recitation?.audioFiles === sortedSurahs
-    ) {
-      // Resume current playlist
-      const status = await resumeAudio(playerState.playbackObject);
-      setPlayerState({
-        ...playerState,
-        playLoading: false,
-        soundObject: status,
-        isPlaying: true,
-        isModalVisible: true,
-      });
-    } else {
-      // Switch to new playlist
-      const status = await playNextAudio(
-        playerState.playbackObject,
-        startSurah.url
+      // Sort the surahs by surahNumber
+      const sortedSurahs = [...playlist.surahs].sort(
+        (a, b) => a.surahNumber - b.surahNumber
       );
-      setPlayerState({
-        ...playerState,
+
+      // Check if we're currently playing this playlist
+      const currentTrack = await TrackPlayer.getCurrentTrack();
+      const playerState = await TrackPlayer.getState();
+      const isCurrentPlaylist =
+        playerState.recitation?.audioFiles === sortedSurahs;
+
+      // If no track is playing, start new playlist
+      if (currentTrack === null) {
+        await TrackPlayer.reset();
+        await TrackPlayer.add({
+          id: sortedSurahs[0].surahNumber.toString(),
+          url: sortedSurahs[0].url,
+          title: getName(sortedSurahs[0].surahInfo),
+          artist: getName(playlist.reciter),
+          artwork: playlist.reciter?.photo,
+          genre: "Quran",
+        });
+
+        await TrackPlayer.play();
+
+        setPlayerState((prev) => ({
+          ...prev,
+          playLoading: false,
+          currentAudio: sortedSurahs[0],
+          reciter: playlist.reciter,
+          recitation: { ...playlist.recitation, audioFiles: sortedSurahs },
+          surahIndex: 0,
+          isAutoPlayEnabled: true,
+          isPlaying: true,
+          isModalVisible: true,
+        }));
+        return;
+      }
+
+      // If this playlist is already playing - handle play/pause
+      if (isCurrentPlaylist) {
+        if (playerState === State.Playing) {
+          await TrackPlayer.pause();
+          setPlayerState((prev) => ({
+            ...prev,
+            playLoading: false,
+            isPlaying: false,
+          }));
+        } else {
+          await TrackPlayer.play();
+          setPlayerState((prev) => ({
+            ...prev,
+            playLoading: false,
+            isPlaying: true,
+            isModalVisible: true,
+          }));
+        }
+        return;
+      }
+
+      // Switch to new playlist
+      await TrackPlayer.reset();
+      await TrackPlayer.add({
+        id: sortedSurahs[0].surahNumber.toString(),
+        url: sortedSurahs[0].url,
+        title: getName(sortedSurahs[0].surahInfo),
+        artist: getName(playlist.reciter),
+        artwork: playlist.reciter?.photo,
+        genre: "Quran",
+      });
+
+      await TrackPlayer.play();
+
+      setPlayerState((prev) => ({
+        ...prev,
         playLoading: false,
-        currentAudio: startSurah,
-        soundObject: status,
+        currentAudio: sortedSurahs[0],
         reciter: playlist.reciter,
         recitation: { ...playlist.recitation, audioFiles: sortedSurahs },
-        surah: startSurah,
+        surahIndex: 0,
         isAutoPlayEnabled: true,
-        surahIndex: startIndex,
         isPlaying: true,
         isModalVisible: true,
-      });
+      }));
+    } catch (error) {
+      console.error("Error playing playlist:", error);
+      setPlayerState((prev) => ({ ...prev, playLoading: false }));
     }
   };
 
   const isCurrentlyPlaying = (playlist) => {
     return (
       playerState.isPlaying &&
-      `${playerState.reciter.slug}_${playerState.recitation?.slug}` ===
-        playlist.key
+      playerState.reciter?.slug === playlist.reciter.slug &&
+      playerState.recitation?.recitationInfo?.slug ===
+        playlist.recitation.recitationInfo.slug
     );
   };
 

@@ -1,45 +1,23 @@
-import axios from "axios";
 import { format } from "date-fns";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const PRAYER_TIMES_CACHE_KEY = "prayer_times_cache";
-const PRAYER_TIMES_DATE_KEY = "prayer_times_date";
-
-async function isCacheValid() {
-  const cachedDate = await AsyncStorage.getItem(PRAYER_TIMES_DATE_KEY);
-  const today = format(new Date(), "yyyy-MM-dd");
-
-  return cachedDate === today;
-}
 
 export async function getPrayerTimes({ latitude, longitude }) {
   try {
-    const cacheValid = await isCacheValid();
-
-    if (cacheValid) {
-      // If cache is valid, return the cached prayer times
-      const cachedPrayerTimes = await AsyncStorage.getItem(
-        PRAYER_TIMES_CACHE_KEY
-      );
-      return JSON.parse(cachedPrayerTimes);
-    }
-
     const today = format(new Date(), "yyyy-MM-dd");
 
-    // Fetch prayer times from API
-    const response = await axios.get(
-      `http://api.aladhan.com/v1/timings/${today}`,
-      {
-        params: {
-          latitude,
-          longitude,
-          method: 2, // Islamic Society of North America (ISNA)
-          school: 0, // Shafi (standard)
-        },
-      }
+    const response = await fetch(
+      `https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=2`
     );
 
-    const timings = response.data.data.timings;
+    if (!response.ok) {
+      const errorData = await response.json();
+      setError(errorData?.data || translate("fetchError"));
+      setLoading(false);
+      return;
+    }
+
+    const data = await response.json();
+
+    const timings = data.data.timings;
 
     // Format the times to HH:mm format
     const prayerTimes = {
@@ -49,13 +27,6 @@ export async function getPrayerTimes({ latitude, longitude }) {
       maghrib: format(new Date(`${today} ${timings.Maghrib}`), "HH:mm"),
       isha: format(new Date(`${today} ${timings.Isha}`), "HH:mm"),
     };
-
-    // Cache the fetched prayer times and the current date
-    await AsyncStorage.setItem(
-      PRAYER_TIMES_CACHE_KEY,
-      JSON.stringify(prayerTimes)
-    );
-    await AsyncStorage.setItem(PRAYER_TIMES_DATE_KEY, today);
 
     return prayerTimes;
   } catch (error) {

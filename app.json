@@ -42,13 +42,6 @@
         }
       ],
       [
-        "expo-av",
-        {
-          "microphonePermission": false,
-          "backgroundMode": true
-        }
-      ],
-      [
         "expo-notifications",
         {
           "icon": "./src/assets/logo.png",

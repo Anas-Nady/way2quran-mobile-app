@@ -1,20 +1,24 @@
-// import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import TrackPlayer from "react-native-track-player";
 import { AudioPlayerProvider } from "../contexts/AudioPlayerContext";
 import RootScreenContent from "../screens/root";
-// import { registerBackgroundNextPrayerTask } from "../services/backgroundTasks";
+import trackPlayer, { setupTrackPlayer } from "../services/trackPlayer";
 
 function App() {
-  // useEffect(() => {
-  //   // Register background task
-  //   const setupBackgroundTask = async () => {
-  //     try {
-  //       await registerBackgroundNextPrayerTask();
-  //     } catch (err) {
-  //       console.error("Failed to setup background task:", err);
-  //     }
-  //   };
-  //   setupBackgroundTask();
-  // }, []);
+  const [isPlayerReady, setIsPlayerReady] = useState(false);
+
+  useEffect(() => {
+    const initializeTrackPlayer = async () => {
+      const setup = await setupTrackPlayer();
+      setIsPlayerReady(setup);
+    };
+
+    initializeTrackPlayer();
+  }, []);
+
+  if (!isPlayerReady) {
+    return null;
+  }
 
   return (
     <AudioPlayerProvider>
@@ -22,5 +26,8 @@ function App() {
     </AudioPlayerProvider>
   );
 }
+
+// Register the playback service outside the component
+TrackPlayer.registerPlaybackService(() => trackPlayer);
 
 export default App;
