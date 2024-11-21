@@ -2,7 +2,7 @@ import { Text, View } from "react-native";
 
 const HeadingScreen = ({ headingTxt, extraStyles = "" }) => {
   return (
-    <View className={`${extraStyles} w-full mx-auto my-3 `}>
+    <View className={`${extraStyles} w-full mx-auto mb-3 mt-4`}>
       <Text className="text-[40px] font-bold text-center text-green-500">
         {headingTxt}
       </Text>

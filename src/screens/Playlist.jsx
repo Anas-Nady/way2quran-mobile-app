@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useMemo, useContext } from "react";
-import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
+import React, { useEffect, useState, useMemo } from "react";
+import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import HeadingScreen from "./../components/HeadingScreen";
 import GoBackButton from "../components/ui/GoBackButton";
@@ -24,12 +24,19 @@ const PlaylistCard = ({
     return [...data.surahs].sort((a, b) => a.surahNumber - b.surahNumber);
   }, [data.surahs]);
 
+  const renderSurah = ({ item }) => (
+    <Text className="flex-grow p-1 mx-1 font-semibold text-center border border-gray-500 rounded text-md text-gray-50">
+      {getName(item?.surahInfo)}
+    </Text>
+  );
+
   const { playerState } = useAudioPlayer();
 
+  const numColumns = 4;
   return (
     <TouchableOpacity
       onPress={onToggleSurahs}
-      className="w-full mb-4 bg-gray-700 border border-gray-500 rounded-xl"
+      className="w-[95%] mx-auto mb-4 bg-gray-700 border border-gray-500 rounded-xl"
     >
       <View className={`${flexDirection()} items-center justify-between p-4`}>
         <Image
@@ -70,15 +77,17 @@ const PlaylistCard = ({
           <Text className="p-1 px-2 mx-auto -mt-3 font-bold text-white border border-gray-500 rounded-full text-md">
             {sortedSurahs.length}
           </Text>
-          <View className={`${flexDirection()} flex-wrap gap-2 p-4`}>
-            {sortedSurahs.map((surah) => (
-              <Text
-                key={surah?.surahNumber}
-                className="flex-grow p-1 font-semibold text-center border border-gray-500 rounded text-md text-gray-50"
-              >
-                {getName(surah?.surahInfo)}
-              </Text>
-            ))}
+          <View className={`p-4`}>
+            <FlatList
+              data={sortedSurahs}
+              renderItem={renderSurah}
+              keyExtractor={(item) => item?.surahNumber.toString()}
+              numColumns={numColumns}
+              scrollEnabled={false}
+              contentContainerStyle={{ flexGrow: 1 }}
+              showsVerticalScrollIndicator={false}
+              style={{ flex: 1, gap: 10 }}
+            />
           </View>
         </View>
       )}
@@ -146,6 +155,9 @@ export default function Playlist() {
           artwork: playlist.reciter.photo,
           genre: "Quran",
         });
+        await TrackPlayer.updateNowPlayingMetadata({
+          artwork: playerState.reciter.photo,
+        });
 
         await TrackPlayer.play();
 
@@ -194,7 +206,9 @@ export default function Playlist() {
         artwork: playlist.reciter.photo,
         genre: "Quran",
       });
-
+      await TrackPlayer.updateNowPlayingMetadata({
+        artwork: playerState.reciter.photo,
+      });
       await TrackPlayer.play();
 
       setPlayerState((prev) => ({
@@ -243,33 +257,43 @@ export default function Playlist() {
     setPlaylistToDelete(null);
   };
 
-  return (
-    <View className="flex-1 w-full bg-gray-800">
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        className="mx-auto w-[90%] flex-1 my-4"
-      >
+  const renderPlaylistItem = ({ item: data }) => (
+    <PlaylistCard
+      data={data}
+      expanded={expandedPlaylist === data.key}
+      onToggleSurahs={() => handleToggleSurahs(data.key)}
+      onDelete={() => handleDelete(data)}
+      onPlay={handlePlayPlaylist}
+      isCurrentlyPlaying={isCurrentlyPlaying(data)}
+      reciter={data.reciter}
+      recitation={data.recitation}
+    />
+  );
+
+  const ListEmptyComponent = () => (
+    <EmptyState message={translate("emptyState")} />
+  );
+
+  const renderHeader = () => {
+    return (
+      <View>
         <GoBackButton />
         <HeadingScreen headingTxt={translate("playlists")} />
-        <View>
-          {playlists?.map((data) => (
-            <PlaylistCard
-              key={data.key}
-              data={data}
-              expanded={expandedPlaylist === data.key} // only expand the selected one
-              onToggleSurahs={() => handleToggleSurahs(data.key)}
-              onDelete={() => handleDelete(data)}
-              onPlay={handlePlayPlaylist}
-              isCurrentlyPlaying={isCurrentlyPlaying(data)}
-              reciter={data.reciter}
-              recitation={data.recitation}
-            />
-          ))}
-          {playlists.length === 0 && (
-            <EmptyState message={translate("emptyState")} />
-          )}
-        </View>
-      </ScrollView>
+      </View>
+    );
+  };
+
+  return (
+    <View className="flex-1 w-full mx-auto bg-gray-800">
+      <FlatList
+        data={playlists}
+        renderItem={renderPlaylistItem}
+        ListHeaderComponent={renderHeader}
+        keyExtractor={(item) => item.key}
+        contentContainerStyle={{ flexGrow: 1, backgroundColor: "#1f2937" }}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={ListEmptyComponent}
+      />
       <ConfirmationDialog
         isVisible={isDialogVisible}
         onConfirm={onConfirmDelete}

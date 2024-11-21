@@ -17,21 +17,29 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": ["audio"]
+        "UIBackgroundModes": [
+          "audio"
+        ]
       },
       "config": {
         "usesNonExemptEncryption": false
-      }
+      },
+      "bundleIdentifier": "com.anasnady.way2quran"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/android-icon.png",
         "backgroundColor": "#374151"
-        // "backgroundColor": "#374151"
       },
       "package": "com.anasnady.way2quran",
-      "permissions": ["ACCESS_FINE_LOCATION", "FOREGROUND_SERVICE", "WAKE_LOCK"]
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "FOREGROUND_SERVICE",
+        "WAKE_LOCK"
+      ]
     },
     "plugins": [
       "expo-router",

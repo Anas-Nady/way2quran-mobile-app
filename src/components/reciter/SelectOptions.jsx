@@ -13,10 +13,10 @@ export default function SelectOptions({
   const selectListStyles = {
     boxStyles: {
       borderColor: "#4B5563",
+      flex: 1,
       borderRadius: 8,
-      marginTop: 10,
       backgroundColor: "#374151",
-      // position: "relative",
+      position: "relative",
       flexDirection: "row",
     },
     inputStyles: {
@@ -27,13 +27,13 @@ export default function SelectOptions({
     dropdownStyles: {
       borderColor: "#4B5563",
       backgroundColor: "#1F2937",
-      position: "absolute",
-      zIndex: 9,
+      position: "relative",
       width: "100%",
-      top: 50,
     },
     dropdownItemStyles: {
       paddingVertical: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: "#4B5563",
     },
     dropdownTextStyles: {
       color: "#E5E7EB",
@@ -48,7 +48,7 @@ export default function SelectOptions({
   }));
 
   return (
-    <View className="mx-auto mb-2 w-[70%]">
+    <View className="mx-auto mb-2 w-[80%]">
       <SelectList
         setSelected={(val) => setRecitation(val)}
         data={recitationOptions}

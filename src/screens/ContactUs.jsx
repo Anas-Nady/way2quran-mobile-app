@@ -18,9 +18,15 @@ export default function ContactUs() {
     <KeyboardAvoidingView
       behavior="padding"
       keyboardVerticalOffset={keyboardVerticalOffset}
-      className="flex-1"
+      style={{ flex: 1 }}
     >
-      <ScrollView className="w-full p-4 bg-slate-800">
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        showsVerticalScrollIndicator={false}
+        className="w-full p-4 bg-slate-800"
+        nestedScrollEnabled={true}
+        style={{ flex: 1 }}
+      >
         <GoBackButton />
         <HeadingScreen headingTxt={translate("contactTitle")} />
         <View className="w-full p-4 mx-auto">

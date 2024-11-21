@@ -8,8 +8,9 @@ import Header from "../components/navbar/Header";
 import TabBar from "../components/TabBar";
 import AudioPlayerModal from "../components/reciter/AudioPlayerModal";
 import { AppNavigator } from "../navigationConfig";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { currentLanguage } from "../helpers/flexDirection";
+import SplashScreen from "../screens/SplashScreen";
 
 function getPlayerModalHeight(playerState) {
   if (playerState.isModalVisible) {
@@ -24,8 +25,15 @@ function getPlayerModalHeight(playerState) {
 
 function Layout({ playerState }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [splashScreenLoaded, setSplashScreenLoaded] = useState(true);
   const tabsHeight = 55;
   const playerModalHeight = getPlayerModalHeight(playerState);
+
+  useEffect(() => {
+    setInterval(() => {
+      setSplashScreenLoaded(false);
+    }, 3500);
+  }, [splashScreenLoaded]);
 
   const toggleMenu = useCallback(() => {
     setIsMenuOpen((prev) => !prev);
@@ -36,44 +44,53 @@ function Layout({ playerState }) {
   }, []);
 
   return (
-    <TouchableWithoutFeedback onPress={closeMenu}>
-      <SafeAreaView
-        className={`${
-          currentLanguage === "ar" ? "font-arabic" : "font-english"
-        }  flex-1 bg-gray-800`}
-        style={{ position: "relative" }}
-      >
-        <StatusBar backgroundColor="#22c55e" barStyle="light-content" />
-        <View
-          style={{
-            flex: 1,
-            marginBottom: tabsHeight + playerModalHeight,
-          }}
-        >
-          <Header isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
-          <AppNavigator />
-        </View>
+    <SafeAreaView
+      className={`${
+        currentLanguage === "ar" ? "font-arabic" : "font-english"
+      } flex-1 bg-gray-800`}
+    >
+      <StatusBar backgroundColor="#22c55e" barStyle="light-content" />
 
-        {/* Audio Player Modal */}
-        <View
-          style={{
-            position: "absolute",
-            bottom: 55,
-            left: 0,
-            right: 0,
-            zIndex: 1000,
-          }}
-          className="w-full"
-        >
-          <AudioPlayerModal />
-        </View>
+      {splashScreenLoaded ? (
+        <SplashScreen />
+      ) : (
+        <TouchableWithoutFeedback onPress={closeMenu}>
+          <View style={{ flex: 1 }}>
+            <Header isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
+            <View
+              style={{
+                flex: 1,
+                marginBottom: playerModalHeight + tabsHeight,
+                paddingBottom: 5,
+              }}
+            >
+              <AppNavigator />
+            </View>
 
-        {/* Tab Bar */}
-        <View style={{ position: "absolute", bottom: 1, left: 0, right: 0 }}>
-          <TabBar />
-        </View>
-      </SafeAreaView>
-    </TouchableWithoutFeedback>
+            {/* Audio Player Modal */}
+            <View
+              style={{
+                position: "absolute",
+                bottom: tabsHeight + 5,
+                left: 0,
+                right: 0,
+                zIndex: 200,
+              }}
+              className="w-full"
+            >
+              <AudioPlayerModal />
+            </View>
+
+            {/* Tab Bar */}
+            <View
+              style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+            >
+              <TabBar />
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      )}
+    </SafeAreaView>
   );
 }
 

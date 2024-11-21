@@ -46,7 +46,7 @@ const listQuranPdf = [
     img: `${IMAGE_BASE_URL}/shubah.webp`,
   },
   {
-    arabicName: "مصحف الدوري عن الكسائي",
+    arabicName: "الدوري عن الكسائي",
     englishName: "Duri Quran",
     slug: "duri-quran",
     id: 25,
@@ -54,7 +54,7 @@ const listQuranPdf = [
     img: `${IMAGE_BASE_URL}/duri.jpg`,
   },
   {
-    arabicName: "مصحف السوسي عن أبي عمرو",
+    arabicName: "السوسي عن أبي عمرو",
     englishName: "Susi Quran",
     slug: "susi-quran",
     id: 26,
@@ -62,7 +62,7 @@ const listQuranPdf = [
     img: `${IMAGE_BASE_URL}/susi.jpg`,
   },
   {
-    arabicName: "مصحف البزي عن ابن كثير",
+    arabicName: "البزي عن ابن كثير",
     englishName: "Al-Bazzi Quran",
     slug: "al-bazzi-quran",
     id: 27,

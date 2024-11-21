@@ -1,4 +1,4 @@
-import { Animated, Text, View, ScrollView } from "react-native";
+import { Animated, Text, View, FlatList } from "react-native";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import SlideItem from "./SlideItem";
 import Pagination from "./Pagination";
@@ -7,6 +7,7 @@ import { getReciters } from "../../services/api";
 import { ScreenDimensionsContext } from "../../contexts/ScreenDimensionsProvider";
 import Error from "./../ui/Error";
 import { ActivityIndicator } from "react-native";
+import { VirtualizedList } from "react-native";
 
 const Slider = () => {
   const { screenWidth: width } = useContext(ScreenDimensionsContext);
@@ -18,7 +19,7 @@ const Slider = () => {
     error: null,
   });
   const scrollX = useRef(new Animated.Value(0)).current;
-  const scrollViewRef = useRef(null);
+  const flatListRef = useRef(null);
   const { t } = useTranslation();
 
   const numItems = width > 768 ? 3 : 1;
@@ -62,8 +63,8 @@ const Slider = () => {
       // Move to the next slide
       setIndex((prevIndex) => {
         const nextIndex = (prevIndex + 1) % state.slides.length;
-        scrollViewRef.current?.scrollTo({
-          x: nextIndex * itemWidth,
+        flatListRef.current?.scrollToIndex({
+          index: nextIndex,
           animated: true,
         });
         return nextIndex;
@@ -73,12 +74,21 @@ const Slider = () => {
     return () => {
       clearInterval(interval);
     };
-  }, [state.slides.length, itemWidth]);
+  }, [state.slides.length]);
 
-  const handleOnScroll = (event) => {
-    const { contentOffset } = event.nativeEvent;
-    scrollX.setValue(contentOffset.x);
-  };
+  const handleOnScroll = Animated.event(
+    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+    { useNativeDriver: false }
+  );
+
+  const getItem = (data, index) => data[index];
+  const getItemCount = (data) => data.length;
+
+  const renderItem = ({ item }) => (
+    <View style={{ width: itemWidth }}>
+      <MemoizedSlideItem item={item} />
+    </View>
+  );
 
   return (
     <View className="py-5 mx-auto my-5" style={{ width }}>
@@ -91,28 +101,27 @@ const Slider = () => {
       ) : state.loading ? (
         <ActivityIndicator size="large" color="#22c55e" />
       ) : (
-        <ScrollView
-          ref={scrollViewRef}
+        <VirtualizedList
+          ref={flatListRef}
+          data={state.slides}
           horizontal
+          keyExtractor={(item) => item.slug}
+          renderItem={renderItem}
           snapToAlignment="center"
           showsHorizontalScrollIndicator={false}
           onScroll={handleOnScroll}
-          scrollEventThrottle={20}
-          pagingEnabled
-          style={{ width }}
-        >
-          {state.slides?.map((item) => (
-            <View key={item.slug} style={{ width: itemWidth }}>
-              <MemoizedSlideItem item={item} />
-            </View>
-          ))}
-        </ScrollView>
+          initialNumToRender={3}
+          scrollEventThrottle={16}
+          getItem={getItem}
+          getItemCount={getItemCount}
+        />
       )}
-      <Pagination data={state.slides} scrollX={scrollX} />
+      <MemoizedPagination data={state.slides} scrollX={scrollX} />
     </View>
   );
 };
 
 export default Slider;
 
-const MemoizedSlideItem = React.memo(SlideItem);
+const MemoizedSlideItem = SlideItem;
+const MemoizedPagination = Pagination;

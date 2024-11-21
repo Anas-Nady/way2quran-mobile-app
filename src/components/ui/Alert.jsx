@@ -43,10 +43,11 @@ const Alert = ({ message, type = "success", duration = 2500, onClose }) => {
         opacity: fadeAnim,
         position: "absolute",
         top: 0,
-        left: width * 0.1,
+        left: width * 0.1, // 10% space from the left side
+        right: width * 0.1, // 10% space from the right side
         zIndex: 100,
-        transform: [{ translateX: -(width * 0.1) }],
-        width: width * 0.9,
+        transform: [{ translateX: 0 }],
+        width: width * 0.8,
         margin: "auto",
       }}
     >

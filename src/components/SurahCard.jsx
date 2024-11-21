@@ -2,19 +2,13 @@ import { useNavigation } from "@react-navigation/native";
 import { View, Text, TouchableOpacity } from "react-native";
 import getName from "../helpers/getName";
 import { flexDirection } from "../helpers/flexDirection";
-import { useContext } from "react";
-import { ScreenDimensionsContext } from "../contexts/ScreenDimensionsProvider";
+import React from "react";
 
-export default function SurahCard({ surah }) {
+const SurahCard = ({ surah }) => {
   const navigation = useNavigation();
 
-  const { screenWidth: width } = useContext(ScreenDimensionsContext);
-
   return (
-    <View
-      style={{ width: width * 0.85 }}
-      className="px-3 py-4 mx-auto mb-2 border border-gray-600 rounded surah-card"
-    >
+    <View className="px-3 py-4 mx-auto w-[90%] mb-2 border border-gray-600 rounded surah-card">
       <TouchableOpacity
         onPress={() =>
           navigation.navigate("Surah", {
@@ -44,4 +38,6 @@ export default function SurahCard({ surah }) {
       </TouchableOpacity>
     </View>
   );
-}
+};
+
+export default React.memo(SurahCard);

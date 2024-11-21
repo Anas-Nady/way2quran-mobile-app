@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { View, ScrollView } from "react-native";
+import { useContext, useEffect, useState } from "react";
+import { View, FlatList } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import recitations from "../constants/recitations";
 import HeadingScreen from "../components/HeadingScreen";
@@ -12,9 +12,11 @@ import { getReciters } from "../services/api";
 import Error from "../components/ui/Error";
 import getRecitationType from "./../helpers/getRecitationType";
 import getName from "../helpers/getName";
-import { flexDirection } from "../helpers/flexDirection";
+import { ScreenDimensionsContext } from "../contexts/ScreenDimensionsProvider";
 
 export default function Reciters() {
+  const { screenWidth: width } = useContext(ScreenDimensionsContext);
+
   const route = useRoute();
   const { recitationSlug } = route.params;
   const navigation = useNavigation();
@@ -62,49 +64,68 @@ export default function Reciters() {
     setCurrentPage(page);
   };
 
-  return (
-    <>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        className="flex-1 w-full p-4 mx-auto bg-gray-800"
-      >
-        <GoBackButton />
-        {state.loading ? (
-          <Loading />
-        ) : state.error ? (
-          <Error message={state.error} />
-        ) : (
-          <>
-            <HeadingScreen headingTxt={getName(recitation)} />
+  const renderReciter = ({ item: reciter }) => (
+    <ReciterCard
+      key={reciter.slug}
+      reciter={reciter}
+      handleNavigateClick={() =>
+        navigation.navigate("Reciter", {
+          reciterSlug: reciter.slug,
+          recitationSlug: getRecitationType(recitationSlug),
+        })
+      }
+    />
+  );
 
-            <View
-              className={`${flexDirection()} flex-wrap items-center justify-center py-7`}
-            >
-              {state.reciters?.length > 0 ? (
-                state.reciters?.map((reciter) => (
-                  <ReciterCard
-                    key={reciter.slug}
-                    reciter={reciter}
-                    handleNavigateClick={() =>
-                      navigation.navigate("Reciter", {
-                        reciterSlug: reciter.slug,
-                        recitationSlug: getRecitationType(recitationSlug),
-                      })
-                    }
-                  />
-                ))
-              ) : (
-                <NotFoundResults />
-              )}
-            </View>
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
-          </>
-        )}
-      </ScrollView>
-    </>
+  const ListEmptyComponent = () => <NotFoundResults />;
+
+  const ListHeaderComponent = () => (
+    <View>
+      <GoBackButton />
+      <HeadingScreen headingTxt={getName(recitation)} />
+    </View>
+  );
+
+  const ListFooterComponent = () => (
+    <Pagination
+      currentPage={currentPage}
+      totalPages={totalPages}
+      onPageChange={handlePageChange}
+    />
+  );
+  const numColumns = width > 600 ? 4 : 2;
+
+  return (
+    <View className="flex-1 w-full bg-gray-800">
+      {state.loading ? (
+        <Loading />
+      ) : state.error ? (
+        <Error message={state.error} />
+      ) : (
+        <FlatList
+          nestedScrollEnabled={true}
+          style={{ flexGrow: 1, backgroundColor: "#1a1a1a" }}
+          data={state.reciters}
+          renderItem={renderReciter}
+          keyExtractor={(item) => item.slug}
+          ListHeaderComponent={ListHeaderComponent}
+          ListFooterComponent={ListFooterComponent}
+          ListEmptyComponent={ListEmptyComponent}
+          contentContainerStyle={{
+            flexGrow: 1,
+            backgroundColor: "#1f2937", // bg-gray-800
+          }}
+          numColumns={numColumns}
+          key={numColumns}
+          showsVerticalScrollIndicator={false}
+          columnWrapperStyle={{
+            justifyContent: "space-between",
+            alignItems: "center",
+            paddingVertical: 14,
+            padding: 20,
+          }}
+        />
+      )}
+    </View>
   );
 }

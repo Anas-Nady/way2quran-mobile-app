@@ -1,16 +1,14 @@
-import { View, ScrollView } from "react-native";
-import Welcome from "../components/Welcome";
 import Footer from "../components/Footer";
-import Slider from "../components/listeningNow/Slider";
+import Welcome from "../components/Welcome";
+import { View } from "react-native";
 
 export default function HomeScreen() {
   return (
-    <View className="flex-1 w-full bg-gray-800">
-      <ScrollView className="flex-1" style={{ position: "relative" }}>
+    <View style={{ flex: 1 }}>
+      <View className="flex-1 w-full bg-gray-800">
         <Welcome />
-        <Slider />
         <Footer />
-      </ScrollView>
+      </View>
     </View>
   );
 }

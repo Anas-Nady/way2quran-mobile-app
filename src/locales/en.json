@@ -29,7 +29,9 @@
     "fullQuran": "Full Holy Quran",
     "frequentRecitations": "Frequent Recitations",
     "variousRecitations": "Various Recitations",
-    "downloadQuran": "Download Quran"
+    "downloadQuran": "Download Quran",
+    "aboutTitle": "About Us",
+    "contactTitle": "Contact Us"
   },
 
   "fullQuran": "Full Holy Quran",
@@ -77,16 +79,10 @@
   },
 
   "Footer": {
+    "downloadQuran": "Download Quran",
     "aboutTitle": "About Us",
     "contactTitle": "Contact Us",
     "allRightsReserved": "Copyright reserved"
-  },
-
-  "NoInternetScreen": {
-    "title": "No Internet Connection",
-    "message": "Please check your internet connection and try again.",
-    "retryButton": "Retry",
-    "retryingButton": "Retrying..."
   },
 
   "TabBar": {

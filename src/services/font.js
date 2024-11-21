@@ -16,11 +16,6 @@ export function useCustomFonts() {
   useEffect(() => {
     if (error) throw error;
 
-    const hideSplashScreen = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 3000)); // 3000ms = 3 seconds
-    };
-
-    hideSplashScreen();
     if (fontsLoaded) SplashScreen.hideAsync();
   }, [fontsLoaded, error]);
 

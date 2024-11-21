@@ -76,6 +76,9 @@ export const AudioPlayerProvider = ({ children }) => {
               artwork: playerState.reciter.photo,
               genre: "Quran",
             });
+            await TrackPlayer.updateNowPlayingMetadata({
+              artwork: playerState.reciter.photo,
+            });
 
             await TrackPlayer.play();
             setPlayerState((prev) => ({
@@ -100,6 +103,9 @@ export const AudioPlayerProvider = ({ children }) => {
               artist: getName(playerState.reciter),
               artwork: playerState.reciter.photo,
               genre: "Quran",
+            });
+            await TrackPlayer.updateNowPlayingMetadata({
+              artwork: playerState.reciter.photo,
             });
 
             await TrackPlayer.play();
@@ -135,7 +141,9 @@ export const AudioPlayerProvider = ({ children }) => {
             artwork: playerState.reciter.photo,
             genre: "Quran",
           });
-
+          await TrackPlayer.updateNowPlayingMetadata({
+            artwork: playerState.reciter.photo,
+          });
           await TrackPlayer.play();
 
           setPlayerState((prev) => ({

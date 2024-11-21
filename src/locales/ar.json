@@ -27,13 +27,15 @@
   "Navbar": {
     "home": "الطريق الي القرآن",
     "fullQuran": "المصحف الكامل",
-    "frequentRecitations": "التلاوات المتواترة",
+    "frequentRecitations": "القراءات المتواترة",
     "variousRecitations": "التلاوات المنوعة",
-    "downloadQuran": "تحميل المصحف"
+    "downloadQuran": "تحميل المصحف",
+    "contactTitle": "تواصل معنا",
+    "aboutTitle": "من نحن"
   },
 
   "fullQuran": "المصحف الكامل",
-  "frequentRecitations": "التلاوات المتواترة",
+  "frequentRecitations": "القراءات المتواترة",
   "variousRecitations": "التلاوات المنوعة",
   "downloadQuran": "تحميل المصحف",
 
@@ -77,16 +79,10 @@
   },
 
   "Footer": {
+    "downloadQuran": "تحميل المصحف",
     "contactTitle": "تواصل معنا",
     "aboutTitle": "من نحن",
     "allRightsReserved": "جميع الحقوق محفوظة."
-  },
-
-  "NoInternetScreen": {
-    "title": "لا يوجد اتصال بالإنترنت",
-    "message": "يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.",
-    "retryButton": "إعادة المحاولة",
-    "retryingButton": "جاري إعادة المحاولة..."
   },
 
   "TabBar": {
@@ -94,7 +90,7 @@
     "playlist": "قائمتك",
     "favorites": "المفضلة",
     "mushaf": "المصحف",
-    "prayerTimes": "المواقيت"
+    "prayerTimes": "صلاتي"
   },
 
   "PlaylistScreen": {

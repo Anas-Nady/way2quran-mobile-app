@@ -7,15 +7,23 @@ const ReciterCard = ({ reciter, handleNavigateClick }) => {
     return null;
   }
 
+  const truncatedName =
+    getName(reciter).length > 18
+      ? `${getName(reciter).slice(0, 18)}...`
+      : getName(reciter);
+
   return (
-    <TouchableOpacity onPress={handleNavigateClick} className="my-4">
-      <View className="w-full px-4">
-        <View className="flex-col items-center pb-5">
+    <TouchableOpacity onPress={handleNavigateClick}>
+      <View className="w-full">
+        <View className="flex-col items-center pb-3">
           <ReciterImg uri={reciter.photo} />
         </View>
       </View>
-      <Text className="px-5 my-1 text-2xl font-semibold text-center text-gray-100">
-        {getName(reciter)}
+      <Text
+        numberOfLines={1}
+        className="text-xl font-semibold text-center text-gray-100"
+      >
+        {truncatedName}
       </Text>
     </TouchableOpacity>
   );

@@ -1,36 +1,32 @@
 import { View, Text, TouchableOpacity, Image, Linking } from "react-native";
 import getName from "../helpers/getName";
-import { ScreenDimensionsContext } from "../contexts/ScreenDimensionsProvider";
-import { useContext } from "react";
 
-export default function QuranPDFCard({ quran }) {
-  const { screenWidth: width } = useContext(ScreenDimensionsContext);
-
+export default function QuranPDFCard({ quran, width }) {
   const handleDownloadPDF = () => {
     Linking.openURL(quran.downloadLink);
   };
 
   const quranName = getName(quran);
 
-  const cardWidth = width > 768 ? width * 0.4 : width * 0.9; // 0.45 for tablet, 0.9 for mobile
-
   return (
     <TouchableOpacity
-      onPress={() => handleDownloadPDF()}
-      style={{ width: cardWidth }}
+      onPress={handleDownloadPDF}
+      style={{ width: width }}
       className="my-2"
     >
-      <View className="flex-col border border-gray-600 quran-pdf">
-        <View className="items-center justify-center flex-1 p-2 overflow-hidden">
+      <View className="border border-gray-600 quran-pdf">
+        <View className="items-center justify-center p-2">
           <Image
             source={{
               uri: quran.img,
+              width: width - 20,
+              height: width - 20,
             }}
-            resizeMode="cover"
-            style={{ width: "100%", height: 540 }}
+            alt={quranName}
+            resizeMode="contain"
           />
         </View>
-        <Text className="py-2 text-xl font-semibold text-center text-white bg-gray-600 line-clamp-1">
+        <Text className="py-1 font-semibold text-center text-white bg-gray-600 text-[15px]">
           {quranName}
         </Text>
       </View>
