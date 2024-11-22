@@ -16,7 +16,9 @@ export function useCustomFonts() {
   useEffect(() => {
     if (error) throw error;
 
-    if (fontsLoaded) SplashScreen.hideAsync();
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
   }, [fontsLoaded, error]);
 
   return { fontsLoaded, error };

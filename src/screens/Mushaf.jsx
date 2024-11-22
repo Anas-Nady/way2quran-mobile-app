@@ -31,7 +31,7 @@ export default function Mushaf() {
         contentContainerStyle={{
           gap: 8,
           paddingBottom: 16,
-          backgroundColor: "#374151", // bg-gray-800
+          backgroundColor: "#1f2937",
           flexGrow: 1,
           width: "100%",
         }}

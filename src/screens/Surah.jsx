@@ -80,12 +80,12 @@ export default function Surah() {
   };
 
   const renderItem = ({ item }) => (
-    <View className="w-[90%] py-3 mx-auto my-2 border-b-2 border-gray-500">
+    <View className="w-[90%] py-3 mx-auto border-b-2 border-gray-500">
       <Text className="mb-1 text-2xl font-medium leading-normal text-gray-300 font-quran">
         {item.textArabic}
         <Text
           style={{ fontFamily: "Quran-verse" }}
-          className={`font-verses text-5xl`}
+          className={`font-verses text-4xl`}
         >
           {+item.id}
         </Text>
@@ -93,7 +93,7 @@ export default function Surah() {
       {currentLanguage === "en" && (
         <Text className="mb-1 text-2xl font-medium leading-normal text-gray-300 font-english">
           {item.textEnglish}{" "}
-          <Text className={`font-verses text-5xl`}>{item.id}</Text>
+          <Text className={`font-verses text-4xl`}>{item.id}</Text>
         </Text>
       )}
     </View>
@@ -170,13 +170,14 @@ export default function Surah() {
           renderItem={renderItem}
           ListFooterComponent={renderFooter}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ flexGrow: 1 }}
-          onScroll={handleScroll}
-          style={{
-            marginHorizontal: "auto",
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingBottom: 16,
             width: "100%",
-            backgroundColor: "#374151", // bg-gray-800
+            backgroundColor: "#1f2937", // bg-gray-800
+            gap: 8,
           }}
+          onScroll={handleScroll}
         />
       </View>
     </>

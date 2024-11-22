@@ -29,8 +29,8 @@ export default function ContactUs() {
       >
         <GoBackButton />
         <HeadingScreen headingTxt={translate("contactTitle")} />
-        <View className="w-full p-4 mx-auto">
-          <Text className="mb-5 text-base text-center text-gray-400">
+        <View className="w-full mx-auto">
+          <Text className="mb-1 text-base text-center text-gray-400">
             {translate("contactDescription")}
           </Text>
           <ContactUsForm />

@@ -4,6 +4,7 @@ import TrackPlayer, {
   useTrackPlayerEvents,
 } from "react-native-track-player";
 import getName from "../helpers/getName";
+import { APP_AR_NAME } from "../constants/socialMedia";
 
 const AudioPlayerContext = createContext();
 
@@ -31,6 +32,7 @@ export const AudioPlayerProvider = ({ children }) => {
       Event.RemotePrevious,
       Event.RemoteStop,
       Event.RemoteSeek,
+      Event.RemoteDuck,
     ],
     async (event) => {
       switch (event.type) {
@@ -71,7 +73,7 @@ export const AudioPlayerProvider = ({ children }) => {
             await TrackPlayer.add({
               id: nextSurah.surahNumber.toString(),
               url: nextSurah.url,
-              title: getName(nextSurah.surahInfo),
+              title: `${APP_AR_NAME} | ${getName(nextSurah.surahInfo)}`,
               artist: getName(playerState.reciter),
               artwork: playerState.reciter.photo,
               genre: "Quran",
@@ -99,7 +101,7 @@ export const AudioPlayerProvider = ({ children }) => {
             await TrackPlayer.add({
               id: prevSurah.surahNumber.toString(),
               url: prevSurah.url,
-              title: getName(prevSurah.surahInfo),
+              title: `${APP_AR_NAME} | ${getName(prevSurah.surahInfo)}`,
               artist: getName(playerState.reciter),
               artwork: playerState.reciter.photo,
               genre: "Quran",
@@ -115,6 +117,16 @@ export const AudioPlayerProvider = ({ children }) => {
               isPlaying: true,
               surahIndex: prevIdx,
             }));
+          }
+          break;
+
+        case Event.RemoteDuck:
+          if (event.paused) {
+            await TrackPlayer.pause();
+            setPlayerState((prev) => ({ ...prev, isPlaying: false }));
+          } else {
+            await TrackPlayer.play();
+            setPlayerState((prev) => ({ ...prev, isPlaying: true }));
           }
           break;
       }
@@ -136,7 +148,7 @@ export const AudioPlayerProvider = ({ children }) => {
           await TrackPlayer.add({
             id: nextSurah.surahNumber.toString(),
             url: nextSurah.url,
-            title: getName(nextSurah.surahInfo),
+            title: `${APP_AR_NAME} | ${getName(nextSurah.surahInfo)}`,
             artist: getName(playerState.reciter),
             artwork: playerState.reciter.photo,
             genre: "Quran",

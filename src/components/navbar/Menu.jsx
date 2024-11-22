@@ -12,6 +12,15 @@ export default function Menu({ closeMenu }) {
     closeMenu();
   };
 
+  // Helper function to chunk the menuLinks into groups of two
+  const chunkArray = (array, chunkSize) => {
+    const result = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      result.push(array.slice(i, i + chunkSize));
+    }
+    return result;
+  };
+
   const menuLinks = [
     {
       label: translate("fullQuran"),
@@ -35,16 +44,27 @@ export default function Menu({ closeMenu }) {
     },
   ];
 
+  const menuChunks = chunkArray(menuLinks, 2);
+
   return (
-    <View>
-      {menuLinks.map((link, i) => (
-        <TouchableOpacity
-          onPress={() => handleNavigation(link.routeName, link.params)}
-          className={`${flexDirection()} my-2`}
-          key={i}
+    <View className="flex-wrap">
+      {menuChunks.map((chunk, rowIndex) => (
+        <View
+          key={rowIndex}
+          className={`${flexDirection()} justify-between my-2 p-1`}
         >
-          <Text className="text-lg font-bold text-gray-200">{link.label}</Text>
-        </TouchableOpacity>
+          {chunk.map((link, linkIndex) => (
+            <TouchableOpacity
+              key={linkIndex}
+              onPress={() => handleNavigation(link.routeName, link.params)}
+              className="w-[49%] p-4 border-b border-gray-700"
+            >
+              <Text className="text-lg font-bold text-center text-gray-200">
+                {link.label}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       ))}
     </View>
   );

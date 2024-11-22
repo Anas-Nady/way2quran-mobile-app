@@ -32,7 +32,7 @@ function Layout({ playerState }) {
   useEffect(() => {
     setInterval(() => {
       setSplashScreenLoaded(false);
-    }, 3500);
+    }, 4000);
   }, [splashScreenLoaded]);
 
   const toggleMenu = useCallback(() => {

@@ -11,6 +11,7 @@ import ConfirmationDialog from "../components/ui/ConfirmationDialog";
 import { useTranslate } from "../helpers/i18nHelper";
 import getName from "../helpers/getName";
 import { flexDirection } from "../helpers/flexDirection";
+import { APP_AR_NAME } from "../constants/socialMedia";
 
 const PlaylistCard = ({
   data,
@@ -51,7 +52,9 @@ const PlaylistCard = ({
             {getName(data.recitation?.recitationInfo)}
           </Text>
         </View>
-        <View className="flex-row-reverse items-center justify-between gap-3">
+        <View
+          className={`${flexDirection()} items-center justify-between gap-3`}
+        >
           <TouchableOpacity
             disabled={playerState.playLoading}
             onPress={() => onPlay(data)}
@@ -150,13 +153,13 @@ export default function Playlist() {
         await TrackPlayer.add({
           id: sortedSurahs[0].surahNumber.toString(),
           url: sortedSurahs[0].url,
-          title: getName(sortedSurahs[0].surahInfo),
+          title: `${APP_AR_NAME} | ${getName(sortedSurahs[0].surahInfo)}`,
           artist: getName(playlist.reciter),
           artwork: playlist.reciter.photo,
           genre: "Quran",
         });
         await TrackPlayer.updateNowPlayingMetadata({
-          artwork: playerState.reciter.photo,
+          artwork: playlist.reciter.photo,
         });
 
         await TrackPlayer.play();
@@ -201,13 +204,13 @@ export default function Playlist() {
       await TrackPlayer.add({
         id: sortedSurahs[0].surahNumber.toString(),
         url: sortedSurahs[0].url,
-        title: getName(sortedSurahs[0].surahInfo),
+        title: `${APP_AR_NAME} | ${getName(sortedSurahs[0].surahInfo)}`,
         artist: getName(playlist.reciter),
         artwork: playlist.reciter.photo,
         genre: "Quran",
       });
       await TrackPlayer.updateNowPlayingMetadata({
-        artwork: playerState.reciter.photo,
+        artwork: playlist.reciter.photo,
       });
       await TrackPlayer.play();
 

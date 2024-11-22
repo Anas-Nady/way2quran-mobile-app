@@ -1,18 +1,6 @@
 import { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Linking,
-  ActivityIndicator,
-  FlatList,
-} from "react-native";
+import { View, Linking, ActivityIndicator, FlatList } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
-import ReciterImg from "../components/reciter/ReciterImg";
-import TopReciterBadge from "../components/reciter/TopReciterBadge";
-import GoBackButton from "../components/ui/GoBackButton";
 import SurahCard from "../components/reciter/SurahCard";
 import { BASE_END_POINT, getReciter } from "../services/api";
 import Error from "../components/ui/Error";
@@ -22,11 +10,8 @@ import {
   removeBookmark,
   isBookmarkExists,
 } from "../helpers/bookmarkHandlers";
-import SelectOptions from "../components/reciter/SelectOptions";
 import Alert from "../components/ui/Alert";
 import { useTranslate } from "./../helpers/i18nHelper.js";
-import getName from "../helpers/getName.js";
-import { flexDirection } from "../helpers/flexDirection.js";
 import ReciterHeader from "../components/reciter/ReciterHeader.jsx";
 
 const ReciterScreen = () => {

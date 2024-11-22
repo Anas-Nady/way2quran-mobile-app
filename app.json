@@ -6,40 +6,30 @@
     "version": "1.0.1",
     "orientation": "default",
     "sdkVersion": "51.0.0",
-    "icon": "./src/assets/images/android-icon.png",
+    "icon": "./src/assets/images/app-icon.png",
     "scheme": "way2quran",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./src/assets/images/bg.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#fff"
+      "backgroundColor": "#374151"
     },
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": [
-          "audio"
-        ]
+        "UIBackgroundModes": ["audio"]
       },
       "config": {
         "usesNonExemptEncryption": false
       },
       "bundleIdentifier": "com.anasnady.way2quran"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/android-icon.png",
+        "foregroundImage": "./src/assets/images/app-icon.png",
         "backgroundColor": "#374151"
       },
       "package": "com.anasnady.way2quran",
-      "permissions": [
-        "ACCESS_FINE_LOCATION",
-        "FOREGROUND_SERVICE",
-        "WAKE_LOCK"
-      ]
+      "permissions": ["ACCESS_FINE_LOCATION", "FOREGROUND_SERVICE", "WAKE_LOCK"]
     },
     "plugins": [
       "expo-router",

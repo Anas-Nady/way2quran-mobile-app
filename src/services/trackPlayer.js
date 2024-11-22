@@ -36,9 +36,6 @@ export default async function () {
       Capability.SkipToPrevious,
     ],
 
-    // Icons for the notification on Android
-    icon: require("./../assets/images/android-icon.png"),
-
     // Notification color (Android)
     notificationColor: "#22c55e",
 

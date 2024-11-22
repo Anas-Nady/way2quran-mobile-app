@@ -12,7 +12,7 @@ const Input = ({ labelText, id, type, value, onChangeText }) => {
         value={value}
         onChangeText={onChangeText}
         keyboardType={type === "email" ? "email-address" : "default"}
-        className={`text-left p-2.5 w-full text-lg  rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white`}
+        className={`text-right p-2.5 w-full text-lg  rounded-lg border bg-gray-700 border-gray-600 placeholder-gray-400 text-white`}
       />
     </View>
   );

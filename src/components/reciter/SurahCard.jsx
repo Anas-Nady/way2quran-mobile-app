@@ -11,6 +11,7 @@ import {
 import getName from "./../../helpers/getName.js";
 import { flexDirection } from "../../helpers/flexDirection.js";
 import TrackPlayer, { State } from "react-native-track-player";
+import { APP_AR_NAME } from "../../constants/socialMedia.js";
 
 const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -44,7 +45,7 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
         await TrackPlayer.add({
           id: surah.surahNumber.toString(),
           url: surah.url,
-          title: notificationInfo.surahName,
+          title: `${APP_AR_NAME} | ${notificationInfo.surahName}`,
           artist: notificationInfo.reciterName,
           artwork: reciter.photo,
           genre: "Quran",
@@ -93,7 +94,7 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
       await TrackPlayer.add({
         id: surah.surahNumber.toString(),
         url: surah.url,
-        title: notificationInfo.surahName,
+        title: `${APP_AR_NAME} | ${notificationInfo.surahName}`,
         artist: notificationInfo.reciterName,
         artwork: reciter.photo,
         genre: "Quran",

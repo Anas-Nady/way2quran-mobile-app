@@ -1,5 +1,5 @@
 import { View, Text, Image, ImageBackground } from "react-native";
-import bgImage from "./../assets/images/bg-img.png";
+import bgImage from "./../assets/images/home-background.png";
 import { useContext } from "react";
 import { ScreenDimensionsContext } from "../contexts/ScreenDimensionsProvider";
 import { useTranslate } from "../helpers/i18nHelper";
@@ -12,7 +12,7 @@ export default function Welcome() {
   return (
     <ImageBackground
       source={bgImage}
-      style={{ width: screenWidth, height: screenHeight * 0.7 }}
+      style={{ width: screenWidth, height: screenHeight * 0.9 - 130 }}
       resizeMode="cover"
       className="h-full bg-center py-9"
     >

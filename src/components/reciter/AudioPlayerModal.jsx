@@ -8,6 +8,7 @@ import getName from "../../helpers/getName";
 import { flexDirection } from "../../helpers/flexDirection";
 import TrackPlayer, { State, useProgress } from "react-native-track-player";
 import { useNavigation } from "@react-navigation/native";
+import { APP_AR_NAME } from "../../constants/socialMedia";
 
 // AudioPlayerModal component
 const AudioPlayerModal = () => {
@@ -55,7 +56,7 @@ const AudioPlayerModal = () => {
       await TrackPlayer.add({
         id: nextSurah.surahNumber.toString(),
         url: nextSurah.url,
-        title: getName(nextSurah.surahInfo),
+        title: `${APP_AR_NAME} | ${getName(nextSurah.surahInfo)}`,
         artist: getName(playerState.reciter),
         artwork: playerState.reciter.photo,
         genre: "Quran",
@@ -84,8 +85,9 @@ const AudioPlayerModal = () => {
       await TrackPlayer.add({
         id: prevSurah.surahNumber.toString(),
         url: prevSurah.url,
-        title: getName(prevSurah.surahInfo),
+        title: `${APP_AR_NAME} | ${getName(nextSurah.surahInfo)}`,
         artist: getName(playerState.reciter),
+
         artwork: playerState.reciter.photo,
         genre: "Quran",
       });
