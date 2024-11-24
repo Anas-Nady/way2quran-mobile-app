@@ -26,7 +26,13 @@ const AudioPlayerModal = () => {
         try {
           const getPlayerState = await AsyncStorage.getItem("playerState");
           if (getPlayerState && activeTrackIndex !== undefined) {
-            setPlayerState(JSON.parse(getPlayerState));
+            const savedPlayerState = JSON.parse(getPlayerState);
+            setPlayerState(savedPlayerState);
+            if (savedPlayerState?.reciter?.slug) {
+              navigation.navigate("Reciter", {
+                reciterSlug: savedPlayerState.reciter.slug,
+              });
+            }
           }
         } catch (error) {
           console.error("Error saving player state:", error);

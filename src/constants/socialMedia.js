@@ -7,13 +7,13 @@ export const socialMedia = [
   },
   {
     id: "whatsapp",
-    url: `https://wa.me/0097455307607`,
+    url: `https://wa.me/+97455307607`,
     icon: "whatsapp",
     color: "#25D366",
   },
   {
     id: "telegram",
-    url: `https://t.me/0097455307607`,
+    url: `https://t.me/+97455307607`,
     icon: "telegram",
     color: "#0088CC",
   },

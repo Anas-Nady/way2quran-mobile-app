@@ -19,17 +19,8 @@ const AboutUsList = () => {
   const translate = useTranslate("AboutScreen");
   const [error, setError] = useState("");
 
-  const handlePress = async (url) => {
-    try {
-      const supported = await Linking.canOpenURL(url);
-      if (supported) {
-        await Linking.openURL(url);
-      } else {
-        setError("This URL cannot be opened: " + url);
-      }
-    } catch (error) {
-      setError("Failed to open URL:", error);
-    }
+  const handlePress = (url) => {
+    Linking.openURL(url);
   };
 
   const SocialMediaIcons = ({ socialMediaItems }) => {
