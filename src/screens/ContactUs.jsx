@@ -27,8 +27,10 @@ export default function ContactUs() {
         nestedScrollEnabled={true}
         style={{ flex: 1 }}
       >
-        <GoBackButton />
-        <HeadingScreen headingTxt={translate("contactTitle")} />
+        <View>
+          <GoBackButton />
+          <HeadingScreen headingTxt={translate("contactTitle")} />
+        </View>
         <View className="w-full mx-auto">
           <Text className="mb-1 text-base text-center text-gray-400">
             {translate("contactDescription")}

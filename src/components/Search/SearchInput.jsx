@@ -1,7 +1,7 @@
 import { View, TextInput } from "react-native";
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { flexDirection } from "../../helpers/flexDirection";
+import { flexDirection, textDirection } from "../../helpers/flexDirection";
 
 export default function SearchInput({ handleTextDebounce }) {
   const textInputRef = useRef(null);
@@ -16,7 +16,7 @@ export default function SearchInput({ handleTextDebounce }) {
         onChangeText={handleTextDebounce}
         placeholder={t("search")}
         placeholderTextColor={"lightgray"}
-        className={`text-right pb-1 w-[70%] py-2 border border-gray-500 flex-1 mx-auto text-base px-5 font-semibold tracking-wider rounded-full text-white`}
+        className={`${textDirection()} pb-1 w-[70%] py-2 border border-gray-500 flex-1 mx-auto text-base px-5 font-semibold tracking-wider rounded-full text-slate-200`}
       />
     </View>
   );

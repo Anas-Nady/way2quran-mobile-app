@@ -4,14 +4,14 @@ import { Ionicons } from "@expo/vector-icons";
 import HeadingScreen from "./../components/HeadingScreen";
 import GoBackButton from "../components/ui/GoBackButton";
 import { getAllBookmarks, removeBookmark } from "../helpers/bookmarkHandlers";
-import EmptyState from "../components/ui/EmptyState";
+import EmptyState from "../components/States/EmptyState";
 import { useAudioPlayer } from "../contexts/AudioPlayerContext";
 import TrackPlayer, { State } from "react-native-track-player/lib/src";
 import ConfirmationDialog from "../components/ui/ConfirmationDialog";
 import { useTranslate } from "../helpers/i18nHelper";
 import getName from "../helpers/getName";
-import { flexDirection } from "../helpers/flexDirection";
-import { APP_AR_NAME } from "../constants/socialMedia";
+import { flexDirection, isRTL } from "../helpers/flexDirection";
+import { savePlayerState } from "../helpers/playerStateStorage";
 
 const PlaylistCard = ({
   data,
@@ -45,7 +45,11 @@ const PlaylistCard = ({
           className="w-20 h-20 rounded-full"
         />
         <View className="flex-1 mx-2">
-          <Text className="text-xl font-bold text-gray-200">
+          <Text
+            className={`${
+              isRTL ? "text-xl" : "text-[16px]"
+            } font-bold text-gray-200`}
+          >
             {getName(data.reciter)}
           </Text>
           <Text className="text-sm text-gray-200">
@@ -123,8 +127,6 @@ export default function Playlist() {
   };
 
   const handleToggleSurahs = (key) => {
-    // If the current playlist is already expanded, collapse it by setting to null
-    // Otherwise, expand the clicked playlist
     setExpandedPlaylist(expandedPlaylist === key ? null : key);
   };
 
@@ -136,14 +138,13 @@ export default function Playlist() {
         return;
       }
 
-      // Sort the surahs by surahNumber
       const sortedSurahs = [...playlist.surahs].sort(
         (a, b) => a.surahNumber - b.surahNumber
       );
 
       // Check if we're currently playing this playlist
       const currentTrack = await TrackPlayer.getCurrentTrack();
-      const playerState = await TrackPlayer.getState();
+      const currentState = await TrackPlayer.getState();
       const isCurrentPlaylist =
         playerState.recitation?.audioFiles === sortedSurahs;
 
@@ -153,7 +154,7 @@ export default function Playlist() {
         await TrackPlayer.add({
           id: sortedSurahs[0].surahNumber.toString(),
           url: sortedSurahs[0].url,
-          title: `${APP_AR_NAME} | ${getName(sortedSurahs[0].surahInfo)}`,
+          title: `${getName(sortedSurahs[0].surahInfo)}`,
           artist: getName(playlist.reciter),
           artwork: playlist.reciter.photo,
           genre: "Quran",
@@ -164,8 +165,8 @@ export default function Playlist() {
 
         await TrackPlayer.play();
 
-        setPlayerState((prev) => ({
-          ...prev,
+        const updatedPlayerState = {
+          ...playerState,
           playLoading: false,
           currentAudio: sortedSurahs[0],
           reciter: playlist.reciter,
@@ -174,28 +175,28 @@ export default function Playlist() {
           isAutoPlayEnabled: true,
           isPlaying: true,
           isModalVisible: true,
-        }));
+        };
+
+        setPlayerState(updatedPlayerState);
+        await savePlayerState(updatedPlayerState);
         return;
       }
 
       // If this playlist is already playing - handle play/pause
       if (isCurrentPlaylist) {
-        if (playerState === State.Playing) {
+        let updatedPlayerState = { ...playerState, playLoading: false };
+
+        if (currentState === State.Playing) {
           await TrackPlayer.pause();
-          setPlayerState((prev) => ({
-            ...prev,
-            playLoading: false,
-            isPlaying: false,
-          }));
+          updatedPlayerState.isPlaying = false;
         } else {
           await TrackPlayer.play();
-          setPlayerState((prev) => ({
-            ...prev,
-            playLoading: false,
-            isPlaying: true,
-            isModalVisible: true,
-          }));
+          updatedPlayerState.isPlaying = true;
+          updatedPlayerState.isModalVisible = true;
         }
+
+        setPlayerState(updatedPlayerState);
+        await savePlayerState(updatedPlayerState);
         return;
       }
 
@@ -204,7 +205,7 @@ export default function Playlist() {
       await TrackPlayer.add({
         id: sortedSurahs[0].surahNumber.toString(),
         url: sortedSurahs[0].url,
-        title: `${APP_AR_NAME} | ${getName(sortedSurahs[0].surahInfo)}`,
+        title: `${getName(sortedSurahs[0].surahInfo)}`,
         artist: getName(playlist.reciter),
         artwork: playlist.reciter.photo,
         genre: "Quran",
@@ -214,8 +215,8 @@ export default function Playlist() {
       });
       await TrackPlayer.play();
 
-      setPlayerState((prev) => ({
-        ...prev,
+      const updatedPlayerState = {
+        ...playerState,
         playLoading: false,
         currentAudio: sortedSurahs[0],
         reciter: playlist.reciter,
@@ -224,10 +225,15 @@ export default function Playlist() {
         isAutoPlayEnabled: true,
         isPlaying: true,
         isModalVisible: true,
-      }));
+      };
+
+      setPlayerState(updatedPlayerState);
+      await savePlayerState(updatedPlayerState);
     } catch (error) {
       console.error("Error playing playlist:", error);
-      setPlayerState((prev) => ({ ...prev, playLoading: false }));
+      const updatedState = { ...playerState, playLoading: false };
+      setPlayerState(updatedState);
+      await savePlayerState(updatedState);
     }
   };
 

@@ -26,7 +26,7 @@ export default function QuranPDFCard({ quran, width }) {
             resizeMode="contain"
           />
         </View>
-        <Text className="py-1 font-semibold text-center text-white bg-gray-600 text-[15px]">
+        <Text className="py-1 font-semibold text-center text-slate-300 bg-gray-600 text-[15px]">
           {quranName}
         </Text>
       </View>

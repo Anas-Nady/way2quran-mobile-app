@@ -1,22 +1,22 @@
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, TouchableOpacity } from "react-native";
-import getName from "../helpers/getName";
-import { flexDirection } from "../helpers/flexDirection";
+import getName from "../../helpers/getName";
+import { flexDirection } from "../../helpers/flexDirection";
 import React from "react";
 
 const SurahCard = ({ surah }) => {
   const navigation = useNavigation();
 
   return (
-    <View className="px-3 py-4 mx-auto w-[90%] mb-2 border border-gray-600 rounded surah-card">
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("Surah", {
-            surahNumber: surah.number,
-          })
-        }
-        className={`${flexDirection()} items-center gap-4`}
-      >
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("Surah", {
+          surahNumber: surah.number,
+        })
+      }
+      className={`${flexDirection()} px-3 py-4 mx-auto w-[90%] mb-2 border border-gray-600 rounded surah-card`}
+    >
+      <View className={`${flexDirection()} items-center gap-4 `}>
         <View
           style={{
             transform: [{ rotate: "45deg" }],
@@ -35,8 +35,8 @@ const SurahCard = ({ surah }) => {
         <Text className="text-lg font-semibold text-slate-200">
           {getName(surah)}
         </Text>
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 

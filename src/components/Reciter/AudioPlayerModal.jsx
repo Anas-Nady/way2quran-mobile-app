@@ -1,5 +1,5 @@
-import React, { useCallback } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import React, { useCallback, useEffect } from "react";
+import { View, Text, TouchableOpacity, AppState } from "react-native";
 import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
 import { useAudioPlayer } from "../../contexts/AudioPlayerContext";
@@ -8,9 +8,9 @@ import getName from "../../helpers/getName";
 import { flexDirection } from "../../helpers/flexDirection";
 import TrackPlayer, { State, useProgress } from "react-native-track-player";
 import { useNavigation } from "@react-navigation/native";
-import { APP_AR_NAME } from "../../constants/socialMedia";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { savePlayerState } from "../../helpers/playerStateStorage";
 
-// AudioPlayerModal component
 const AudioPlayerModal = () => {
   const { playerState, setPlayerState, toggleModalExpansion } =
     useAudioPlayer();
@@ -18,99 +18,136 @@ const AudioPlayerModal = () => {
   const iconColor = "white";
   const navigation = useNavigation();
 
-  // Toggle play/pause functionality
-  const togglePlayPause = useCallback(async () => {
-    try {
-      const playerState = await TrackPlayer.getState();
+  useEffect(() => {
+    const handleAppStateChange = async (nextAppState) => {
+      if (nextAppState === "active") {
+        const activeTrackIndex = await TrackPlayer.getActiveTrackIndex();
 
-      if (playerState === State.Playing) {
+        try {
+          const getPlayerState = await AsyncStorage.getItem("playerState");
+          if (getPlayerState && activeTrackIndex !== undefined) {
+            setPlayerState(JSON.parse(getPlayerState));
+          }
+        } catch (error) {
+          console.error("Error saving player state:", error);
+        }
+      }
+    };
+
+    handleAppStateChange(AppState.currentState);
+  }, [setPlayerState]);
+
+  const togglePlayPause = async () => {
+    try {
+      const currentState = await TrackPlayer.getState();
+      let updatedState = { ...playerState };
+
+      if (currentState === State.Playing) {
         await TrackPlayer.pause();
-        setPlayerState((prev) => ({
-          ...prev,
-          isPlaying: false,
-        }));
+        updatedState = { ...updatedState, isPlaying: false };
       } else {
         await TrackPlayer.play();
-        setPlayerState((prev) => ({
-          ...prev,
-          isPlaying: true,
-        }));
+        updatedState = { ...playerState, isPlaying: true };
       }
+
+      setPlayerState(updatedState);
+      await savePlayerState(updatedState);
     } catch (error) {
       console.error("Error handling playback:", error);
     }
-  }, [setPlayerState]);
+  };
 
-  // Handle seeking the audio
   const handleSeek = async (value) => {
     await TrackPlayer.seekTo(value);
   };
 
-  // Handle playing the next surah
   const handleNextSurah = async () => {
-    if (playerState.surahIndex < playerState.recitation.audioFiles.length - 1) {
-      const nextIdx = playerState.surahIndex + 1;
-      const nextSurah = playerState?.recitation?.audioFiles[nextIdx];
+    setPlayerState((prev) => ({ ...prev, loadingNextPrev: true }));
 
-      await TrackPlayer.reset();
-      await TrackPlayer.add({
-        id: nextSurah.surahNumber.toString(),
-        url: nextSurah.url,
-        title: `${APP_AR_NAME} | ${getName(nextSurah.surahInfo)}`,
-        artist: getName(playerState.reciter),
-        artwork: playerState.reciter.photo,
-        genre: "Quran",
-      });
-      await TrackPlayer.updateNowPlayingMetadata({
-        artwork: playerState.reciter.photo,
-      });
-      await TrackPlayer.play();
+    try {
+      if (
+        playerState.surahIndex <
+        playerState.recitation.audioFiles.length - 1
+      ) {
+        const nextIdx = playerState.surahIndex + 1;
+        const nextSurah = playerState.recitation.audioFiles[nextIdx];
 
-      setPlayerState((prev) => ({
-        ...prev,
-        currentAudio: nextSurah,
-        isPlaying: true,
-        surahIndex: nextIdx,
-      }));
+        await TrackPlayer.reset();
+        await TrackPlayer.add({
+          id: nextSurah.surahNumber.toString(),
+          url: nextSurah.url,
+          title: getName(nextSurah.surahInfo),
+          artist: getName(playerState.reciter),
+          artwork: playerState.reciter?.photo,
+          genre: "Quran",
+        });
+        await TrackPlayer.updateNowPlayingMetadata({
+          artwork: playerState.reciter.photo,
+        });
+
+        await TrackPlayer.play();
+
+        const updatedPlayerState = {
+          ...playerState,
+          currentAudio: nextSurah,
+          isPlaying: true,
+          surahIndex: nextIdx,
+          loadingNextPrev: false,
+        };
+
+        setPlayerState(updatedPlayerState);
+        await savePlayerState(updatedPlayerState);
+      }
+    } catch (error) {
+      console.error("Error playing next track:", error);
+      setPlayerState((prev) => ({ ...prev, loadingNextPrev: false }));
     }
   };
 
-  // Handle playing the previous surah
   const handlePrevSurah = async () => {
-    if (playerState.surahIndex > 0) {
-      const prevIdx = playerState.surahIndex - 1;
-      const prevSurah = playerState?.recitation?.audioFiles[prevIdx];
+    setPlayerState((prev) => ({ ...prev, loadingNextPrev: true }));
 
-      await TrackPlayer.reset();
-      await TrackPlayer.add({
-        id: prevSurah.surahNumber.toString(),
-        url: prevSurah.url,
-        title: `${APP_AR_NAME} | ${getName(nextSurah.surahInfo)}`,
-        artist: getName(playerState.reciter),
+    try {
+      if (playerState.surahIndex > 0) {
+        const prevIdx = playerState.surahIndex - 1;
+        const prevSurah = playerState.recitation.audioFiles[prevIdx];
 
-        artwork: playerState.reciter.photo,
-        genre: "Quran",
-      });
-      await TrackPlayer.updateNowPlayingMetadata({
-        artwork: playerState.reciter.photo,
-      });
+        await TrackPlayer.reset();
+        await TrackPlayer.add({
+          id: prevSurah.surahNumber.toString(),
+          url: prevSurah.url,
+          title: getName(prevSurah.surahInfo),
+          artist: getName(playerState.reciter),
+          artwork: playerState.reciter?.photo,
+          genre: "Quran",
+        });
+        await TrackPlayer.updateNowPlayingMetadata({
+          artwork: playerState.reciter.photo,
+        });
 
-      await TrackPlayer.play();
+        await TrackPlayer.play();
 
-      setPlayerState((prev) => ({
-        ...prev,
-        currentAudio: prevSurah,
-        isPlaying: true,
-        surahIndex: prevIdx,
-      }));
+        const updatedPlayerState = {
+          ...playerState,
+          currentAudio: prevSurah,
+          isPlaying: true,
+          surahIndex: prevIdx,
+          loadingNextPrev: false,
+        };
+
+        setPlayerState(updatedPlayerState);
+        await savePlayerState(updatedPlayerState);
+      }
+    } catch (error) {
+      console.error("Error playing previous track:", error);
+      setPlayerState((prev) => ({ ...prev, loadingNextPrev: false }));
     }
   };
 
-  // Close modal and stop playback
   const closeModal = async () => {
     await TrackPlayer.reset();
-    setPlayerState((prev) => ({
-      ...prev,
+    const updatedState = {
+      ...playerState,
       audioFiles: [],
       currentAudio: null,
       isPlaying: false,
@@ -121,10 +158,19 @@ const AudioPlayerModal = () => {
       reciter: null,
       recitation: null,
       modalHeight: 0,
-    }));
+    };
+
+    setPlayerState(updatedState);
+    await savePlayerState(updatedState);
   };
 
   if (!playerState.isModalVisible) return null;
+
+  const navigateToReciterScreen = () =>
+    navigation.navigate("Reciter", {
+      reciterSlug: playerState.reciter?.slug,
+      recitationSlug: playerState.recitation?.recitationInfo?.slug,
+    });
 
   return (
     <View
@@ -158,24 +204,18 @@ const AudioPlayerModal = () => {
 
       {/* Expanded View */}
       {playerState?.isModalExpanded ? (
-        // Expanded view content
         <>
           {/* Audio Details */}
           <View className={`${flexDirection()} items-center justify-end mx-4`}>
             <View className={`${flexDirection()} items-center flex-1 gap-2`}>
               <View className="flex-1">
-                <Text
-                  onPress={() =>
-                    navigation.navigate("Reciter", {
-                      reciterSlug: playerState.reciter?.slug,
-                      recitationSlug:
-                        playerState.recitation?.recitationInfo?.slug,
-                    })
-                  }
-                  className={` text-[18px] text-center font-bold text-gray-100`}
-                >
-                  {getName(playerState.reciter)}
-                </Text>
+                <TouchableOpacity onPress={navigateToReciterScreen}>
+                  <Text
+                    className={` text-[18px] text-center font-bold text-gray-100`}
+                  >
+                    {getName(playerState.reciter)}
+                  </Text>
+                </TouchableOpacity>
                 <Text
                   numberOfLines={1}
                   className={`mt-1 text-[15px] text-center font-semibold text-gray-100`}
@@ -207,13 +247,17 @@ const AudioPlayerModal = () => {
           <View
             className={`${flexDirection()} items-center justify-between w-full`}
           >
-            <Text className="text-sm text-white">{formatTime(position)}</Text>
+            <Text className="text-sm text-white w-[48px] text-center">
+              {formatTime(position)}
+            </Text>
             <View
               className={`${flexDirection()} items-center justify-center gap-2`}
             >
               <TouchableOpacity
                 onPress={handlePrevSurah}
-                disabled={playerState.surahIndex === 0}
+                disabled={
+                  playerState.surahIndex === 0 || playerState.loadingNextPrev
+                }
               >
                 <Ionicons
                   name="play-skip-forward"
@@ -232,7 +276,8 @@ const AudioPlayerModal = () => {
                 onPress={handleNextSurah}
                 disabled={
                   playerState.surahIndex ===
-                  playerState.recitation?.audioFiles.length - 1
+                    playerState.recitation?.audioFiles.length - 1 ||
+                  playerState.loadingNextPrev
                 }
               >
                 <Ionicons
@@ -247,7 +292,9 @@ const AudioPlayerModal = () => {
                 />
               </TouchableOpacity>
             </View>
-            <Text className="text-sm text-white">{formatTime(duration)}</Text>
+            <Text className="text-sm text-white w-[48px]">
+              {formatTime(duration)}
+            </Text>
           </View>
         </>
       ) : (
@@ -271,15 +318,19 @@ const AudioPlayerModal = () => {
 
           {/* Playback Controls */}
           <View
-            className={`${flexDirection()} items-center justify-between w-full -mt-2 px-3`}
+            className={`${flexDirection()} items-center justify-between w-full -mt-2`}
           >
-            <Text className="text-sm text-white">{formatTime(position)}</Text>
+            <Text className="text-sm text-white w-[48px] text-center">
+              {formatTime(position)}
+            </Text>
             <View
               className={`${flexDirection()} items-center justify-center gap-2`}
             >
               <TouchableOpacity
                 onPress={handlePrevSurah}
-                disabled={playerState.surahIndex === 0}
+                disabled={
+                  playerState.surahIndex === 0 || playerState.loadingNextPrev
+                }
               >
                 <Ionicons
                   name="play-skip-forward"
@@ -298,7 +349,8 @@ const AudioPlayerModal = () => {
                 onPress={handleNextSurah}
                 disabled={
                   playerState.surahIndex ===
-                  playerState.recitation?.audioFiles.length - 1
+                    playerState.recitation?.audioFiles.length - 1 ||
+                  playerState.loadingNextPrev
                 }
               >
                 <Ionicons
@@ -313,7 +365,9 @@ const AudioPlayerModal = () => {
                 />
               </TouchableOpacity>
             </View>
-            <Text className="text-sm text-white">{formatTime(duration)}</Text>
+            <Text className="text-sm text-white w-[48px] text-end">
+              {formatTime(duration)}
+            </Text>
           </View>
         </View>
       )}

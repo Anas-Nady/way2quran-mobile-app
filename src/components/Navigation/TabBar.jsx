@@ -1,9 +1,9 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useTranslate } from "../helpers/i18nHelper.js";
-import { flexDirection } from "../helpers/flexDirection.js";
-import prayerTimesIcon from "./../assets/images/mosqueIcon.png";
+import { useTranslate } from "../../helpers/i18nHelper.js";
+import { flexDirection } from "../../helpers/flexDirection.js";
+import prayerTimesIcon from "./../../assets/images/mosqueIcon.png";
 
 export default function TabBar() {
   const navigation = useNavigation();

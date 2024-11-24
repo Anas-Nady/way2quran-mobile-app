@@ -2,23 +2,15 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslate } from "../../helpers/i18nHelper";
 import { flexDirection } from "../../helpers/flexDirection";
+import { chunkArray } from "../../helpers/chunkArray";
 
-export default function Menu({ closeMenu }) {
+export default function TopBarMenu({ closeMenu }) {
   const navigation = useNavigation();
-  const translate = useTranslate("Navbar");
+  const translate = useTranslate("TopBarMenu");
 
   const handleNavigation = (route, params) => {
     navigation.navigate(route, params);
     closeMenu();
-  };
-
-  // Helper function to chunk the menuLinks into groups of two
-  const chunkArray = (array, chunkSize) => {
-    const result = [];
-    for (let i = 0; i < array.length; i += chunkSize) {
-      result.push(array.slice(i, i + chunkSize));
-    }
-    return result;
   };
 
   const menuLinks = [
@@ -51,7 +43,7 @@ export default function Menu({ closeMenu }) {
       {menuChunks.map((chunk, rowIndex) => (
         <View
           key={rowIndex}
-          className={`${flexDirection()} justify-between my-2 p-1`}
+          className={`${flexDirection()} justify-between my-2.5 p-1`}
         >
           {chunk.map((link, linkIndex) => (
             <TouchableOpacity

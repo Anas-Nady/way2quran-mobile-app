@@ -4,21 +4,18 @@ import {
   View,
   TouchableWithoutFeedback,
 } from "react-native";
-import Header from "../components/navbar/Header";
-import TabBar from "../components/TabBar";
-import AudioPlayerModal from "../components/reciter/AudioPlayerModal";
+import { NavigationContainer } from "@react-navigation/native";
+import TabBar from "../components/Navigation/TabBar";
+import AudioPlayerModal from "../components/Reciter/AudioPlayerModal";
 import { AppNavigator } from "../navigationConfig";
 import { useState, useCallback, useEffect } from "react";
 import { currentLanguage } from "../helpers/flexDirection";
 import SplashScreen from "../screens/SplashScreen";
+import TopBar from "./Navigation/TopBar";
 
 function getPlayerModalHeight(playerState) {
   if (playerState.isModalVisible) {
-    if (playerState.isModalExpanded) {
-      return 165;
-    } else {
-      return 80;
-    }
+    return playerState.isModalExpanded ? 165 : 80;
   }
   return 0;
 }
@@ -30,10 +27,11 @@ function Layout({ playerState }) {
   const playerModalHeight = getPlayerModalHeight(playerState);
 
   useEffect(() => {
-    setInterval(() => {
+    const timer = setTimeout(() => {
       setSplashScreenLoaded(false);
     }, 4000);
-  }, [splashScreenLoaded]);
+    return () => clearTimeout(timer);
+  }, []);
 
   const toggleMenu = useCallback(() => {
     setIsMenuOpen((prev) => !prev);
@@ -43,20 +41,22 @@ function Layout({ playerState }) {
     setIsMenuOpen(false);
   }, []);
 
-  return (
-    <SafeAreaView
-      className={`${
-        currentLanguage === "ar" ? "font-arabic" : "font-english"
-      } flex-1 bg-gray-800`}
-    >
-      <StatusBar backgroundColor="#22c55e" barStyle="light-content" />
+  if (splashScreenLoaded) {
+    return <SplashScreen />;
+  }
 
-      {splashScreenLoaded ? (
-        <SplashScreen />
-      ) : (
+  return (
+    <NavigationContainer independent={true}>
+      <SafeAreaView
+        className={`${
+          currentLanguage === "ar" ? "font-arabic" : "font-english"
+        } flex-1 bg-gray-800`}
+      >
+        <StatusBar backgroundColor="#22c55e" barStyle="light-content" />
+
         <TouchableWithoutFeedback onPress={closeMenu}>
           <View style={{ flex: 1 }}>
-            <Header isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
+            <TopBar isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
             <View
               style={{
                 flex: 1,
@@ -89,8 +89,8 @@ function Layout({ playerState }) {
             </View>
           </View>
         </TouchableWithoutFeedback>
-      )}
-    </SafeAreaView>
+      </SafeAreaView>
+    </NavigationContainer>
   );
 }
 

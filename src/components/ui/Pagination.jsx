@@ -3,11 +3,9 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const pageLimit = 6;
 
-  // Calculate the start and end of the visible page range
   const startPage = Math.max(1, currentPage - Math.floor(pageLimit / 2));
   const endPage = Math.min(totalPages, startPage + pageLimit - 1);
 
-  // Ensure the page range is valid
   const pageRange =
     endPage >= startPage
       ? [...Array(endPage - startPage + 1).keys()].map((i) => startPage + i)
@@ -26,7 +24,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           key={page}
           text={page.toString()}
           onPress={() => handlePageChange(page)}
-          isActive={currentPage === page} // Changed this line
+          isActive={currentPage === page}
         />
       ))}
     </View>

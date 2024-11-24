@@ -2,24 +2,23 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, Linking } from "react-native";
 import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useAudioPlayer } from "../../contexts/AudioPlayerContext";
+import { useAudioPlayer } from "../../contexts/AudioPlayerContext.jsx";
 import {
   isBookmarkExists,
   addBookmark,
   getBookmarkData,
-} from "../../helpers/bookmarkHandlers";
-import getName from "./../../helpers/getName.js";
+} from "../../helpers/bookmarkHandlers.js";
+import getName from "../../helpers/getName.js";
 import { flexDirection } from "../../helpers/flexDirection.js";
 import TrackPlayer, { State } from "react-native-track-player";
-import { APP_AR_NAME } from "../../constants/socialMedia.js";
+import { savePlayerState } from "../../helpers/playerStateStorage";
 
-const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
+const SurahCardDetails = ({ surah, surahIndex, reciter, recitation }) => {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const navigation = useNavigation();
 
   const { playerState, setPlayerState } = useAudioPlayer();
 
-  // download audio file
   const handleDownload = () => {
     Linking.openURL(surah?.downloadUrl);
   };
@@ -35,9 +34,8 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
         surahName: getName(surah?.surahInfo),
       };
 
-      // Check if this is the current track
       const currentTrack = await TrackPlayer.getCurrentTrack();
-      const playerState = await TrackPlayer.getState();
+      const playbackState = await TrackPlayer.getState();
 
       // If no track is loaded yet
       if (currentTrack === null) {
@@ -45,17 +43,19 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
         await TrackPlayer.add({
           id: surah.surahNumber.toString(),
           url: surah.url,
-          title: `${APP_AR_NAME} | ${notificationInfo.surahName}`,
+          title: `${notificationInfo.surahName}`,
           artist: notificationInfo.reciterName,
           artwork: reciter.photo,
           genre: "Quran",
         });
-        await TrackPlayer.updateNowPlayingMetadata({ artwork: reciter.photo });
+        await TrackPlayer.updateNowPlayingMetadata({
+          artwork: reciter.photo,
+        });
 
         await TrackPlayer.play();
 
-        setPlayerState((prev) => ({
-          ...prev,
+        const updatedPlayerState = {
+          ...playerState,
           playLoading: false,
           currentAudio: surah,
           isPlaying: true,
@@ -64,28 +64,28 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
           surahIndex,
           reciter,
           recitation,
-        }));
+        };
+
+        setPlayerState(updatedPlayerState);
+        await savePlayerState(updatedPlayerState);
         return;
       }
 
       // If this is the current track - handle play/pause
       if (currentTrack === surah.surahNumber.toString()) {
-        if (playerState === State.Playing) {
+        const updatedPlayerState = {
+          ...playerState,
+          playLoading: false,
+        };
+        if (playbackState === State.Playing) {
           await TrackPlayer.pause();
-          setPlayerState((prev) => ({
-            ...prev,
-            playLoading: false,
-            isPlaying: false,
-          }));
+          updatedPlayerState.isPlaying = false;
         } else {
           await TrackPlayer.play();
-          setPlayerState((prev) => ({
-            ...prev,
-            playLoading: false,
-            isPlaying: true,
-            isModalVisible: true,
-          }));
+          updatedPlayerState.isPlaying = true;
         }
+
+        await savePlayerState(updatedPlayerState);
         return;
       }
 
@@ -94,7 +94,7 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
       await TrackPlayer.add({
         id: surah.surahNumber.toString(),
         url: surah.url,
-        title: `${APP_AR_NAME} | ${notificationInfo.surahName}`,
+        title: `${notificationInfo.surahName}`,
         artist: notificationInfo.reciterName,
         artwork: reciter.photo,
         genre: "Quran",
@@ -103,8 +103,8 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
       await TrackPlayer.updateNowPlayingMetadata({ artwork: reciter.photo });
       await TrackPlayer.play();
 
-      setPlayerState((prev) => ({
-        ...prev,
+      const updatedPlayerState = {
+        ...playerState,
         playLoading: false,
         currentAudio: surah,
         isPlaying: true,
@@ -113,10 +113,15 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
         surahIndex,
         reciter,
         recitation,
-      }));
+      };
+
+      setPlayerState(updatedPlayerState);
+      await savePlayerState(updatedPlayerState);
     } catch (error) {
       console.error("Error playing track:", error);
-      setPlayerState((prev) => ({ ...prev, playLoading: false }));
+      const updatedState = { ...playerState, playLoading: false };
+      setPlayerState(updatedState);
+      await savePlayerState(updatedState);
     }
   };
 
@@ -242,7 +247,6 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
             }
             size={30}
             color={isCurrentlyPlaying() ? "#22c55e" : iconColor}
-            // color={"white"}
           />
         </TouchableOpacity>
 
@@ -263,4 +267,4 @@ const SurahCard = ({ surah, surahIndex, reciter, recitation }) => {
   );
 };
 
-export default React.memo(SurahCard);
+export default React.memo(SurahCardDetails);

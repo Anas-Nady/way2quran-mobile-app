@@ -35,7 +35,6 @@ export async function getPrayerTimes({ latitude, longitude }) {
   }
 }
 
-// Get the next prayer time
 export function getNextPrayer(prayerTimes) {
   const now = new Date();
   const currentTime = format(now, "HH:mm");
@@ -85,7 +84,6 @@ export function calculateRemainingTime(times, nextPrayer) {
   };
 }
 
-// Helper function to check if it's prayer time
 export function isPrayerTime(currentTime, prayerTimes) {
   return Object.values(prayerTimes).includes(currentTime);
 }

@@ -1,10 +1,8 @@
 import { createContext, useState, useEffect } from "react";
 import { Dimensions } from "react-native";
 
-// Create context
 export const ScreenDimensionsContext = createContext();
 
-// Create provider component
 export const ScreenDimensionsProvider = ({ children }) => {
   const [screenWidth, setScreenWidth] = useState(
     Dimensions.get("window").width

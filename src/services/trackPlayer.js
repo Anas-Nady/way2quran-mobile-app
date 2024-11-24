@@ -1,4 +1,7 @@
-import TrackPlayer, { Capability } from "react-native-track-player";
+import TrackPlayer, {
+  AppKilledPlaybackBehavior,
+  Capability,
+} from "react-native-track-player";
 
 export const setupTrackPlayer = async () => {
   try {
@@ -18,7 +21,6 @@ export const setupTrackPlayer = async () => {
 
 export default async function () {
   TrackPlayer.updateOptions({
-    // Media controls capabilities
     capabilities: [
       Capability.Play,
       Capability.Pause,
@@ -28,7 +30,6 @@ export default async function () {
       Capability.SeekTo,
     ],
 
-    // Capabilities that will show up when the notification is in the compact form on Android
     compactCapabilities: [
       Capability.Play,
       Capability.Pause,
@@ -36,10 +37,10 @@ export default async function () {
       Capability.SkipToPrevious,
     ],
 
-    // Notification color (Android)
-    notificationColor: "#22c55e",
-
-    // Media controls color on lock screen (iOS)
-    accentColor: "#22c55e",
+    android: {
+      appKilledPlaybackBehavior:
+        AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
+      alwaysPauseOnInterruption: true,
+    },
   });
 }

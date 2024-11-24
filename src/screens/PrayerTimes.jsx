@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { View, Text, ScrollView } from "react-native";
 import * as Location from "expo-location";
-import Loading from "./../components/ui/Loading";
-import Error from "./../components/ui/Error";
+import LoadingSpinner from "./../components/States/LoadingSpinner";
+import Error from "./../components/States/Error";
 import { useTranslate } from "./../helpers/i18nHelper.js";
 import { flexDirection } from "../helpers/flexDirection.js";
 import GoBackButton from "../components/ui/GoBackButton.jsx";
@@ -24,7 +24,6 @@ const PrayerTimes = () => {
   useEffect(() => {
     const getLocationAndPrayerTimes = async () => {
       try {
-        // Request location permissions
         const { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== "granted") {
           setError(translate("locationPermissionDenied"));
@@ -34,7 +33,6 @@ const PrayerTimes = () => {
 
         const location = await Location.getCurrentPositionAsync({});
 
-        // Get address from coordinates
         const addressResponse = await Location.reverseGeocodeAsync({
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
@@ -45,7 +43,6 @@ const PrayerTimes = () => {
           setAddress(`${city}, ${country}`);
         }
 
-        // Get prayer times using location
         const times = await getPrayerTimes({
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
@@ -75,7 +72,7 @@ const PrayerTimes = () => {
   }, [prayerTimes, nextPrayer]);
 
   if (loading) {
-    return <Loading />;
+    return <LoadingSpinner />;
   }
 
   if (error) {

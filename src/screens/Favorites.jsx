@@ -5,7 +5,7 @@ import HeadingScreen from "../components/HeadingScreen";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { getAllBookmarks, removeBookmark } from "../helpers/bookmarkHandlers";
-import EmptyState from "../components/ui/EmptyState";
+import EmptyState from "../components/States/EmptyState";
 import ConfirmationDialog from "../components/ui/ConfirmationDialog";
 import { useTranslate } from "../helpers/i18nHelper";
 import { flexDirection } from "../helpers/flexDirection";
@@ -30,7 +30,7 @@ export default function Favorites() {
 
   const handleDeleteBookmark = async (reciterSlug) => {
     await removeBookmark(TYPE, reciterSlug);
-    loadBookmarks(); // Reload bookmarks after deletion
+    loadBookmarks();
   };
 
   const handleDelete = (bookmark) => {

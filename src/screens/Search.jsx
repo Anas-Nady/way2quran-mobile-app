@@ -1,8 +1,8 @@
 import { useState, useCallback } from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 import { searchItems } from "../services/api";
-import SearchInput from "../components/ui/SearchInput";
-import SearchResult from "../components/ui/SearchResult";
+import SearchInput from "../components/Search/SearchInput";
+import SearchResult from "../components/Search/SearchResult";
 import { debounce } from "lodash";
 import { useTranslate } from "../helpers/i18nHelper";
 import GoBackButton from "../components/ui/GoBackButton";

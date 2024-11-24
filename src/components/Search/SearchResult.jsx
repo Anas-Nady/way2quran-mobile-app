@@ -1,10 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, TouchableOpacity } from "react-native";
-import Error from "./Error";
-import EmptyState from "./EmptyState";
-import Loading from "./Loading";
+import Error from "../States/Error";
+import EmptyState from "../States/EmptyState";
+import LoadingSpinner from "../States/LoadingSpinner";
 import { useTranslate } from "../../helpers/i18nHelper";
-import getName from "./../../helpers/getName";
+import getName from "../../helpers/getName";
 
 export default function SearchResult({ results, loading, error }) {
   const navigation = useNavigation();
@@ -14,7 +14,6 @@ export default function SearchResult({ results, loading, error }) {
     items.map((item, index) => {
       const dynamicParams = {};
 
-      // Apply specific parameters based on the provided params structure
       if (params.reciterSlug && params.recitationSlug) {
         dynamicParams.reciterSlug = item.slug;
         dynamicParams.recitationSlug = item.recitationSlug;
@@ -40,7 +39,7 @@ export default function SearchResult({ results, loading, error }) {
     });
 
   if (loading) {
-    return <Loading />;
+    return <LoadingSpinner />;
   }
 
   if (error) {

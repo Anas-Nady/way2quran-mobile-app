@@ -4,7 +4,7 @@ import HeadingScreen from "../components/HeadingScreen";
 import { useTranslation } from "react-i18next";
 import GoBackButton from "../components/ui/GoBackButton";
 import SurahsList from "../constants/surahsList";
-import SurahCard from "../components/SurahCard";
+import SurahCard from "../components/Surah/SurahCard";
 import { ScreenDimensionsContext } from "../contexts/ScreenDimensionsProvider";
 
 export default function Mushaf() {

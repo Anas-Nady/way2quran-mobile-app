@@ -8,5 +8,5 @@ export const flexDirection = () => {
 };
 
 export const textDirection = () => {
-  return "text-left";
+  return isRTL ? "text-right" : "text-left";
 };

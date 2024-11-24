@@ -1,12 +1,12 @@
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { TouchableOpacity, View } from "react-native";
-import Menu from "./Menu";
-import AppTitle from "./../AppTitle";
+import AppTitle from "../AppTitle";
 import Animated, { FadeIn } from "react-native-reanimated";
 import { useNavigation } from "@react-navigation/native";
 import { flexDirection } from "../../helpers/flexDirection";
+import TopBarMenu from "./TopBarMenu";
 
-const Header = ({ isMenuOpen, toggleMenu }) => {
+const TopBar = ({ isMenuOpen, toggleMenu }) => {
   const navigation = useNavigation();
 
   return (
@@ -48,7 +48,7 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
             className="w-full px-3 py-2 bg-gray-800 border-b border-gray-500"
             entering={FadeIn.delay(20).springify()}
           >
-            <Menu closeMenu={toggleMenu} />
+            <TopBarMenu closeMenu={toggleMenu} />
           </Animated.View>
         )}
       </View>
@@ -56,4 +56,4 @@ const Header = ({ isMenuOpen, toggleMenu }) => {
   );
 };
 
-export default Header;
+export default TopBar;

@@ -38,7 +38,7 @@ const ReciterHeader = ({
         <View className="flex-col items-center w-full">
           <ReciterImg uri={reciter?.photo} />
           <View className="my-2">
-            <Text className="text-3xl font-semibold text-white">
+            <Text className="px-2 text-3xl font-semibold text-center text-slate-300">
               {getName(reciter)}
             </Text>
             {reciter?.isTopReciter && <TopReciterBadge />}
@@ -46,7 +46,7 @@ const ReciterHeader = ({
               className={`${flexDirection()} items-center justify-center gap-2 mt-1`}
             >
               <Ionicons name="eye-outline" size={25} color="#6B7280" />
-              <Text className="mb-1 ml-1 text-lg font-semibold text-white">
+              <Text className="mb-1 ml-1 text-lg font-semibold text-slate-300">
                 {reciter?.totalViewers?.toLocaleString()}
               </Text>
             </View>
@@ -61,7 +61,7 @@ const ReciterHeader = ({
             recitationName={getName(currentRecitation?.recitationInfo)}
           />
         ) : (
-          <Text className="w-[90%] p-2 mx-auto text-2xl font-semibold text-center text-gray-100 border border-gray-600 rounded">
+          <Text className="w-[90%] p-2 mx-auto text-2xl font-semibold text-center text-gray-200 border border-gray-600 rounded">
             {getName(currentRecitation?.recitationInfo)}
           </Text>
         )}
@@ -70,7 +70,7 @@ const ReciterHeader = ({
           onPress={downloadRecitation}
           className="w-[95%] mx-auto p-4 mt-4 bg-gray-700 border border-gray-500 rounded-md"
         >
-          <Text className="ml-2 text-lg font-semibold text-center text-white">
+          <Text className="ml-2 text-lg font-semibold text-center text-slate-100">
             {downloadTranslate}
           </Text>
         </TouchableOpacity>

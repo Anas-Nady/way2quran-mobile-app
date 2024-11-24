@@ -10,7 +10,7 @@
     "scheme": "way2quran",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "backgroundColor": "#374151"
+      "backgroundColor": "#fff"
     },
     "ios": {
       "supportsTablet": true,

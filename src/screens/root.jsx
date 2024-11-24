@@ -1,4 +1,3 @@
-import { NavigationContainer } from "@react-navigation/native";
 import { ScreenDimensionsProvider } from "../contexts/ScreenDimensionsProvider";
 import { useAudioPlayer } from "../contexts/AudioPlayerContext";
 import { useCustomFonts } from "../services/font";
@@ -11,11 +10,9 @@ function RootScreenContent() {
   if (!fontsLoaded && !error) return null;
 
   return (
-    <NavigationContainer independent={true}>
-      <ScreenDimensionsProvider>
-        <Layout playerState={playerState} />
-      </ScreenDimensionsProvider>
-    </NavigationContainer>
+    <ScreenDimensionsProvider>
+      <Layout playerState={playerState} />
+    </ScreenDimensionsProvider>
   );
 }
 

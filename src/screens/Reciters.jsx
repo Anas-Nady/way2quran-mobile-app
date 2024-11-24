@@ -3,13 +3,13 @@ import { View, FlatList } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import recitations from "../constants/recitations";
 import HeadingScreen from "../components/HeadingScreen";
-import ReciterCard from "../components/reciter/ReciterCard";
-import Loading from "../components/ui/Loading";
+import ReciterCard from "../components/Reciter/ReciterCard";
+import LoadingSpinner from "../components/States/LoadingSpinner";
 import GoBackButton from "../components/ui/GoBackButton";
 import Pagination from "../components/ui/Pagination";
-import NotFoundResults from "../components/ui/NotFoundResults";
+import NotFoundResults from "../components/States/NotFoundResults";
 import { getReciters } from "../services/api";
-import Error from "../components/ui/Error";
+import Error from "../components/States/Error";
 import getRecitationType from "./../helpers/getRecitationType";
 import getName from "../helpers/getName";
 import { ScreenDimensionsContext } from "../contexts/ScreenDimensionsProvider";
@@ -45,10 +45,13 @@ export default function Reciters() {
         const data = await res.json();
 
         if (!res.ok) {
-          // do something here
-          return <Error message={data.message} />;
+          return (
+            <Error
+              message={data?.message || "An error occurred please try again"}
+            />
+          );
         }
-        setTotalPages(data.pagination.pages); // Changed from data.pagination.page
+        setTotalPages(data.pagination.pages);
         setState({ reciters: data.reciters, loading: false, error: null });
       } catch (error) {
         setState({ reciters: [], loading: false, error: error.message });
@@ -86,19 +89,20 @@ export default function Reciters() {
     </View>
   );
 
-  const ListFooterComponent = () => (
-    <Pagination
-      currentPage={currentPage}
-      totalPages={totalPages}
-      onPageChange={handlePageChange}
-    />
-  );
+  const ListFooterComponent = () =>
+    totalPages > 1 && (
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
+    );
   const numColumns = width > 600 ? 4 : 2;
 
   return (
     <View className="flex-1 w-full bg-gray-800">
       {state.loading ? (
-        <Loading />
+        <LoadingSpinner />
       ) : state.error ? (
         <Error message={state.error} />
       ) : (
@@ -121,7 +125,6 @@ export default function Reciters() {
           columnWrapperStyle={{
             justifyContent: "space-between",
             alignItems: "center",
-            paddingVertical: 14,
             padding: 20,
           }}
         />

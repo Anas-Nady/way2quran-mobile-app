@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { View, Linking, ActivityIndicator, FlatList } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import SurahCard from "../components/reciter/SurahCard";
+import SurahCardDetails from "../components/Surah/SurahCardDetails";
 import { BASE_END_POINT, getReciter } from "../services/api";
-import Error from "../components/ui/Error";
-import Loading from "../components/ui/Loading";
+import Error from "../components/States/Error";
+import LoadingSpinner from "../components/States/LoadingSpinner";
 import {
   addBookmark,
   removeBookmark,
@@ -12,7 +12,7 @@ import {
 } from "../helpers/bookmarkHandlers";
 import Alert from "../components/ui/Alert";
 import { useTranslate } from "./../helpers/i18nHelper.js";
-import ReciterHeader from "../components/reciter/ReciterHeader.jsx";
+import ReciterHeader from "../components/Reciter/ReciterHeader.jsx";
 
 const ReciterScreen = () => {
   const route = useRoute();
@@ -142,7 +142,7 @@ const ReciterScreen = () => {
   };
 
   const renderSurahItem = ({ item, index }) => (
-    <SurahCard
+    <SurahCardDetails
       surah={item}
       surahIndex={index}
       recitation={currentRecitation}
@@ -168,7 +168,7 @@ const ReciterScreen = () => {
         />
       )}
       {state.loading ? (
-        <Loading />
+        <LoadingSpinner />
       ) : state.error ? (
         <Error message={state.error} />
       ) : (

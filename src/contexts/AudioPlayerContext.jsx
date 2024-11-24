@@ -4,7 +4,7 @@ import TrackPlayer, {
   useTrackPlayerEvents,
 } from "react-native-track-player";
 import getName from "../helpers/getName";
-import { APP_AR_NAME } from "../constants/socialMedia";
+import { savePlayerState } from "../helpers/playerStateStorage";
 
 const AudioPlayerContext = createContext();
 
@@ -21,9 +21,9 @@ export const AudioPlayerProvider = ({ children }) => {
     recitation: null,
     modalHeight: 80,
     playLoading: false,
+    loadingNextPrev: false,
   });
 
-  // Listen to remote control events
   useTrackPlayerEvents(
     [
       Event.RemotePlay,
@@ -35,26 +35,41 @@ export const AudioPlayerProvider = ({ children }) => {
       Event.RemoteDuck,
     ],
     async (event) => {
+      let updatedPlayerState = { ...playerState };
+
       switch (event.type) {
         case Event.RemotePlay:
           await TrackPlayer.play();
-          setPlayerState((prev) => ({ ...prev, isPlaying: true }));
+          updatedPlayerState = {
+            ...playerState,
+            isPlaying: true,
+          };
+          setPlayerState(updatedPlayerState);
+          await savePlayerState(updatedPlayerState);
           break;
 
         case Event.RemotePause:
           await TrackPlayer.pause();
-          setPlayerState((prev) => ({ ...prev, isPlaying: false }));
+          updatedPlayerState = {
+            ...playerState,
+            isPlaying: false,
+          };
+          setPlayerState(updatedPlayerState);
+          await savePlayerState(updatedPlayerState);
           break;
 
         case Event.RemoteStop:
           await TrackPlayer.reset();
-          setPlayerState((prev) => ({
-            ...prev,
+          updatedPlayerState = {
+            ...playerState,
             isPlaying: false,
             currentAudio: null,
             surahIndex: -1,
             isModalVisible: false,
-          }));
+          };
+
+          setPlayerState(updatedPlayerState);
+          await savePlayerState(updatedPlayerState);
           break;
 
         case Event.RemoteSeek:
@@ -63,19 +78,24 @@ export const AudioPlayerProvider = ({ children }) => {
 
         case Event.RemoteNext:
           if (
-            playerState.surahIndex <
-            playerState.recitation?.audioFiles.length - 1
+            !playerState.recitation?.audioFiles ||
+            playerState.surahIndex >=
+              playerState.recitation.audioFiles.length - 1
           ) {
+            break;
+          }
+
+          try {
             const nextIdx = playerState.surahIndex + 1;
-            const nextSurah = playerState?.recitation?.audioFiles[nextIdx];
+            const nextSurah = playerState.recitation.audioFiles[nextIdx];
 
             await TrackPlayer.reset();
             await TrackPlayer.add({
               id: nextSurah.surahNumber.toString(),
               url: nextSurah.url,
-              title: `${APP_AR_NAME} | ${getName(nextSurah.surahInfo)}`,
+              title: getName(nextSurah.surahInfo),
               artist: getName(playerState.reciter),
-              artwork: playerState.reciter.photo,
+              artwork: playerState.reciter?.photo,
               genre: "Quran",
             });
             await TrackPlayer.updateNowPlayingMetadata({
@@ -83,12 +103,18 @@ export const AudioPlayerProvider = ({ children }) => {
             });
 
             await TrackPlayer.play();
-            setPlayerState((prev) => ({
-              ...prev,
+
+            const updatedPlayerState = {
+              ...playerState,
               currentAudio: nextSurah,
               isPlaying: true,
               surahIndex: nextIdx,
-            }));
+            };
+
+            setPlayerState(updatedPlayerState);
+            await savePlayerState(updatedPlayerState);
+          } catch (error) {
+            console.error("Error handling remote next:", error);
           }
           break;
 
@@ -101,7 +127,7 @@ export const AudioPlayerProvider = ({ children }) => {
             await TrackPlayer.add({
               id: prevSurah.surahNumber.toString(),
               url: prevSurah.url,
-              title: `${APP_AR_NAME} | ${getName(prevSurah.surahInfo)}`,
+              title: `${getName(prevSurah.surahInfo)}`,
               artist: getName(playerState.reciter),
               artwork: playerState.reciter.photo,
               genre: "Quran",
@@ -111,12 +137,15 @@ export const AudioPlayerProvider = ({ children }) => {
             });
 
             await TrackPlayer.play();
-            setPlayerState((prev) => ({
-              ...prev,
+
+            updatedPlayerState = {
+              ...playerState,
               currentAudio: prevSurah,
               isPlaying: true,
               surahIndex: prevIdx,
-            }));
+            };
+            setPlayerState(updatedPlayerState);
+            await savePlayerState(updatedPlayerState);
           }
           break;
 
@@ -133,7 +162,6 @@ export const AudioPlayerProvider = ({ children }) => {
     }
   );
 
-  // Add PlaybackQueueEnded event listener
   useTrackPlayerEvents([Event.PlaybackQueueEnded], async (event) => {
     if (event.type === Event.PlaybackQueueEnded) {
       if (
@@ -148,7 +176,7 @@ export const AudioPlayerProvider = ({ children }) => {
           await TrackPlayer.add({
             id: nextSurah.surahNumber.toString(),
             url: nextSurah.url,
-            title: `${APP_AR_NAME} | ${getName(nextSurah.surahInfo)}`,
+            title: `${getName(nextSurah.surahInfo)}`,
             artist: getName(playerState.reciter),
             artwork: playerState.reciter.photo,
             genre: "Quran",
@@ -158,28 +186,35 @@ export const AudioPlayerProvider = ({ children }) => {
           });
           await TrackPlayer.play();
 
-          setPlayerState((prev) => ({
-            ...prev,
+          const updatedPlayerState = {
+            ...playerState,
             currentAudio: nextSurah,
             isPlaying: true,
             surahIndex: nextIdx,
-          }));
+          };
+          setPlayerState(updatedPlayerState);
+          await savePlayerState(updatedPlayerState);
         } catch (error) {
-          console.error("Error auto-playing next track:", error);
-          setPlayerState((prev) => ({ ...prev, isPlaying: false }));
+          const updatedPlayerState = { ...playerState, isPlaying: false };
+          setPlayerState(updatedPlayerState);
+          await savePlayerState(updatedPlayerState);
         }
       } else {
-        setPlayerState((prev) => ({ ...prev, isPlaying: false }));
+        const updatedPlayerState = { ...playerState, isPlaying: false };
+        setPlayerState(updatedPlayerState);
+        await savePlayerState(updatedPlayerState);
       }
     }
   });
 
-  const toggleModalExpansion = () => {
-    setPlayerState((prev) => ({
-      ...prev,
-      isModalExpanded: !prev.isModalExpanded,
-      modalHeight: prev.isModalExpanded ? 165 : 80,
-    }));
+  const toggleModalExpansion = async () => {
+    const updatedPlayerState = {
+      ...playerState,
+      isModalExpanded: !playerState.isModalExpanded,
+      modalHeight: playerState.isModalExpanded ? 165 : 80,
+    };
+    setPlayerState(updatedPlayerState);
+    await savePlayerState(updatedPlayerState);
   };
 
   return (

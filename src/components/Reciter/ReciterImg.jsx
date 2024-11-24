@@ -7,7 +7,7 @@ export default function ReciterImg({
   alt = "Way2quran",
   otherClasses = "",
 }) {
-  const sizeClass = "w-[150px] h-[150px]";
+  const sizeClass = "w-[140px] h-[140px]";
 
   return (
     <View

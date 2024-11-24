@@ -7,9 +7,9 @@ const Button = ({ onPress, text, disabled }) => {
       disabled={disabled}
       className={`${
         disabled ? "bg-gray-700" : "bg-green-500"
-      } px-5 py-2.5 text-sm font-medium text-center text-white rounded-lg`}
+      } px-5 py-2.5 text-sm font-medium text-center rounded-lg`}
     >
-      <Text className="text-base font-semibold text-white">{text}</Text>
+      <Text className="text-base font-semibold text-slate-200">{text}</Text>
     </TouchableOpacity>
   );
 };

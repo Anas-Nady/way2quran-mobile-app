@@ -1,4 +1,5 @@
 import { View, Text, TextInput } from "react-native";
+import { textDirection } from "../../helpers/flexDirection";
 
 const TextAreaInput = ({ id, value, onChangeText, label }) => {
   return (
@@ -13,7 +14,7 @@ const TextAreaInput = ({ id, value, onChangeText, label }) => {
         numberOfLines={3}
         value={value}
         onChangeText={onChangeText}
-        className="w-full p-1 text-lg text-right text-white placeholder-gray-400 bg-gray-700 border border-gray-600 rounded-lg"
+        className={`${textDirection()} w-full p-1 text-lg  text-slate-200 placeholder-gray-400 bg-gray-700 border border-gray-600 rounded-lg`}
       />
     </View>
   );

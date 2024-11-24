@@ -27,7 +27,6 @@ function App() {
   );
 }
 
-// Register the playback service outside the component
 TrackPlayer.registerPlaybackService(() => trackPlayer);
 
 export default App;
