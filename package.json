@@ -53,7 +53,6 @@
     "react-native-screens": "3.31.1",
     "react-native-svg": "15.2.0",
     "react-native-track-player": "^4.1.1",
-    "react-native-zoomable-view": "^0.3.1",
     "typescript": "~5.3.3"
   },
   "devDependencies": {

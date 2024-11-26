@@ -47,6 +47,15 @@ export default function Surah() {
     }
   };
 
+  // Hide arrows with fade-out animation
+  const hideArrows = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 500, // 500ms fade-out duration
+      useNativeDriver: true,
+    }).start(() => setShowArrows(false)); // Hide arrows completely
+  };
+
   // Navigate to the previous page
   const goToPreviousPage = () => {
     if (currentPage > 1) {
@@ -144,12 +153,11 @@ export default function Surah() {
           </Animated.View>
         </View>
       )}
-
       <Image
         source={surahPage}
         style={styles.quranImage}
         contentFit="contain"
-        transition={200}
+        transition={300}
       />
     </View>
   );
@@ -158,9 +166,12 @@ export default function Surah() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#FEF9DE",
     justifyContent: "center",
     alignItems: "center",
+  },
+  zoomContainer: {
+    flex: 1,
   },
   quranImage: {
     width: "100%",

@@ -7,7 +7,7 @@ export default function GoBackButton() {
 
   return (
     <Pressable
-      className="absolute z-10 left-3 top-3"
+      className="absolute z-10 left-3 top-2"
       onPress={() => navigation.goBack()}
     >
       <View className="p-1 bg-green-500 rounded-xl">

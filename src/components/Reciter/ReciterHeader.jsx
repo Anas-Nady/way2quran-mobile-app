@@ -24,7 +24,7 @@ const ReciterHeader = ({
         <TouchableOpacity
           disabled={favouriteState.loading}
           onPress={handleFavoriteToggle}
-          className="absolute z-10 top-2 right-2"
+          className="absolute z-10 top-2 right-3"
         >
           <AntDesign
             name="heart"

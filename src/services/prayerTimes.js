@@ -2,8 +2,6 @@ import { format } from "date-fns";
 
 export async function getPrayerTimes({ latitude, longitude }) {
   try {
-    const today = format(new Date(), "yyyy-MM-dd");
-
     const response = await fetch(
       `https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=2`
     );
@@ -16,16 +14,16 @@ export async function getPrayerTimes({ latitude, longitude }) {
     }
 
     const data = await response.json();
-
     const timings = data.data.timings;
 
-    // Format the times to HH:mm format
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
     const prayerTimes = {
-      fajr: format(new Date(`${today} ${timings.Fajr}`), "HH:mm"),
-      dhuhr: format(new Date(`${today} ${timings.Dhuhr}`), "HH:mm"),
-      asr: format(new Date(`${today} ${timings.Asr}`), "HH:mm"),
-      maghrib: format(new Date(`${today} ${timings.Maghrib}`), "HH:mm"),
-      isha: format(new Date(`${today} ${timings.Isha}`), "HH:mm"),
+      fajr: convertTimeToLocal(timings.Fajr, timeZone),
+      dhuhr: convertTimeToLocal(timings.Dhuhr, timeZone),
+      asr: convertTimeToLocal(timings.Asr, timeZone),
+      maghrib: convertTimeToLocal(timings.Maghrib, timeZone),
+      isha: convertTimeToLocal(timings.Isha, timeZone),
     };
 
     return prayerTimes;
@@ -34,6 +32,12 @@ export async function getPrayerTimes({ latitude, longitude }) {
     throw error;
   }
 }
+
+const convertTimeToLocal = (time, timeZone) => {
+  const date = new Date(`1970-01-01T${time}:00Z`);
+  const zonedDate = utcToZonedTime(date, timeZone);
+  return format(zonedDate, "HH:mm");
+};
 
 export function getNextPrayer(prayerTimes) {
   const now = new Date();

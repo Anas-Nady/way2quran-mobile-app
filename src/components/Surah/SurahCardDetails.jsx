@@ -204,11 +204,10 @@ const SurahCardDetails = ({ surah, surahIndex, reciter, recitation }) => {
     <View
       className={`${flexDirection()} w-[95%] mx-auto relative items-center justify-between p-4 my-1 border rounded-lg border-gray-500 bg-gray-700`}
     >
-      <View
-        className={`${flexDirection()} items-center`}
-        // onPress={() =>
-        //   navigation.navigate("Surah", { surahNumber: surah?.surahNumber })
-        // }
+      <TouchableOpacity
+        className={`${flexDirection()} items-center flex-1`}
+        onPress={() => togglePlayback(surah)}
+        disabled={playerState.playLoading}
       >
         <View
           style={{ transform: [{ rotate: "45deg" }] }}
@@ -224,7 +223,7 @@ const SurahCardDetails = ({ surah, surahIndex, reciter, recitation }) => {
         <Text className="text-lg font-semibold text-white">
           {getName(surah?.surahInfo)}
         </Text>
-      </View>
+      </TouchableOpacity>
       <View
         style={{ gap: 9 }}
         className={`${flexDirection()} items-center justify-center`}
