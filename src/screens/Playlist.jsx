@@ -6,7 +6,7 @@ import GoBackButton from "../components/ui/GoBackButton";
 import { getAllBookmarks, removeBookmark } from "../helpers/bookmarkHandlers";
 import EmptyState from "../components/States/EmptyState";
 import { useAudioPlayer } from "../contexts/AudioPlayerContext";
-import TrackPlayer, { State } from "react-native-track-player/lib/src";
+import TrackPlayer from "react-native-track-player/lib/src";
 import ConfirmationDialog from "../components/ui/ConfirmationDialog";
 import { useTranslate } from "../helpers/i18nHelper";
 import getName from "../helpers/getName";
@@ -142,14 +142,8 @@ export default function Playlist() {
         (a, b) => a.surahNumber - b.surahNumber
       );
 
-      // Check if we're currently playing this playlist
-      const currentTrack = await TrackPlayer.getCurrentTrack();
-      const currentState = await TrackPlayer.getState();
-      const isCurrentPlaylist =
-        playerState.recitation?.audioFiles === sortedSurahs;
-
       // If no track is playing, start new playlist
-      if (currentTrack === null) {
+      if (playerState.surahIndex === -1) {
         await TrackPlayer.reset();
         await TrackPlayer.add({
           id: sortedSurahs[0].surahNumber.toString(),
@@ -182,17 +176,23 @@ export default function Playlist() {
         return;
       }
 
+      const isCurrentPlaylist =
+        playerState.reciter?.slug === playlist?.reciter?.slug;
+
       // If this playlist is already playing - handle play/pause
       if (isCurrentPlaylist) {
         let updatedPlayerState = { ...playerState, playLoading: false };
 
-        if (currentState === State.Playing) {
+        if (playerState.isPlaying) {
           await TrackPlayer.pause();
-          updatedPlayerState.isPlaying = false;
+          updatedPlayerState = { ...updatedPlayerState, isPlaying: false };
         } else {
           await TrackPlayer.play();
-          updatedPlayerState.isPlaying = true;
-          updatedPlayerState.isModalVisible = true;
+          updatedPlayerState = {
+            ...updatedPlayerState,
+            isPlaying: true,
+            isModalVisible: true,
+          };
         }
 
         setPlayerState(updatedPlayerState);
@@ -230,7 +230,6 @@ export default function Playlist() {
       setPlayerState(updatedPlayerState);
       await savePlayerState(updatedPlayerState);
     } catch (error) {
-      console.error("Error playing playlist:", error);
       const updatedState = { ...playerState, playLoading: false };
       setPlayerState(updatedState);
       await savePlayerState(updatedState);

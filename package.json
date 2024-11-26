@@ -27,6 +27,7 @@
     "expo-constants": "~16.0.2",
     "expo-dev-client": "~4.0.29",
     "expo-font": "~12.0.9",
+    "expo-image": "~1.13.0",
     "expo-linking": "~6.3.1",
     "expo-location": "^17.0.1",
     "expo-router": "~3.5.23",
@@ -52,6 +53,7 @@
     "react-native-screens": "3.31.1",
     "react-native-svg": "15.2.0",
     "react-native-track-player": "^4.1.1",
+    "react-native-zoomable-view": "^0.3.1",
     "typescript": "~5.3.3"
   },
   "devDependencies": {

@@ -40,7 +40,7 @@ export default function Reciters() {
         const res = await getReciters({
           recitationSlug,
           currentPage,
-          pageSize: 30,
+          pageSize: 50,
         });
         const data = await res.json();
 
@@ -125,7 +125,7 @@ export default function Reciters() {
           columnWrapperStyle={{
             justifyContent: "space-between",
             alignItems: "center",
-            padding: 20,
+            flex: 1,
           }}
         />
       )}

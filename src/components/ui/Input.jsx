@@ -9,6 +9,8 @@ const Input = ({ labelText, id, type, value, onChangeText }) => {
       </Text>
       <TextInput
         id={id}
+        accessibilityLabel={labelText}
+        accessibilityHint={`Provide a ${labelText}`}
         name={id}
         value={value}
         onChangeText={onChangeText}

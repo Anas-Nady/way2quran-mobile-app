@@ -1,132 +1,190 @@
-import React, {
-  useRef,
-  useEffect,
-  useState,
-  useMemo,
-  useCallback,
-} from "react";
-import { View, Animated, FlatList } from "react-native";
-import surahs from "./../constants/surahs";
-import HeadingScreen from "../components/HeadingScreen";
+import React, { useState, useContext, useRef, useEffect } from "react";
+import { StyleSheet, View, PanResponder, Animated } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import GoBackButton from "../components/ui/GoBackButton";
-import getName from "../helpers/getName";
+import { ScreenDimensionsContext } from "../contexts/ScreenDimensionsProvider";
+import { Image } from "expo-image";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { flexDirection } from "../helpers/flexDirection";
-import SurahText from "../components/Surah/SurahText";
-import SurahNavigation from "../components/Surah/SurahNavigation";
-import { VirtualizedList } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 
 export default function Surah() {
+  const { screenWidth, screenHeight } = useContext(ScreenDimensionsContext);
   const route = useRoute();
-  const scrollViewRef = useRef();
-  const surahNumber = parseInt(route.params?.surahNumber);
-  const surahInfo = surahs[surahNumber];
+  const [currentPage, setCurrentPage] = useState(
+    parseInt(route.params.pageNumber)
+  );
+  const [showArrows, setShowArrows] = useState(false);
+  const fadeAnim = useRef(new Animated.Value(1)).current;
+  const leftArrowAnim = useRef(new Animated.Value(0)).current;
+  const rightArrowAnim = useRef(new Animated.Value(0)).current;
 
-  const [progress, setProgress] = useState(new Animated.Value(0));
+  useEffect(() => {
+    const checkFirstTime = async () => {
+      const hasSeenArrows = await AsyncStorage.getItem("hasSeenArrows");
+      if (!hasSeenArrows) {
+        setShowArrows(true);
+        await AsyncStorage.setItem("hasSeenArrows", "true");
+        animateArrows();
+        setTimeout(() => fadeOutArrows(), 3000);
+      }
+    };
+    checkFirstTime();
+  }, []);
 
-  const handleScroll = async (event) => {
-    const currentOffsetY = event.nativeEvent.contentOffset.y;
-    const contentHeight = event.nativeEvent.contentSize.height;
-    const scrollHeight = event.nativeEvent.layoutMeasurement.height;
+  // Fade-out animation for arrows
+  const fadeOutArrows = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 500, // 500ms fade-out
+      useNativeDriver: true,
+    }).start(() => setShowArrows(false)); // Hide completely after animation
+  };
 
-    const newProgress = currentOffsetY / (contentHeight - scrollHeight);
-
-    Animated.timing(progress, {
-      toValue: newProgress,
-      duration: 100,
-      useNativeDriver: false,
-    }).start();
-
-    try {
-      await AsyncStorage.setItem(
-        `scrollTo-${surahNumber}`,
-        currentOffsetY.toString()
-      );
-    } catch (error) {
-      console.error("Failed to save scroll position:", error);
+  // Navigate to the next page
+  const goToNextPage = () => {
+    if (currentPage < 604) {
+      setCurrentPage((prevPage) => prevPage + 1);
+      hideArrows(); // Hide arrows after scrolling
     }
   };
 
-  useEffect(() => {
-    const getSavedScrollPosition = async () => {
-      try {
-        const savedScrollPosition = await AsyncStorage.getItem(
-          `scrollTo-${surahNumber}`
-        );
-        if (savedScrollPosition !== null) {
-          scrollViewRef.current?.scrollTo({
-            y: parseInt(savedScrollPosition),
-            animated: true,
-          });
+  // Navigate to the previous page
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+      hideArrows(); // Hide arrows after scrolling
+    }
+  };
+
+  // Detect swipe gestures using PanResponder
+  const panResponder = React.useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderRelease: (_, gestureState) => {
+        const { dx } = gestureState;
+
+        if (dx > 50) {
+          // Swipe right (go to the next page)
+          goToNextPage();
+        } else if (dx < -50) {
+          // Swipe left (go to the previous page)
+          goToPreviousPage();
         }
-      } catch (error) {
-        console.error("Error retrieving scroll position:", error);
-      }
-    };
+      },
+    })
+  ).current;
 
-    getSavedScrollPosition();
-  }, [surahNumber]);
+  const animateArrows = () => {
+    // Left arrow: Moves from center to the left
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(leftArrowAnim, {
+          toValue: -30, // Move left by 30 pixels
+          duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(leftArrowAnim, {
+          toValue: 0, // Return to original position
+          duration: 500,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
 
-  const renderHeader = useMemo(() => {
-    return (
-      <View>
-        <GoBackButton />
-        <HeadingScreen headingTxt={getName(surahInfo)} />
-      </View>
-    );
-  }, []);
+    // Right arrow: Moves from center to the right
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(rightArrowAnim, {
+          toValue: 30, // Move right by 30 pixels
+          duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(rightArrowAnim, {
+          toValue: 0, // Return to original position
+          duration: 500,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  };
 
-  const renderItem = useCallback(({ item }) => <SurahText item={item} />, []);
-
-  const renderFooter = useMemo(() => {
-    return <SurahNavigation surahNumber={surahNumber} />;
-  }, [surahNumber]);
-
-  const getItemCount = (data) => data.length;
-
-  const getItem = (data, index) => data[index];
+  const surahPage = `https://storage.googleapis.com/way2quran_storage/quran-pages/${currentPage}.jpg`;
 
   return (
-    <>
-      <View
-        className={`${flexDirection()} bg-gray-700`}
-        style={{ height: 2, width: "100%" }}
-      >
-        <Animated.View
-          className="bg-green-400"
-          style={{
-            height: "100%",
-            width: progress.interpolate({
-              inputRange: [0, 1],
-              outputRange: ["0%", "100%"],
-            }),
-          }}
-        />
-      </View>
-      <View className="flex-1 w-full bg-gray-800">
-        <VirtualizedList
-          style={{ flex: 1 }}
-          data={surahInfo.verses}
-          getItemCount={getItemCount}
-          getItem={getItem}
-          keyExtractor={(item) => item.id.toString()}
-          ListHeaderComponent={renderHeader}
-          renderItem={renderItem}
-          ListFooterComponent={renderFooter}
-          showsVerticalScrollIndicator={false}
-          initialNumToRender={7}
-          maxToRenderPerBatch={4}
-          updateCellsBatchingPeriod={100}
-          contentContainerStyle={{
-            backgroundColor: "#1f2937",
-            paddingBottom: 16,
-            flexGrow: 1,
-          }}
-          onScroll={handleScroll}
-          scrollEventThrottle={16}
-        />
-      </View>
-    </>
+    <View
+      style={[styles.container, { width: screenWidth, height: screenHeight }]}
+      {...panResponder.panHandlers}
+    >
+      {showArrows && (
+        <View style={styles.arrowContainer}>
+          {/* Left Arrow */}
+          <Animated.View
+            style={[
+              styles.arrow,
+              styles.leftArrow,
+              { transform: [{ translateX: leftArrowAnim }] },
+            ]}
+          >
+            <View style={styles.arrowShape}>
+              <AntDesign name="arrowleft" size={24} color="white" />
+            </View>
+          </Animated.View>
+
+          {/* Right Arrow */}
+          <Animated.View
+            style={[
+              styles.arrow,
+              styles.rightArrow,
+              { transform: [{ translateX: rightArrowAnim }] },
+            ]}
+          >
+            <View style={styles.arrowShape}>
+              <AntDesign name="arrowright" size={24} color="white" />
+            </View>
+          </Animated.View>
+        </View>
+      )}
+
+      <Image
+        source={surahPage}
+        style={styles.quranImage}
+        contentFit="contain"
+        transition={200}
+      />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  quranImage: {
+    width: "100%",
+    height: "100%",
+  },
+  arrowContainer: {
+    position: "absolute",
+    top: "50%",
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 30,
+    zIndex: 10,
+  },
+  arrow: {
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 30,
+  },
+  arrowText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+});

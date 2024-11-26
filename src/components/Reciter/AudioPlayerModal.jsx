@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { View, Text, TouchableOpacity, AppState } from "react-native";
 import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
@@ -195,7 +195,7 @@ const AudioPlayerModal = () => {
               ? "arrow-down-circle"
               : "arrow-up-circle"
           }
-          size={26}
+          size={28}
           color={iconColor}
         />
       </TouchableOpacity>
@@ -205,7 +205,7 @@ const AudioPlayerModal = () => {
         className={`absolute z-10 top-2 right-3`}
         onPress={closeModal}
       >
-        <AntDesign name="closecircleo" size={24} color={iconColor} />
+        <AntDesign name="closecircleo" size={25} color={iconColor} />
       </TouchableOpacity>
 
       {/* Expanded View */}
@@ -215,7 +215,10 @@ const AudioPlayerModal = () => {
           <View className={`${flexDirection()} items-center justify-end mx-4`}>
             <View className={`${flexDirection()} items-center flex-1 gap-2`}>
               <View className="flex-1">
-                <TouchableOpacity onPress={navigateToReciterScreen}>
+                <TouchableOpacity
+                  className="mx-3"
+                  onPress={navigateToReciterScreen}
+                >
                   <Text
                     className={` text-[18px] text-center font-bold text-gray-100`}
                   >

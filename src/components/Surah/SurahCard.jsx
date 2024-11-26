@@ -9,12 +9,13 @@ const SurahCard = ({ surah }) => {
 
   return (
     <TouchableOpacity
+      style={{ flexGrow: 1 }}
       onPress={() =>
         navigation.navigate("Surah", {
-          surahNumber: surah.number,
+          pageNumber: surah.page,
         })
       }
-      className={`${flexDirection()} px-3 py-4 mx-auto w-[90%] mb-2 border border-gray-600 rounded surah-card`}
+      className={`${flexDirection()} px-4 py-4 mx-auto w-[90%] border border-gray-600 rounded surah-card`}
     >
       <View className={`${flexDirection()} items-center gap-4 `}>
         <View

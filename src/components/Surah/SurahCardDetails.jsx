@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, Linking } from "react-native";
 import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import { useAudioPlayer } from "../../contexts/AudioPlayerContext.jsx";
 import {
   isBookmarkExists,
@@ -10,12 +9,12 @@ import {
 } from "../../helpers/bookmarkHandlers.js";
 import getName from "../../helpers/getName.js";
 import { flexDirection } from "../../helpers/flexDirection.js";
-import TrackPlayer, { State } from "react-native-track-player";
+import TrackPlayer from "react-native-track-player";
 import { savePlayerState } from "../../helpers/playerStateStorage";
 
 const SurahCardDetails = ({ surah, surahIndex, reciter, recitation }) => {
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const navigation = useNavigation();
+  const currentSurahIndex = surah.surahNumber - 1;
 
   const { playerState, setPlayerState } = useAudioPlayer();
 
@@ -34,11 +33,8 @@ const SurahCardDetails = ({ surah, surahIndex, reciter, recitation }) => {
         surahName: getName(surah?.surahInfo),
       };
 
-      const currentTrack = await TrackPlayer.getCurrentTrack();
-      const playbackState = await TrackPlayer.getState();
-
       // If no track is loaded yet
-      if (currentTrack === null) {
+      if (playerState.surahIndex === -1) {
         await TrackPlayer.reset();
         await TrackPlayer.add({
           id: surah.surahNumber.toString(),
@@ -71,21 +67,21 @@ const SurahCardDetails = ({ surah, surahIndex, reciter, recitation }) => {
         return;
       }
 
-      // If this is the current track - handle play/pause
-      if (currentTrack === surah.surahNumber.toString()) {
-        const updatedPlayerState = {
+      if (playerState.surahIndex == currentSurahIndex) {
+        let updatedPlayerState = {
           ...playerState,
           playLoading: false,
         };
-        if (playbackState === State.Playing) {
+        if (playerState.isPlaying) {
           await TrackPlayer.pause();
-          updatedPlayerState.isPlaying = false;
+          updatedPlayerState = { ...updatedPlayerState, isPlaying: false };
         } else {
           await TrackPlayer.play();
-          updatedPlayerState.isPlaying = true;
+          updatedPlayerState = { ...updatedPlayerState, isPlaying: true };
         }
 
         await savePlayerState(updatedPlayerState);
+        setPlayerState(updatedPlayerState);
         return;
       }
 
@@ -118,7 +114,6 @@ const SurahCardDetails = ({ surah, surahIndex, reciter, recitation }) => {
       setPlayerState(updatedPlayerState);
       await savePlayerState(updatedPlayerState);
     } catch (error) {
-      console.error("Error playing track:", error);
       const updatedState = { ...playerState, playLoading: false };
       setPlayerState(updatedState);
       await savePlayerState(updatedState);
@@ -131,7 +126,7 @@ const SurahCardDetails = ({ surah, surahIndex, reciter, recitation }) => {
       playerState.reciter?.slug === reciter?.slug &&
       playerState.recitation?.recitationInfo?.slug ===
         recitation?.recitationInfo?.slug &&
-      playerState.currentAudio?.surahNumber === surah?.surahNumber
+      playerState?.surahIndex === currentSurahIndex
     );
   };
 
@@ -207,13 +202,13 @@ const SurahCardDetails = ({ surah, surahIndex, reciter, recitation }) => {
 
   return (
     <View
-      className={`${flexDirection()} w-[95%] mx-auto relative items-center justify-between p-4 my-2 border rounded-lg border-gray-500 bg-gray-700`}
+      className={`${flexDirection()} w-[95%] mx-auto relative items-center justify-between p-4 my-1 border rounded-lg border-gray-500 bg-gray-700`}
     >
-      <TouchableOpacity
+      <View
         className={`${flexDirection()} items-center`}
-        onPress={() =>
-          navigation.navigate("Surah", { surahNumber: surah?.surahNumber })
-        }
+        // onPress={() =>
+        //   navigation.navigate("Surah", { surahNumber: surah?.surahNumber })
+        // }
       >
         <View
           style={{ transform: [{ rotate: "45deg" }] }}
@@ -229,7 +224,7 @@ const SurahCardDetails = ({ surah, surahIndex, reciter, recitation }) => {
         <Text className="text-lg font-semibold text-white">
           {getName(surah?.surahInfo)}
         </Text>
-      </TouchableOpacity>
+      </View>
       <View
         style={{ gap: 9 }}
         className={`${flexDirection()} items-center justify-center`}

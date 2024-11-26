@@ -5,6 +5,7 @@ const SurahsList = [
     arabicName: "سورة الفاتحة",
     englishName: "Al-Fatihah",
     slug: "al-fatihah",
+    page: 1,
   },
   {
     _id: "669f49b0129976b9cb99b9bd",
@@ -12,6 +13,7 @@ const SurahsList = [
     arabicName: "سورة البقرة",
     englishName: "Al-Baqarah",
     slug: "al-baqarah",
+    page: 2,
   },
   {
     _id: "669f49b2129976b9cb99bae4",
@@ -19,6 +21,7 @@ const SurahsList = [
     arabicName: "سورة آل عمران",
     englishName: "Ali 'Imran",
     slug: "ali-'imran",
+    page: 50,
   },
   {
     _id: "669f49b4129976b9cb99bbae",
@@ -26,6 +29,7 @@ const SurahsList = [
     arabicName: "سورة النساء",
     englishName: "An-Nisa",
     slug: "an-nisa",
+    page: 77,
   },
   {
     _id: "669f49b6129976b9cb99bc60",
@@ -33,6 +37,7 @@ const SurahsList = [
     arabicName: "سورة المائدة",
     englishName: "Al-Ma'numberah",
     slug: "al-ma'numberah",
+    page: 106,
   },
   {
     _id: "669f49b7129976b9cb99bcda",
@@ -40,6 +45,7 @@ const SurahsList = [
     arabicName: "سورة الأنعام",
     englishName: "Al-An'am",
     slug: "al-an'am",
+    page: 128,
   },
   {
     _id: "669f49b7129976b9cb99bd81",
@@ -47,6 +53,7 @@ const SurahsList = [
     arabicName: "سورة الأعراف",
     englishName: "Al-A'raf",
     slug: "al-a'raf",
+    page: 151,
   },
   {
     _id: "669f49b8129976b9cb99be51",
@@ -54,6 +61,7 @@ const SurahsList = [
     arabicName: "سورة الأنفال",
     englishName: "Al-Anfal",
     slug: "al-anfal",
+    page: 177,
   },
   {
     _id: "669f49b8129976b9cb99be9e",
@@ -61,6 +69,7 @@ const SurahsList = [
     arabicName: "سورة التوبة",
     englishName: "At-Tawbah",
     slug: "at-tawbah",
+    page: 187,
   },
   {
     _id: "669f49b8129976b9cb99bf21",
@@ -68,6 +77,7 @@ const SurahsList = [
     arabicName: "سورة يونس",
     englishName: "Yunus",
     slug: "yunus",
+    page: 208,
   },
   {
     _id: "669f49b9129976b9cb99bf90",
@@ -75,6 +85,7 @@ const SurahsList = [
     arabicName: "سورة هود",
     englishName: "Hud",
     slug: "hud",
+    page: 221,
   },
   {
     _id: "669f49b9129976b9cb99c00d",
@@ -82,6 +93,7 @@ const SurahsList = [
     arabicName: "سورة يوسف",
     englishName: "Yusuf",
     slug: "yusuf",
+    page: 235,
   },
   {
     _id: "669f49ba129976b9cb99c07e",
@@ -89,6 +101,7 @@ const SurahsList = [
     arabicName: "سورة الرعد",
     englishName: "Ar-Ra'd",
     slug: "ar-ra'd",
+    page: 249,
   },
   {
     _id: "669f49ba129976b9cb99c0ab",
@@ -96,6 +109,7 @@ const SurahsList = [
     arabicName: "سورة إبراهيم",
     englishName: "Ibrahim",
     slug: "ibrahim",
+    page: 255,
   },
   {
     _id: "669f49ba129976b9cb99c0e1",
@@ -103,6 +117,7 @@ const SurahsList = [
     arabicName: "سورة الحجر",
     englishName: "Al-Hijr",
     slug: "al-hijr",
+    page: 262,
   },
   {
     _id: "669f49ba129976b9cb99c146",
@@ -110,6 +125,7 @@ const SurahsList = [
     arabicName: "سورة النحل",
     englishName: "An-Nahl",
     slug: "an-nahl",
+    page: 267,
   },
   {
     _id: "669f49bb129976b9cb99c1c8",
@@ -117,6 +133,7 @@ const SurahsList = [
     arabicName: "سورة الإسراء",
     englishName: "Al-Isra",
     slug: "al-isra",
+    page: 282,
   },
   {
     _id: "669f49bb129976b9cb99c239",
@@ -124,6 +141,7 @@ const SurahsList = [
     arabicName: "سورة الكهف",
     englishName: "Al-Kahf",
     slug: "al-kahf",
+    page: 293,
   },
   {
     _id: "669f49bb129976b9cb99c2a9",
@@ -131,6 +149,7 @@ const SurahsList = [
     arabicName: "سورة مريم",
     englishName: "Maryam",
     slug: "maryam",
+    page: 305,
   },
   {
     _id: "669f49bc129976b9cb99c30d",
@@ -138,6 +157,7 @@ const SurahsList = [
     arabicName: "سورة طه",
     englishName: "Taha",
     slug: "taha",
+    page: 312,
   },
   {
     _id: "669f49bc129976b9cb99c396",
@@ -145,6 +165,7 @@ const SurahsList = [
     arabicName: "سورة الأنبياء",
     englishName: "Al-Anbya",
     slug: "al-anbya",
+    page: 322,
   },
   {
     _id: "669f49bc129976b9cb99c408",
@@ -152,6 +173,7 @@ const SurahsList = [
     arabicName: "سورة الحج",
     englishName: "Al-Hajj",
     slug: "al-hajj",
+    page: 332,
   },
   {
     _id: "669f49bd129976b9cb99c458",
@@ -159,6 +181,7 @@ const SurahsList = [
     arabicName: "سورة المؤمنون",
     englishName: "Al-Mu'minun",
     slug: "al-mu'minun",
+    page: 342,
   },
   {
     _id: "669f49bd129976b9cb99c4d0",
@@ -166,6 +189,7 @@ const SurahsList = [
     arabicName: "سورة النور",
     englishName: "An-Nur",
     slug: "an-nur",
+    page: 350,
   },
   {
     _id: "669f49be129976b9cb99c512",
@@ -173,6 +197,7 @@ const SurahsList = [
     arabicName: "سورة الفرقان",
     englishName: "Al-Furqan",
     slug: "al-furqan",
+    page: 359,
   },
   {
     _id: "669f49be129976b9cb99c561",
@@ -180,6 +205,7 @@ const SurahsList = [
     arabicName: "سورة الشعراء",
     englishName: "Ash-Shu'ara",
     slug: "ash-shu'ara",
+    page: 367,
   },
   {
     _id: "669f49be129976b9cb99c646",
@@ -187,6 +213,7 @@ const SurahsList = [
     arabicName: "سورة النمل",
     englishName: "An-Naml",
     slug: "an-naml",
+    page: 377,
   },
   {
     _id: "669f49bf129976b9cb99c6a5",
@@ -194,6 +221,7 @@ const SurahsList = [
     arabicName: "سورة القصص",
     englishName: "Al-Qasas",
     slug: "al-qasas",
+    page: 385,
   },
   {
     _id: "669f49bf129976b9cb99c6ff",
@@ -201,6 +229,7 @@ const SurahsList = [
     arabicName: "سورة العنكبوت",
     englishName: "Al-'Ankabut",
     slug: "al-'ankabut",
+    page: 396,
   },
   {
     _id: "669f49c0129976b9cb99c746",
@@ -208,6 +237,7 @@ const SurahsList = [
     arabicName: "سورة الروم",
     englishName: "Ar-Rum",
     slug: "ar-rum",
+    page: 404,
   },
   {
     _id: "669f49c0129976b9cb99c784",
@@ -215,6 +245,7 @@ const SurahsList = [
     arabicName: "سورة لقمان",
     englishName: "Luqman",
     slug: "luqman",
+    page: 411,
   },
   {
     _id: "669f49c0129976b9cb99c7a8",
@@ -222,6 +253,7 @@ const SurahsList = [
     arabicName: "سورة السجدة",
     englishName: "As-Sajdah",
     slug: "as-sajdah",
+    page: 415,
   },
   {
     _id: "669f49c0129976b9cb99c7c8",
@@ -229,6 +261,7 @@ const SurahsList = [
     arabicName: "سورة الأحزاب",
     englishName: "Al-Ahzab",
     slug: "al-ahzab",
+    page: 418,
   },
   {
     _id: "669f49c1129976b9cb99c813",
@@ -236,6 +269,7 @@ const SurahsList = [
     arabicName: "سورة سبأ",
     englishName: "Saba",
     slug: "saba",
+    page: 428,
   },
   {
     _id: "669f49c1129976b9cb99c84b",
@@ -243,6 +277,7 @@ const SurahsList = [
     arabicName: "سورة فاطر",
     englishName: "Fatir",
     slug: "fatir",
+    page: 434,
   },
   {
     _id: "669f49c1129976b9cb99c87a",
@@ -250,6 +285,7 @@ const SurahsList = [
     arabicName: "سورة يس",
     englishName: "Ya-Sin",
     slug: "ya-sin",
+    page: 440,
   },
   {
     _id: "669f49c1129976b9cb99c8cf",
@@ -257,6 +293,7 @@ const SurahsList = [
     arabicName: "سورة الصافات",
     englishName: "As-Saffat",
     slug: "as-saffat",
+    page: 446,
   },
   {
     _id: "669f49c2129976b9cb99c987",
@@ -264,6 +301,7 @@ const SurahsList = [
     arabicName: "سورة ص",
     englishName: "Sad",
     slug: "sad",
+    page: 453,
   },
   {
     _id: "669f49c2129976b9cb99c9e1",
@@ -271,6 +309,7 @@ const SurahsList = [
     arabicName: "سورة الزمر",
     englishName: "Az-Zumar",
     slug: "az-zumar",
+    page: 458,
   },
   {
     _id: "669f49c2129976b9cb99ca2e",
@@ -278,6 +317,7 @@ const SurahsList = [
     arabicName: "سورة غافر",
     englishName: "Ghafir",
     slug: "ghafir",
+    page: 467,
   },
   {
     _id: "669f49c2129976b9cb99ca85",
@@ -285,6 +325,7 @@ const SurahsList = [
     arabicName: "سورة فصلت",
     englishName: "Fussilat",
     slug: "fussilat",
+    page: 477,
   },
   {
     _id: "669f49c3129976b9cb99cabd",
@@ -292,6 +333,7 @@ const SurahsList = [
     arabicName: "سورة الشورى",
     englishName: "Ash-Shuraa",
     slug: "ash-shuraa",
+    page: 483,
   },
   {
     _id: "669f49c3129976b9cb99caf4",
@@ -299,6 +341,7 @@ const SurahsList = [
     arabicName: "سورة الزخرف",
     englishName: "Az-Zukhruf",
     slug: "az-zukhruf",
+    page: 489,
   },
   {
     _id: "669f49c3129976b9cb99cb4f",
@@ -306,6 +349,7 @@ const SurahsList = [
     arabicName: "سورة الدخان",
     englishName: "Ad-Dukhan",
     slug: "ad-dukhan",
+    page: 496,
   },
   {
     _id: "669f49c3129976b9cb99cb8c",
@@ -313,6 +357,7 @@ const SurahsList = [
     arabicName: "سورة الجاثية",
     englishName: "Al-Jathiyah",
     slug: "al-jathiyah",
+    page: 499,
   },
   {
     _id: "669f49c4129976b9cb99cbb3",
@@ -320,6 +365,7 @@ const SurahsList = [
     arabicName: "سورة الأحقاف",
     englishName: "Al-Ahqaf",
     slug: "al-ahqaf",
+    page: 502,
   },
   {
     _id: "669f49c4129976b9cb99cbd8",
@@ -327,6 +373,7 @@ const SurahsList = [
     arabicName: "سورة محمد",
     englishName: "Muhammad",
     slug: "muhammad",
+    page: 507,
   },
   {
     _id: "669f49c4129976b9cb99cc00",
@@ -334,6 +381,7 @@ const SurahsList = [
     arabicName: "سورة الفتح",
     englishName: "Al-Fath",
     slug: "al-fath",
+    page: 511,
   },
   {
     _id: "669f49c4129976b9cb99cc1f",
@@ -341,6 +389,7 @@ const SurahsList = [
     arabicName: "سورة الحجرات",
     englishName: "Al-Hujurat",
     slug: "al-hujurat",
+    page: 515,
   },
   {
     _id: "669f49c5129976b9cb99cc33",
@@ -348,6 +397,7 @@ const SurahsList = [
     arabicName: "سورة ق",
     englishName: "Qaf",
     slug: "qaf",
+    page: 518,
   },
   {
     _id: "669f49c5129976b9cb99cc62",
@@ -355,6 +405,7 @@ const SurahsList = [
     arabicName: "سورة الذاريات",
     englishName: "Adh-Dhariyat",
     slug: "adh-dhariyat",
+    page: 520,
   },
   {
     _id: "669f49c5129976b9cb99cca0",
@@ -362,6 +413,7 @@ const SurahsList = [
     arabicName: "سورة الطور",
     englishName: "At-Tur",
     slug: "at-tur",
+    page: 523,
   },
   {
     _id: "669f49c5129976b9cb99ccd3",
@@ -369,6 +421,7 @@ const SurahsList = [
     arabicName: "سورة النجم",
     englishName: "An-Najm",
     slug: "an-najm",
+    page: 526,
   },
   {
     _id: "669f49c6129976b9cb99cd13",
@@ -376,6 +429,7 @@ const SurahsList = [
     arabicName: "سورة القمر",
     englishName: "Al-Qamar",
     slug: "al-qamar",
+    page: 528,
   },
   {
     _id: "669f49c6129976b9cb99cd4c",
@@ -383,6 +437,7 @@ const SurahsList = [
     arabicName: "سورة الرحمن",
     englishName: "Ar-Rahman",
     slug: "ar-rahman",
+    page: 513,
   },
   {
     _id: "669f49c6129976b9cb99cd9c",
@@ -390,6 +445,7 @@ const SurahsList = [
     arabicName: "سورة الواقعة",
     englishName: "Al-Waqi'ah",
     slug: "al-waqi'ah",
+    page: 534,
   },
   {
     _id: "669f49c6129976b9cb99cdfe",
@@ -397,6 +453,7 @@ const SurahsList = [
     arabicName: "سورة الحديد",
     englishName: "Al-Hadnumber",
     slug: "al-hadnumber",
+    page: 537,
   },
   {
     _id: "669f49c6129976b9cb99ce1d",
@@ -404,6 +461,7 @@ const SurahsList = [
     arabicName: "سورة المجادلة",
     englishName: "Al-Mujadila",
     slug: "al-mujadila",
+    page: 542,
   },
   {
     _id: "669f49c7129976b9cb99ce35",
@@ -411,6 +469,7 @@ const SurahsList = [
     arabicName: "سورة الحشر",
     englishName: "Al-Hashr",
     slug: "al-hashr",
+    page: 545,
   },
   {
     _id: "669f49c7129976b9cb99ce4f",
@@ -418,6 +477,7 @@ const SurahsList = [
     arabicName: "سورة الممتحنة",
     englishName: "Al-Mumtahanah",
     slug: "al-mumtahanah",
+    page: 549,
   },
   {
     _id: "669f49c7129976b9cb99ce5e",
@@ -425,6 +485,7 @@ const SurahsList = [
     arabicName: "سورة الصف",
     englishName: "As-Saf",
     slug: "as-saf",
+    page: 551,
   },
   {
     _id: "669f49c7129976b9cb99ce6e",
@@ -432,6 +493,7 @@ const SurahsList = [
     arabicName: "سورة الجمعة",
     englishName: "Al-Jumu'ah",
     slug: "al-jumu'ah",
+    page: 553,
   },
   {
     _id: "669f49c8129976b9cb99ce7b",
@@ -439,6 +501,7 @@ const SurahsList = [
     arabicName: "سورة المنافقون",
     englishName: "Al-Munafiqun",
     slug: "al-munafiqun",
+    page: 554,
   },
   {
     _id: "669f49c8129976b9cb99ce88",
@@ -446,6 +509,7 @@ const SurahsList = [
     arabicName: "سورة التغابن",
     englishName: "At-Taghabun",
     slug: "at-taghabun",
+    page: 556,
   },
   {
     _id: "669f49c8129976b9cb99ce9c",
@@ -453,6 +517,7 @@ const SurahsList = [
     arabicName: "سورة الطلاق",
     englishName: "At-Talaq",
     slug: "at-talaq",
+    page: 558,
   },
   {
     _id: "669f49c8129976b9cb99ceaa",
@@ -460,6 +525,7 @@ const SurahsList = [
     arabicName: "سورة التحريم",
     englishName: "At-Tahrim",
     slug: "at-tahrim",
+    page: 560,
   },
   {
     _id: "669f49c8129976b9cb99ceb8",
@@ -467,6 +533,7 @@ const SurahsList = [
     arabicName: "سورة الملك",
     englishName: "Al-Mulk",
     slug: "al-mulk",
+    page: 562,
   },
   {
     _id: "669f49c9129976b9cb99ced8",
@@ -474,6 +541,7 @@ const SurahsList = [
     arabicName: "سورة القلم",
     englishName: "Al-Qalam",
     slug: "al-qalam",
+    page: 564,
   },
   {
     _id: "669f49c9129976b9cb99cf0e",
@@ -481,6 +549,7 @@ const SurahsList = [
     arabicName: "سورة الحاقة",
     englishName: "Al-Haqqah",
     slug: "al-haqqah",
+    page: 566,
   },
   {
     _id: "669f49c9129976b9cb99cf44",
@@ -488,6 +557,7 @@ const SurahsList = [
     arabicName: "سورة المعارج",
     englishName: "Al-Ma'arij",
     slug: "al-ma'arij",
+    page: 568,
   },
   {
     _id: "669f49c9129976b9cb99cf72",
@@ -495,6 +565,7 @@ const SurahsList = [
     arabicName: "سورة نوح",
     englishName: "Nuh",
     slug: "nuh",
+    page: 570,
   },
   {
     _id: "669f49c9129976b9cb99cf90",
@@ -502,6 +573,7 @@ const SurahsList = [
     arabicName: "سورة الجن",
     englishName: "Al-Jinn",
     slug: "al-jinn",
+    page: 572,
   },
   {
     _id: "669f49ca129976b9cb99cfae",
@@ -509,6 +581,7 @@ const SurahsList = [
     arabicName: "سورة المزمل",
     englishName: "Al-Muzzammil",
     slug: "al-muzzammil",
+    page: 574,
   },
   {
     _id: "669f49ca129976b9cb99cfc4",
@@ -516,6 +589,7 @@ const SurahsList = [
     arabicName: "سورة المدثر",
     englishName: "Al-Muddaththir",
     slug: "al-muddaththir",
+    page: 575,
   },
   {
     _id: "669f49ca129976b9cb99cffe",
@@ -523,6 +597,7 @@ const SurahsList = [
     arabicName: "سورة القيامة",
     englishName: "Al-Qiyamah",
     slug: "al-qiyamah",
+    page: 577,
   },
   {
     _id: "669f49ca129976b9cb99d028",
@@ -530,6 +605,7 @@ const SurahsList = [
     arabicName: "سورة الإنسان",
     englishName: "Al-Insan",
     slug: "al-insan",
+    page: 578,
   },
   {
     _id: "669f49ca129976b9cb99d049",
@@ -537,6 +613,7 @@ const SurahsList = [
     arabicName: "سورة المرسلات",
     englishName: "Al-Mursalat",
     slug: "al-mursalat",
+    page: 580,
   },
   {
     _id: "669f49cb129976b9cb99d07d",
@@ -544,6 +621,7 @@ const SurahsList = [
     arabicName: "سورة النبأ",
     englishName: "An-Naba",
     slug: "an-naba",
+    page: 582,
   },
   {
     _id: "669f49cb129976b9cb99d0a7",
@@ -551,6 +629,7 @@ const SurahsList = [
     arabicName: "سورة النازعات",
     englishName: "An-Nazi'at",
     slug: "an-nazi'at",
+    page: 583,
   },
   {
     _id: "669f49cb129976b9cb99d0d7",
@@ -558,6 +637,7 @@ const SurahsList = [
     arabicName: "سورة عبس",
     englishName: "'Abasa",
     slug: "'abasa",
+    page: 585,
   },
   {
     _id: "669f49cb129976b9cb99d103",
@@ -565,6 +645,7 @@ const SurahsList = [
     arabicName: "سورة التكوير",
     englishName: "At-Takwir",
     slug: "at-takwir",
+    page: 586,
   },
   {
     _id: "669f49cc129976b9cb99d122",
@@ -572,6 +653,7 @@ const SurahsList = [
     arabicName: "سورة الانفطار",
     englishName: "Al-Infitar",
     slug: "al-infitar",
+    page: 587,
   },
   {
     _id: "669f49cc129976b9cb99d137",
@@ -579,6 +661,7 @@ const SurahsList = [
     arabicName: "سورة المطففين",
     englishName: "Al-Mutaffifin",
     slug: "al-mutaffifin",
+    page: 587,
   },
   {
     _id: "669f49cc129976b9cb99d15d",
@@ -586,6 +669,7 @@ const SurahsList = [
     arabicName: "سورة الانشقاق",
     englishName: "Al-Inshiqaq",
     slug: "al-inshiqaq",
+    page: 589,
   },
   {
     _id: "669f49cc129976b9cb99d178",
@@ -593,6 +677,7 @@ const SurahsList = [
     arabicName: "سورة البروج",
     englishName: "Al-Buruj",
     slug: "al-buruj",
+    page: 590,
   },
   {
     _id: "669f49cc129976b9cb99d190",
@@ -600,6 +685,7 @@ const SurahsList = [
     arabicName: "سورة الطارق",
     englishName: "At-Tariq",
     slug: "at-tariq",
+    page: 591,
   },
   {
     _id: "669f49cd129976b9cb99d1a3",
@@ -607,6 +693,7 @@ const SurahsList = [
     arabicName: "سورة الأعلى",
     englishName: "Al-A'la",
     slug: "al-a'la",
+    page: 591,
   },
   {
     _id: "669f49cd129976b9cb99d1b8",
@@ -614,6 +701,7 @@ const SurahsList = [
     arabicName: "سورة الغاشية",
     englishName: "Al-Ghashiyah",
     slug: "al-ghashiyah",
+    page: 592,
   },
   {
     _id: "669f49cd129976b9cb99d1d4",
@@ -621,6 +709,7 @@ const SurahsList = [
     arabicName: "سورة الفجر",
     englishName: "Al-Fajr",
     slug: "al-fajr",
+    page: 593,
   },
   {
     _id: "669f49cd129976b9cb99d1f4",
@@ -628,6 +717,7 @@ const SurahsList = [
     arabicName: "سورة البلد",
     englishName: "Al-Balad",
     slug: "al-balad",
+    page: 594,
   },
   {
     _id: "669f49cd129976b9cb99d20a",
@@ -635,6 +725,7 @@ const SurahsList = [
     arabicName: "سورة الشمس",
     englishName: "Ash-Shams",
     slug: "ash-shams",
+    page: 595,
   },
   {
     _id: "669f49ce129976b9cb99d21b",
@@ -642,6 +733,7 @@ const SurahsList = [
     arabicName: "سورة الليل",
     englishName: "Al-Layl",
     slug: "al-layl",
+    page: 595,
   },
   {
     _id: "669f49ce129976b9cb99d232",
@@ -649,6 +741,7 @@ const SurahsList = [
     arabicName: "سورة الضحى",
     englishName: "Ad-Duhaa",
     slug: "ad-duhaa",
+    page: 596,
   },
   {
     _id: "669f49ce129976b9cb99d23f",
@@ -656,6 +749,7 @@ const SurahsList = [
     arabicName: "سورة الشرح",
     englishName: "Ash-Sharh",
     slug: "ash-sharh",
+    page: 596,
   },
   {
     _id: "669f49ce129976b9cb99d249",
@@ -663,6 +757,7 @@ const SurahsList = [
     arabicName: "سورة التين",
     englishName: "At-Tin",
     slug: "at-tin",
+    page: 597,
   },
   {
     _id: "669f49ce129976b9cb99d253",
@@ -670,6 +765,7 @@ const SurahsList = [
     arabicName: "سورة العلق",
     englishName: "Al-'Alaq",
     slug: "al-'alaq",
+    page: 597,
   },
   {
     _id: "669f49cf129976b9cb99d268",
@@ -677,6 +773,7 @@ const SurahsList = [
     arabicName: "سورة القدر",
     englishName: "Al-Qadr",
     slug: "al-qadr",
+    page: 598,
   },
   {
     _id: "669f49cf129976b9cb99d26f",
@@ -684,6 +781,7 @@ const SurahsList = [
     arabicName: "سورة البينة",
     englishName: "Al-Bayyinah",
     slug: "al-bayyinah",
+    page: 598,
   },
   {
     _id: "669f49cf129976b9cb99d279",
@@ -691,6 +789,7 @@ const SurahsList = [
     arabicName: "سورة الزلزلة",
     englishName: "Az-Zalzalah",
     slug: "az-zalzalah",
+    page: 599,
   },
   {
     _id: "669f49cf129976b9cb99d283",
@@ -698,6 +797,7 @@ const SurahsList = [
     arabicName: "سورة العاديات",
     englishName: "Al-'Adiyat",
     slug: "al-'adiyat",
+    page: 599,
   },
   {
     _id: "669f49cf129976b9cb99d290",
@@ -705,6 +805,7 @@ const SurahsList = [
     arabicName: "سورة القارعة",
     englishName: "Al-Qari'ah",
     slug: "al-qari'ah",
+    page: 600,
   },
   {
     _id: "669f49d0129976b9cb99d29d",
@@ -712,6 +813,7 @@ const SurahsList = [
     arabicName: "سورة التكاثر",
     englishName: "At-Takathur",
     slug: "at-takathur",
+    page: 600,
   },
   {
     _id: "669f49d0129976b9cb99d2a7",
@@ -719,6 +821,7 @@ const SurahsList = [
     arabicName: "سورة العصر",
     englishName: "Al-'Asr",
     slug: "al-'asr",
+    page: 601,
   },
   {
     _id: "669f49d0129976b9cb99d2ac",
@@ -726,6 +829,7 @@ const SurahsList = [
     arabicName: "سورة الهمزة",
     englishName: "Al-Humazah",
     slug: "al-humazah",
+    page: 601,
   },
   {
     _id: "669f49d0129976b9cb99d2b7",
@@ -733,6 +837,7 @@ const SurahsList = [
     arabicName: "سورة الفيل",
     englishName: "Al-Fil",
     slug: "al-fil",
+    page: 601,
   },
   {
     _id: "669f49d0129976b9cb99d2be",
@@ -740,6 +845,7 @@ const SurahsList = [
     arabicName: "سورة قريش",
     englishName: "Quraysh",
     slug: "quraysh",
+    page: 602,
   },
   {
     _id: "669f49d1129976b9cb99d2c4",
@@ -747,6 +853,7 @@ const SurahsList = [
     arabicName: "سورة الماعون",
     englishName: "Al-Ma'un",
     slug: "al-ma'un",
+    page: 602,
   },
   {
     _id: "669f49d1129976b9cb99d2cd",
@@ -754,6 +861,7 @@ const SurahsList = [
     arabicName: "سورة الكوثر",
     englishName: "Al-Kawthar",
     slug: "al-kawthar",
+    page: 602,
   },
   {
     _id: "669f49d1129976b9cb99d2d2",
@@ -761,6 +869,7 @@ const SurahsList = [
     arabicName: "سورة الكافرون",
     englishName: "Al-Kafirun",
     slug: "al-kafirun",
+    page: 603,
   },
   {
     _id: "669f49d1129976b9cb99d2da",
@@ -768,6 +877,7 @@ const SurahsList = [
     arabicName: "سورة النصر",
     englishName: "An-Nasr",
     slug: "an-nasr",
+    page: 603,
   },
   {
     _id: "669f49d2129976b9cb99d2df",
@@ -775,6 +885,7 @@ const SurahsList = [
     arabicName: "سورة المسد",
     englishName: "Al-Masad",
     slug: "al-masad",
+    page: 603,
   },
   {
     _id: "669f49d2129976b9cb99d2e6",
@@ -782,6 +893,7 @@ const SurahsList = [
     arabicName: "سورة الإخلاص",
     englishName: "Al-Ikhlas",
     slug: "al-ikhlas",
+    page: 604,
   },
   {
     _id: "669f49d2129976b9cb99d2ec",
@@ -789,6 +901,7 @@ const SurahsList = [
     arabicName: "سورة الفلق",
     englishName: "Al-Falaq",
     slug: "al-falaq",
+    page: 604,
   },
   {
     _id: "669f49d2129976b9cb99d2f3",
@@ -796,6 +909,7 @@ const SurahsList = [
     arabicName: "سورة الناس",
     englishName: "An-Nas",
     slug: "an-nas",
+    page: 604,
   },
 ];
 export default SurahsList;

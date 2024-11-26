@@ -15,7 +15,10 @@ const ReciterCard = ({ reciter, handleNavigateClick }) => {
       : getName(reciter);
 
   return (
-    <TouchableOpacity onPress={handleNavigateClick}>
+    <TouchableOpacity
+      style={{ flexGrow: 1, paddingVertical: 10 }}
+      onPress={handleNavigateClick}
+    >
       <View className="w-full">
         <View className="flex-col items-center pb-3">
           <ReciterImg uri={reciter.photo} alt={getName(reciter)} />

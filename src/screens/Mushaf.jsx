@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { View, FlatList } from "react-native";
 import HeadingScreen from "../components/HeadingScreen";
 import { useTranslation } from "react-i18next";
@@ -11,14 +11,14 @@ export default function Mushaf() {
   const { t } = useTranslation();
   const { screenWidth: width } = useContext(ScreenDimensionsContext);
 
-  const renderHeader = () => {
+  const renderHeader = useMemo(() => {
     return (
       <View>
         <GoBackButton />
         <HeadingScreen headingTxt={t("mushaf")} />
       </View>
     );
-  };
+  }, []);
 
   const numColumns = width > 600 ? 2 : 1;
   return (
@@ -29,9 +29,8 @@ export default function Mushaf() {
         renderItem={({ item }) => <SurahCard surah={item} />}
         ListHeaderComponent={renderHeader}
         contentContainerStyle={{
-          gap: 8,
-          paddingBottom: 16,
           backgroundColor: "#1f2937",
+          gap: 12,
           flexGrow: 1,
           width: "100%",
         }}

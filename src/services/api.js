@@ -22,7 +22,7 @@ export async function getReciters({
 
 export async function getReciter(reciterSlug) {
   const res = await fetch(
-    `${BASE_END_POINT}/reciters/reciter-profile/${reciterSlug}`
+    `${BASE_END_POINT}/reciters/reciter-profile/${reciterSlug}?increaseViews=true`
   );
 
   return res;

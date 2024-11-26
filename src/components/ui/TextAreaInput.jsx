@@ -10,6 +10,7 @@ const TextAreaInput = ({ id, value, onChangeText, label }) => {
       <TextInput
         id={id}
         name={id}
+        testID={label}
         multiline
         numberOfLines={3}
         value={value}

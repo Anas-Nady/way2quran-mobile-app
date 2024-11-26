@@ -27,14 +27,12 @@ const TopBar = ({ isMenuOpen, toggleMenu }) => {
             <Feather className="flex" name="menu" size={30} color={"white"} />
           </TouchableOpacity>
           <AppTitle />
-          <View className="px-2 bg-gray-600 rounded search-icon">
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Search")}
-              className="my-2"
-            >
-              <AntDesign name="search1" size={30} color={"white"} />
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            className="px-2 py-1 bg-gray-600 rounded"
+            onPress={() => navigation.navigate("Search")}
+          >
+            <AntDesign name="search1" size={30} color={"white"} />
+          </TouchableOpacity>
         </View>
         {/* Menu  */}
         {isMenuOpen && (
