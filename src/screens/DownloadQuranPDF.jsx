@@ -10,7 +10,7 @@ import { useContext } from "react";
 export default function DownloadQuranPDF() {
   const { t } = useTranslation();
   const { screenWidth } = useContext(ScreenDimensionsContext);
-  const cardWidth = screenWidth / 2 - 24; // accounting for padding and gap
+  const cardWidth = screenWidth / 2 - 20; // accounting for padding and gap
 
   const renderHeader = () => {
     return (

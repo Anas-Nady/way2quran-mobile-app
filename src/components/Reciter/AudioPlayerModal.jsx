@@ -10,6 +10,7 @@ import TrackPlayer, { State, useProgress } from "react-native-track-player";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { savePlayerState } from "../../helpers/playerStateStorage";
+import { setupTrackPlayback } from "../../helpers/setupTrackPlayback";
 
 const AudioPlayerModal = () => {
   const { playerState, setPlayerState, toggleModalExpansion } =
@@ -78,20 +79,13 @@ const AudioPlayerModal = () => {
         const nextIdx = playerState.surahIndex + 1;
         const nextSurah = playerState.recitation.audioFiles[nextIdx];
 
-        await TrackPlayer.reset();
-        await TrackPlayer.add({
+        await setupTrackPlayback({
           id: nextSurah.surahNumber.toString(),
           url: nextSurah.url,
           title: getName(nextSurah.surahInfo),
           artist: getName(playerState.reciter),
           artwork: playerState.reciter?.photo,
-          genre: "Quran",
         });
-        await TrackPlayer.updateNowPlayingMetadata({
-          artwork: playerState.reciter.photo,
-        });
-
-        await TrackPlayer.play();
 
         const updatedPlayerState = {
           ...playerState,
@@ -118,20 +112,13 @@ const AudioPlayerModal = () => {
         const prevIdx = playerState.surahIndex - 1;
         const prevSurah = playerState.recitation.audioFiles[prevIdx];
 
-        await TrackPlayer.reset();
-        await TrackPlayer.add({
+        await setupTrackPlayback({
           id: prevSurah.surahNumber.toString(),
           url: prevSurah.url,
           title: getName(prevSurah.surahInfo),
           artist: getName(playerState.reciter),
           artwork: playerState.reciter?.photo,
-          genre: "Quran",
         });
-        await TrackPlayer.updateNowPlayingMetadata({
-          artwork: playerState.reciter.photo,
-        });
-
-        await TrackPlayer.play();
 
         const updatedPlayerState = {
           ...playerState,

@@ -11,6 +11,7 @@ import getName from "../../helpers/getName.js";
 import { flexDirection } from "../../helpers/flexDirection.js";
 import TrackPlayer from "react-native-track-player";
 import { savePlayerState } from "../../helpers/playerStateStorage";
+import { setupTrackPlayback } from "../../helpers/setupTrackPlayback.js";
 
 const SurahCardDetails = ({ surah, surahIndex, reciter, recitation }) => {
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -35,20 +36,13 @@ const SurahCardDetails = ({ surah, surahIndex, reciter, recitation }) => {
 
       // If no track is loaded yet
       if (playerState.surahIndex === -1) {
-        await TrackPlayer.reset();
-        await TrackPlayer.add({
+        await setupTrackPlayback({
           id: surah.surahNumber.toString(),
           url: surah.url,
           title: `${notificationInfo.surahName}`,
           artist: notificationInfo.reciterName,
           artwork: reciter.photo,
-          genre: "Quran",
         });
-        await TrackPlayer.updateNowPlayingMetadata({
-          artwork: reciter.photo,
-        });
-
-        await TrackPlayer.play();
 
         const updatedPlayerState = {
           ...playerState,
@@ -86,18 +80,13 @@ const SurahCardDetails = ({ surah, surahIndex, reciter, recitation }) => {
       }
 
       // If switching to a different track
-      await TrackPlayer.reset();
-      await TrackPlayer.add({
+      await setupTrackPlayback({
         id: surah.surahNumber.toString(),
         url: surah.url,
         title: `${notificationInfo.surahName}`,
         artist: notificationInfo.reciterName,
         artwork: reciter.photo,
-        genre: "Quran",
       });
-
-      await TrackPlayer.updateNowPlayingMetadata({ artwork: reciter.photo });
-      await TrackPlayer.play();
 
       const updatedPlayerState = {
         ...playerState,

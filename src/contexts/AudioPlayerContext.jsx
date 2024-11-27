@@ -5,6 +5,7 @@ import TrackPlayer, {
 } from "react-native-track-player";
 import getName from "../helpers/getName";
 import { savePlayerState } from "../helpers/playerStateStorage";
+import { setupTrackPlayback } from "../helpers/setupTrackPlayback";
 
 const AudioPlayerContext = createContext();
 
@@ -89,20 +90,13 @@ export const AudioPlayerProvider = ({ children }) => {
             const nextIdx = playerState.surahIndex + 1;
             const nextSurah = playerState.recitation.audioFiles[nextIdx];
 
-            await TrackPlayer.reset();
-            await TrackPlayer.add({
+            await setupTrackPlayback({
               id: nextSurah.surahNumber.toString(),
               url: nextSurah.url,
               title: getName(nextSurah.surahInfo),
               artist: getName(playerState.reciter),
               artwork: playerState.reciter?.photo,
-              genre: "Quran",
             });
-            await TrackPlayer.updateNowPlayingMetadata({
-              artwork: playerState.reciter.photo,
-            });
-
-            await TrackPlayer.play();
 
             const updatedPlayerState = {
               ...playerState,
@@ -123,20 +117,13 @@ export const AudioPlayerProvider = ({ children }) => {
             const prevIdx = playerState.surahIndex - 1;
             const prevSurah = playerState?.recitation?.audioFiles[prevIdx];
 
-            await TrackPlayer.reset();
-            await TrackPlayer.add({
+            await setupTrackPlayback({
               id: prevSurah.surahNumber.toString(),
               url: prevSurah.url,
-              title: `${getName(prevSurah.surahInfo)}`,
+              title: getName(prevSurah.surahInfo),
               artist: getName(playerState.reciter),
-              artwork: playerState.reciter.photo,
-              genre: "Quran",
+              artwork: playerState.reciter?.photo,
             });
-            await TrackPlayer.updateNowPlayingMetadata({
-              artwork: playerState.reciter.photo,
-            });
-
-            await TrackPlayer.play();
 
             updatedPlayerState = {
               ...playerState,
@@ -172,19 +159,13 @@ export const AudioPlayerProvider = ({ children }) => {
         const nextSurah = playerState.recitation.audioFiles[nextIdx];
 
         try {
-          await TrackPlayer.reset();
-          await TrackPlayer.add({
+          await setupTrackPlayback({
             id: nextSurah.surahNumber.toString(),
             url: nextSurah.url,
-            title: `${getName(nextSurah.surahInfo)}`,
+            title: getName(nextSurah.surahInfo),
             artist: getName(playerState.reciter),
-            artwork: playerState.reciter.photo,
-            genre: "Quran",
+            artwork: playerState.reciter?.photo,
           });
-          await TrackPlayer.updateNowPlayingMetadata({
-            artwork: playerState.reciter.photo,
-          });
-          await TrackPlayer.play();
 
           const updatedPlayerState = {
             ...playerState,

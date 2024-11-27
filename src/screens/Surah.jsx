@@ -1,5 +1,11 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
-import { StyleSheet, View, PanResponder, Animated } from "react-native";
+import {
+  StyleSheet,
+  View,
+  PanResponder,
+  Animated,
+  Dimensions,
+} from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { ScreenDimensionsContext } from "../contexts/ScreenDimensionsProvider";
 import { Image } from "expo-image";
@@ -9,6 +15,7 @@ import { AntDesign } from "@expo/vector-icons";
 export default function Surah() {
   const { screenWidth, screenHeight } = useContext(ScreenDimensionsContext);
   const route = useRoute();
+  const [contentFit, setContentFit] = useState("fill"); // Initial contentFit
   const [currentPage, setCurrentPage] = useState(
     parseInt(route.params.pageNumber)
   );
@@ -28,6 +35,25 @@ export default function Surah() {
       }
     };
     checkFirstTime();
+  }, []);
+
+  useEffect(() => {
+    // Listen to orientation changes
+    const updateContentFit = () => {
+      const { width, height } = Dimensions.get("window");
+      setContentFit(width > height ? "contain" : "fill");
+    };
+
+    const subscription = Dimensions.addEventListener(
+      "change",
+      updateContentFit
+    );
+
+    updateContentFit();
+
+    return () => {
+      subscription.remove();
+    };
   }, []);
 
   // Fade-out animation for arrows
@@ -156,7 +182,7 @@ export default function Surah() {
       <Image
         source={surahPage}
         style={styles.quranImage}
-        contentFit="contain"
+        contentFit={contentFit}
         transition={300}
       />
     </View>

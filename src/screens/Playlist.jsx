@@ -6,12 +6,13 @@ import GoBackButton from "../components/ui/GoBackButton";
 import { getAllBookmarks, removeBookmark } from "../helpers/bookmarkHandlers";
 import EmptyState from "../components/States/EmptyState";
 import { useAudioPlayer } from "../contexts/AudioPlayerContext";
-import TrackPlayer from "react-native-track-player/lib/src";
+import TrackPlayer from "react-native-track-player";
 import ConfirmationDialog from "../components/ui/ConfirmationDialog";
 import { useTranslate } from "../helpers/i18nHelper";
 import getName from "../helpers/getName";
 import { flexDirection, isRTL } from "../helpers/flexDirection";
 import { savePlayerState } from "../helpers/playerStateStorage";
+import { setupTrackPlayback } from "../helpers/setupTrackPlayback";
 
 const PlaylistCard = ({
   data,
@@ -26,7 +27,7 @@ const PlaylistCard = ({
   }, [data.surahs]);
 
   const renderSurah = ({ item }) => (
-    <Text className="flex-grow p-1 mx-1 font-semibold text-center border border-gray-500 rounded text-md text-gray-50">
+    <Text className="flex-grow p-1 font-semibold text-center border border-gray-500 rounded text-md text-gray-50">
       {getName(item?.surahInfo)}
     </Text>
   );
@@ -144,20 +145,14 @@ export default function Playlist() {
 
       // If no track is playing, start new playlist
       if (playerState.surahIndex === -1) {
-        await TrackPlayer.reset();
-        await TrackPlayer.add({
+        await setupTrackPlayback({
           id: sortedSurahs[0].surahNumber.toString(),
           url: sortedSurahs[0].url,
           title: `${getName(sortedSurahs[0].surahInfo)}`,
           artist: getName(playlist.reciter),
           artwork: playlist.reciter.photo,
-          genre: "Quran",
+          imageCover: playlist.reciter.photo,
         });
-        await TrackPlayer.updateNowPlayingMetadata({
-          artwork: playlist.reciter.photo,
-        });
-
-        await TrackPlayer.play();
 
         const updatedPlayerState = {
           ...playerState,
@@ -201,19 +196,14 @@ export default function Playlist() {
       }
 
       // Switch to new playlist
-      await TrackPlayer.reset();
-      await TrackPlayer.add({
+      await setupTrackPlayback({
         id: sortedSurahs[0].surahNumber.toString(),
         url: sortedSurahs[0].url,
         title: `${getName(sortedSurahs[0].surahInfo)}`,
         artist: getName(playlist.reciter),
         artwork: playlist.reciter.photo,
-        genre: "Quran",
+        imageCover: playlist.reciter.photo,
       });
-      await TrackPlayer.updateNowPlayingMetadata({
-        artwork: playlist.reciter.photo,
-      });
-      await TrackPlayer.play();
 
       const updatedPlayerState = {
         ...playerState,
